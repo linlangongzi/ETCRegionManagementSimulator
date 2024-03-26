@@ -26,5 +26,10 @@ namespace ETCRegionManagementSimulator
         {
             this.InitializeComponent();
         }
+
+        private void OnStart(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

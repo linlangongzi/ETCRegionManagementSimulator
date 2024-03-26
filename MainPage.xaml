@@ -6,9 +6,228 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="620" d:DesignHeight="820" MinWidth="600" MinHeight="800">
 
-    <Grid>
+    <Grid Width="600" Height="800">
 
+        <TextBlock x:Name="title" 
+                   Height="55" 
+                   Width="520" 
+                   FontSize="30"
+                   FontWeight="Bold" 
+                   Text="RegionServerSimulator" 
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center" 
+                   TextAlignment="Center" Margin="0,20,0,0"
+                   />
+
+        <Grid Margin="0,105,0,266" HorizontalAlignment="Center" Width="559" Height="420">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280*"/>
+                <ColumnDefinition Width="360*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Row 0 -->
+            <TextBlock x:Name="tag_ip" 
+                       Text="IP Address :" 
+                       TextWrapping="Wrap"
+                       FontSize="20" 
+                       Width="200" 
+                       Height="40" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       TextAlignment="Center" 
+                       />
+
+            <TextBox x:Name="ip_address" 
+                     PlaceholderText = "IP Address"
+                     Text="127.0.0.1" 
+                     Width="280" 
+                     TextWrapping="Wrap"
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Center"
+                     TextAlignment="Center"
+                     FontSize="20" 
+                     Grid.Column="2" Height="40" />
+
+            <!-- Row 1 -->
+            <TextBlock x:Name="tag_port" 
+                       Text="Connection Port No.1 :" 
+                       TextWrapping="Wrap" 
+                       Width="200"
+                       Height="40" 
+                       FontSize="19" 
+                       Grid.Row="1" 
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       />
+
+            <TextBlock x:Name="connectionPortFirst" 
+                       Text="Port Number" 
+                       Grid.Row="1" 
+                       Width="280" 
+                       Height="40" 
+                       Grid.Column="2"
+                       HorizontalAlignment="Center" 
+                       TextAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       HorizontalTextAlignment="Center" FontSize="20"/>
+
+            <!-- Row 2 -->
+            <TextBlock x:Name="tag_port_Copy" 
+                       Text="Connection Port No.2 :"
+                       TextWrapping="Wrap" 
+                       Width="200" 
+                       Height="40"
+                       FontSize="19" 
+                       Grid.Row="2" 
+                       Grid.Column="0" 
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       />
+
+            <TextBlock x:Name="connectionPortSecond" Text="Port Number"
+                       Height="40" 
+                       Width="280" 
+                       VerticalAlignment="Center"
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       Grid.Row="2" 
+                       Grid.Column="1" FontSize="20"
+                       />
+
+            <!-- Row 3 -->
+            <TextBlock x:Name="tag_port_Copy1" 
+                       Text="Connection Port No.3 :" 
+                       TextWrapping="Wrap" 
+                       Height="40" 
+                       Width="200" 
+                       FontSize="19" 
+                       Grid.Row="3"
+                       Grid.Column="0" 
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       />
+
+            <TextBlock x:Name="connectionPortThird" Text="Port Number" 
+                       Width="280" 
+                       Height="40" 
+                       Grid.Column="2"
+                       Grid.Row="3"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center" FontSize="20"/>
+
+            <!-- Row 4 -->
+            <TextBlock x:Name="tag_port_Copy2"
+                       Text="Connection Port No.4 :"
+                       TextWrapping="Wrap" 
+                       Height="40" 
+                       Width="200" 
+                       FontSize="19" 
+                       Grid.Row="4" 
+                       Grid.Column="0" 
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       />
+
+            <TextBlock x:Name="connectionPortForth" Text="Port Number" 
+                       Width="280" 
+                       Height="40" 
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       Grid.Row="4"
+                       Grid.Column="2" FontSize="20"
+                       />
+
+            <!-- Row 5 -->
+            <TextBlock x:Name="tag_port_Copy3" 
+                       Text="Connection Port No.5 :" 
+                       Height="40" 
+                       Width="200" 
+                       TextWrapping="Wrap" 
+                       FontSize="19" 
+                       Grid.Row="5"
+                       Grid.Column="0" 
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       />
+
+            <TextBlock x:Name="connectionPortFifth" Text="Port Number" 
+                       Width="280" 
+                       Height="40" 
+                       HorizontalAlignment="Center"  
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Grid.Row="5" 
+                       Grid.Column="2" FontSize="20"
+                       />
+        </Grid>
+        <StackPanel 
+            HorizontalAlignment="Center" 
+            Orientation="Horizontal" 
+            VerticalAlignment="Bottom" Margin="0,0,0,210" 
+           >
+
+            <TextBlock x:Name="logPathTag" 
+                       Height="31" 
+                       Text="Log Path: " 
+                       TextWrapping="NoWrap" 
+                       Width="100" 
+                       TextAlignment="Center" 
+                       VerticalAlignment="Center" FontSize="20"
+                       />
+            <TextBox x:Name="logPath" 
+                     Height="40"
+                     Text=""
+                     TextWrapping="Wrap"
+                     Width="360" 
+                     TextAlignment="Left" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Center" Margin="10,0,10,0"
+                     />
+            <Button x:Name="openDir" 
+                    Content="Open"
+                    Height="40" 
+                    Width="66" 
+                    HorizontalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"
+                    />
+
+        </StackPanel>
+        
+        <Button 
+            Width="120"
+            Height="120" 
+            Content="Start" 
+            Background="Red"
+            BorderThickness="0" 
+            Click="OnStart" 
+            HorizontalAlignment="Center" 
+            Margin="0,0,0,60" 
+            VerticalAlignment="Bottom" FontSize="20" FontWeight="SemiBold" FontFamily="Segoe UI">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse Fill="{TemplateBinding Background}"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </Page>
