@@ -57,11 +57,12 @@
                      VerticalAlignment="Center"
                      TextAlignment="Center"
                      FontSize="20" 
-                     Grid.Column="2" Height="40" />
+                     Grid.Column="2" Height="40" BorderThickness="0,0,0,2" />
 
             <!-- Row 1 -->
             <TextBlock x:Name="tag_port" 
                        Text="Connection Port No.1 :" 
+                       x:Uid="ConnectionPortNo.1"
                        TextWrapping="Wrap" 
                        Width="200"
                        Height="40" 
@@ -86,6 +87,7 @@
             <!-- Row 2 -->
             <TextBlock x:Name="tag_port_Copy" 
                        Text="Connection Port No.2 :"
+                       x:Uid="ConnectionPortNo.2"
                        TextWrapping="Wrap" 
                        Width="200" 
                        Height="40"
@@ -110,6 +112,7 @@
             <!-- Row 3 -->
             <TextBlock x:Name="tag_port_Copy1" 
                        Text="Connection Port No.3 :" 
+                       x:Uid="ConnectionPortNo.3"
                        TextWrapping="Wrap" 
                        Height="40" 
                        Width="200" 
@@ -133,6 +136,7 @@
             <!-- Row 4 -->
             <TextBlock x:Name="tag_port_Copy2"
                        Text="Connection Port No.4 :"
+                       x:Uid="ConnectionPortNo.4"
                        TextWrapping="Wrap" 
                        Height="40" 
                        Width="200" 
@@ -157,6 +161,7 @@
             <!-- Row 5 -->
             <TextBlock x:Name="tag_port_Copy3" 
                        Text="Connection Port No.5 :" 
+                       x:Uid="ConnectionPortNo.5"
                        Height="40" 
                        Width="200" 
                        TextWrapping="Wrap" 
@@ -198,8 +203,8 @@
                      TextWrapping="Wrap"
                      Width="360" 
                      TextAlignment="Left" 
-                     HorizontalAlignment="Center" 
-                     VerticalAlignment="Center" Margin="10,0,10,0"
+                     HorizontalAlignment="Left" 
+                     VerticalAlignment="Center" Margin="10,0,10,0" BorderThickness="1,1,1,1" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
                      />
             <Button x:Name="openDir" 
                     Content="Open"
