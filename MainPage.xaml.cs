@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -17,19 +18,48 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
+
+        private Server server;
+
         public MainPage()
         {
             this.InitializeComponent();
+            server = new Server();
         }
 
-        private void OnStart(object sender, RoutedEventArgs e)
+        private async void OnStart(object sender, RoutedEventArgs e)
         {
+            bool serverRunningState = false;
+            if (!server.Running)
+            {
+                await server.Start();
+                server.Running = true;
+                serverRunningState = true;
+                Console.WriteLine($"Server is running");
+            }
+            else
+            {
+                Console.WriteLine($"Shutting down Running Server ");
+                return;
+            }
+            updateUI(serverRunningState);
 
+        }
+
+        private void updateUI(bool isServerRunning)
+        {
+            if (isServerRunning)
+            {
+                startServer.Content = "Running";
+                startServer.Background = new SolidColorBrush(Colors.Green);
+            }
+            else
+            {
+                startServer.Content = "Start";
+                startServer.Background = new SolidColorBrush(Colors.Red);
+            }
         }
     }
 }

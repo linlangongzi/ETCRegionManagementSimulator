@@ -215,7 +215,7 @@
 
         </StackPanel>
         
-        <Button 
+        <Button x:Name="startServer" 
             Width="120"
             Height="120" 
             Content="Start" 

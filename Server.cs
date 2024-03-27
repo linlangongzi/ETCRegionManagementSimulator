@@ -14,24 +14,56 @@ namespace ETCRegionManagementSimulator
         private IPAddress defaultIPAddress;
         private IPAddress backupIPAddress;
         private List<int> ports;
+
         private List<TcpListener> listeners;
-        private bool running;
+        public bool Running { get; set; }
+
         private ClientsManager clientManager;
+
+        public IPAddress DefaultIPAddress
+        {
+            get { return defaultIPAddress; }
+            set { defaultIPAddress = value; }
+        }
+
+        public IPAddress BackupIPAddress
+        {
+            get { return backupIPAddress; }
+            set { backupIPAddress = value; }
+        }
+
+        public List<int> Ports
+        {
+            get { return ports; }
+            set { ports = value; }
+        }
+
+        // Default constructor
+        public Server()
+        {
+            defaultIPAddress = IPAddress.Loopback;
+            backupIPAddress = null;
+            ports = new List<int>();
+            listeners = new List<TcpListener>();
+            clientManager = new ClientsManager();
+            Running = false;
+        }
 
         public Server(string defaultIP, string backupIP, List<int> ports)
         {
             defaultIPAddress = IPAddress.Parse(defaultIP);
             backupIPAddress = IPAddress.Parse(backupIP);
             this.ports = ports;
+            listeners = new List<TcpListener>();
             clientManager = new ClientsManager();
-            running = false;
+            Running = false;
         }
 
         public async Task Start()
         {
-            if (!running)
+            if (!Running)
             {
-                running = true;
+                Running = true;
                 foreach(int port in ports)
                 { 
                     TcpListener listener = new TcpListener(defaultIPAddress, port);  //Set port number to default 0 to initialize the listener  
@@ -47,7 +79,7 @@ namespace ETCRegionManagementSimulator
 
         private async Task AcceptClientsAsync(TcpListener listener, int port)
         {
-            while (running)
+            while (Running)
             {
                 try
                 {
@@ -72,6 +104,18 @@ namespace ETCRegionManagementSimulator
             clientManager.AddClient(clientId, client);
 
             client.ReadData();
+        }
+
+        public void Shutdown()
+        {
+            if (Running)
+            {
+                Running = false;
+                // Destruct Clients in Client manager
+                // 
+                //listener.Stop();
+                Console.WriteLine("Server stopped.");
+            }
         }
     }
 }
