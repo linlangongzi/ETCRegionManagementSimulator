@@ -18,12 +18,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class StartUpPage : Page
     {
 
         private Server server;
 
-        public MainPage()
+        public StartUpPage()
         {
             this.InitializeComponent();
             server = new Server();
@@ -34,6 +34,8 @@ namespace ETCRegionManagementSimulator
             bool serverRunningState = false;
             if (!server.Running)
             {
+                string ipAddressStr = ip_address.Text.Trim();
+               // IPAddress ipAddress;
                 await server.Start();
                 server.Running = true;
                 serverRunningState = true;

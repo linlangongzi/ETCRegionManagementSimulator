@@ -99,12 +99,29 @@ namespace ETCRegionManagementSimulator
         private async Task HandleClientAsync(TcpClient tcpClient)
         {
             string clientId = ClientIdGenerator.GenerateClientId();
-            Client client = new Client(clientId, tcpClient);
 
+            Client client = new Client(clientId, tcpClient);
             clientManager.AddClient(clientId, client);
 
-            client.ReadData();
+            //Task readDataTask = client.ReadData();
+            //Task sendDataTask = client.SendData();
+
+            //await Task.WhenAny(readDataTask, sendDataTask);
+
+            //if (readDataTask.IsFaulted)
+            //{
+            //    Exception readDataException = readDataTask.Exception;
+
+            //    // TODO: Handle read data exception
+            //}
+            //else
+            //{
+            //    Exception sendDataException = sendDataTask.Exception;
+            //    // TODO: Handle send data exception
+            //}
+
         }
+
 
         public void Shutdown()
         {
