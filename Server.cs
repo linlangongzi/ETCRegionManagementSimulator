@@ -98,27 +98,29 @@ namespace ETCRegionManagementSimulator
 
         private async Task HandleClientAsync(TcpClient tcpClient)
         {
+            // TODO: To change the Data retrieve method , should get this data from UI or Reading file
+            string data = "test data";
             string clientId = ClientIdGenerator.GenerateClientId();
 
             Client client = new Client(clientId, tcpClient);
             clientManager.AddClient(clientId, client);
 
-            //Task readDataTask = client.ReadData();
-            //Task sendDataTask = client.SendData();
+            Task readDataTask = client.ReadDataAsync();
+            Task sendDataTask = client.SendDataAsync( data);
 
-            //await Task.WhenAny(readDataTask, sendDataTask);
+            await Task.WhenAny(readDataTask, sendDataTask);
 
-            //if (readDataTask.IsFaulted)
-            //{
-            //    Exception readDataException = readDataTask.Exception;
-
-            //    // TODO: Handle read data exception
-            //}
-            //else
-            //{
-            //    Exception sendDataException = sendDataTask.Exception;
-            //    // TODO: Handle send data exception
-            //}
+            if (readDataTask.IsFaulted)
+            {
+                Exception readDataException = readDataTask.Exception;
+                Console.WriteLine($" Read Data Exception : {readDataException.Message}");
+                // TODO: Handle read data exception
+            }
+            else
+            {
+                Exception sendDataException = sendDataTask.Exception;
+                // TODO: Handle send data exception
+            }
 
         }
 

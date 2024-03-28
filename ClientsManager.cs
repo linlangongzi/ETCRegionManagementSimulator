@@ -50,17 +50,17 @@ namespace ETCRegionManagementSimulator
             }
         }
 
-        public void BroadcastDataToSelectedClients(List<Client> clients, string data)
+        public async Task BroadcastDataToSelectedClients(List<Client> clients, string data)
         {
-            foreach (var client in clients)
-            {
-                client.SendData(data);
-            }
+            List<Task> tasks = (from client in clients
+                                let task = client.SendDataAsync(data)
+                                select task).ToList();
+            await Task.WhenAll(tasks);
         }
 
-        public void BroadcastDataToALL(string data)
+        public async Task BroadcastDataToALL(string data)
         {
-            BroadcastDataToSelectedClients(new List<Client>(clients.Values), data);
+            await BroadcastDataToSelectedClients(new List<Client>(clients.Values), data);
         }
     }
 }

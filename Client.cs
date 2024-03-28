@@ -20,17 +20,17 @@ namespace ETCRegionManagementSimulator
             Stream = TcpClient.GetStream();
         }
 
-        public string ReadData()
+        public async Task<string> ReadDataAsync()
         {
             byte[] buffer = new byte[1024];
-            int bytesRead = Stream.Read(buffer, 0, buffer.Length);
+            int bytesRead = await Stream.ReadAsync(buffer, 0, buffer.Length);
             return Encoding.UTF8.GetString(buffer, 0, bytesRead);
         }
 
-        public void SendData(string data)
+        public async Task SendDataAsync(string data)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(data);
-            Stream.Write(buffer, 0, buffer.Length);
+            await Stream.WriteAsync(buffer, 0, buffer.Length);
         }
 
         public void AnalyzeData(string data)
