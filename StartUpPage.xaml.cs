@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,11 +24,13 @@ namespace ETCRegionManagementSimulator
     {
 
         private Server server;
+        private MainPage mainPage;
 
         public StartUpPage()
         {
             this.InitializeComponent();
             server = new Server();
+            mainPage = new MainPage();
         }
 
         private async void OnStart(object sender, RoutedEventArgs e)
@@ -48,6 +52,7 @@ namespace ETCRegionManagementSimulator
             }
             updateUI(serverRunningState);
 
+            startApplication();
         }
 
         private void updateUI(bool isServerRunning)
@@ -61,6 +66,21 @@ namespace ETCRegionManagementSimulator
             {
                 startServer.Content = "Start";
                 startServer.Background = new SolidColorBrush(Colors.Red);
+            }
+        }
+
+        private async void startApplication()
+        { 
+            if (mainPage != null)
+            {
+                int currentViewId = ApplicationView.GetForCurrentView().Id;
+                await CoreApplication.CreateNewView().Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                {
+                    Window.Current.Content = new Frame();
+                    ((Frame)Window.Current.Content).Navigate(typeof(MainPage), mainPage);
+                    Window.Current.Activate();
+                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Window.Current.CoreWindow), ViewSizePreference.Default, currentViewId, ViewSizePreference.Default);
+                });
             }
         }
     }
