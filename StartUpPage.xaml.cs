@@ -20,11 +20,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator
 {
-    public sealed partial class StartUpPage : Page
+    public sealed partial class StartUpPage : Page, IDisposable
     {
 
         private Server server;
         private MainPage mainPage;
+        private bool disposedValue;
 
         public StartUpPage()
         {
@@ -82,6 +83,36 @@ namespace ETCRegionManagementSimulator
                     await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Window.Current.CoreWindow), ViewSizePreference.Default, currentViewId, ViewSizePreference.Default);
                 });
             }
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
+                    mainPage.Dispose();
+                }
+
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
+                disposedValue = true;
+            }
+        }
+
+        // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        ~StartUpPage()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
