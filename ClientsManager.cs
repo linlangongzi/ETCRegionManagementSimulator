@@ -27,6 +27,22 @@ namespace ETCRegionManagementSimulator
             }
         }
 
+        public void RemoveAllClients()
+        {
+            lock (clients)
+            {
+                foreach(var client in clients)
+                {
+                    client.Value.Dispose();
+                }
+                clients.Clear();
+            }
+        }
+
+        public Dictionary<string, Client> GetAllClients()
+        {
+            return clients;
+        }
         public Client GetClient(string clientId)
         {
             lock (clients)

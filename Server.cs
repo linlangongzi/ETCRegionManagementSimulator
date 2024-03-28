@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-
 namespace ETCRegionManagementSimulator
 {
-    class Server
+    class Server : IDisposable
     {
         private IPAddress defaultIPAddress;
         private IPAddress backupIPAddress;
         private List<int> ports;
 
+        private ClientsManager clientManager;
         private List<TcpListener> listeners;
         public bool Running { get; set; }
 
-        private ClientsManager clientManager;
+        private bool disposedValue;
 
         public IPAddress DefaultIPAddress
         {
@@ -66,7 +66,7 @@ namespace ETCRegionManagementSimulator
                 Running = true;
                 foreach(int port in ports)
                 { 
-                    TcpListener listener = new TcpListener(defaultIPAddress, port);  //Set port number to default 0 to initialize the listener  
+                    TcpListener listener = new TcpListener(defaultIPAddress, port);
                     listener.Start();
                     listeners.Add(listener);
                     Console.WriteLine($"Server started on port {port}");
@@ -106,7 +106,7 @@ namespace ETCRegionManagementSimulator
             clientManager.AddClient(clientId, client);
 
             Task readDataTask = client.ReadDataAsync();
-            Task sendDataTask = client.SendDataAsync( data);
+            Task sendDataTask = client.SendDataAsync(data);
 
             await Task.WhenAny(readDataTask, sendDataTask);
 
@@ -124,17 +124,44 @@ namespace ETCRegionManagementSimulator
 
         }
 
-
-        public void Shutdown()
+        protected virtual void Dispose(bool disposing)
         {
-            if (Running)
+            if (!disposedValue)
             {
+                if (disposing)
+                {
+                    foreach (TcpListener listener in listeners)
+                    {
+                        listener.Stop();
+                    }
+
+                    if (clientManager != null)
+                    {
+                        clientManager.RemoveAllClients();
+                        clientManager = null;
+                    }
+
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
                 Running = false;
-                // Destruct Clients in Client manager
-                // 
-                //listener.Stop();
-                Console.WriteLine("Server stopped.");
+                disposedValue = true;
             }
+        }
+
+        ~Server()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
