@@ -20,7 +20,7 @@ namespace ETCRegionManagementSimulator
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class SettingPage : Page , IDisposable
+    public sealed partial class SettingPage : Page, IDisposable
     {
         private bool disposedValue;
 
@@ -35,25 +35,25 @@ namespace ETCRegionManagementSimulator
             {
                 if (disposing)
                 {
-                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
+                    // TODO: dispose managed state (managed objects)
                 }
 
-                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
-                // TODO: 大きなフィールドを null に設定します
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         // ~SettingPage()
         // {
-        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         //     Dispose(disposing: false);
         // }
 
         public void Dispose()
         {
-            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }

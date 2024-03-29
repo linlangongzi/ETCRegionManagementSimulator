@@ -46,7 +46,8 @@ namespace ETCRegionManagementSimulator
 
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            if(args.IsSettingsSelected)
+            //TODO: Remove IsSettingsSelected check
+            if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(SettingPage),settingPage);
             }

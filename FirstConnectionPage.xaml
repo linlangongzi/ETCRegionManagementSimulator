@@ -9,7 +9,41 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <!--TODO Dummy content, Replace later -->
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">First</TextBlock>
+        <!--File Read -->
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left part -->
+        <Grid Grid.Column="0">
+            <!-- Add your left part content here -->
+            <!-- For example: -->
+            <StackPanel Margin="10">
+                <!-- Horizontal line with a tag, an input TextBox, and a Button -->
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Tag:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="5,0" VerticalAlignment="Center"/>
+                    <Button Grid.Column="2" Content="Button" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <TextBlock Text="Item 1" Margin="0,5,0,5"/>
+                <TextBlock Text="Item 2" Margin="0,0,0,5"/>
+                <TextBlock Text="Item 3" Margin="0,0,0,5"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right part -->
+        <Grid Grid.Column="1">
+            <!-- Add your right part content here -->
+            <!-- For example: -->
+            <TextBox x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+        </Grid>
     </Grid>
 </Page>

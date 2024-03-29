@@ -23,7 +23,6 @@ namespace ETCRegionManagementSimulator
     public sealed partial class ThirdConnectionPage : Page, IDisposable
     {
         private bool disposedValue;
-        private bool disposedValue1;
 
         public ThirdConnectionPage()
         {
@@ -32,7 +31,7 @@ namespace ETCRegionManagementSimulator
 
         private void Dispose(bool disposing)
         {
-            if (!disposedValue1)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
@@ -41,7 +40,7 @@ namespace ETCRegionManagementSimulator
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
-                disposedValue1 = true;
+                disposedValue = true;
             }
         }
 
