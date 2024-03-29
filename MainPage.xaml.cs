@@ -24,10 +24,26 @@ namespace ETCRegionManagementSimulator
     {
         private bool disposedValue;
 
+
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            string excelFilePath = @"D:\データ作成.xlsx";
+            // Create an instance of ExcelReader
+            ExcelReader excelReader = new ExcelReader(excelFilePath);
+
+            // Open the Excel file
+            excelReader.OpenExcelFile();
+
+            // Read the Excel file
+            excelReader.ReadExcelFile();
+
+            // Close the Excel file
+            excelReader.CloseExcelFile();
         }
+
 
         private void Dispose(bool disposing)
         {
