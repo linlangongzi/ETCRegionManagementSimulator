@@ -71,7 +71,7 @@ namespace ETCRegionManagementSimulator
         }
 
         private async void startApplication()
-        { 
+        {
             if (mainPage != null)
             {
                 int currentViewId = ApplicationView.GetForCurrentView().Id;
