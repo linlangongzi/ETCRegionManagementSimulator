@@ -53,8 +53,7 @@ namespace ETCRegionManagementSimulator
             else
             {
                 Console.WriteLine($"Shutting down Running Server ");
-                server.Dispose();
-                server = new Server();
+                //TO DO: Stop server.
                 //return;
             }
             updateUI(serverRunningState);

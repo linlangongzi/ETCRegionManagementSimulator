@@ -18,25 +18,31 @@
 
         <!-- Left part -->
         <Grid Grid.Column="0">
-            <!-- Add your left part content here -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
             <!-- For example: -->
-            <StackPanel Margin="10">
+            <StackPanel Grid.Row="0" Margin="10">
                 <!-- Horizontal line with a tag, an input TextBox, and a Button -->
-                <Grid Margin="10">
+                <Grid Margin="10" VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="14*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Tag:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="Tag_FilePath" Text="FilePath:" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBox Grid.Column="1" Margin="5,0" VerticalAlignment="Center"/>
-                    <Button Grid.Column="2" Content="Button" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Button Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                 </Grid>
-
-                <TextBlock Text="Item 1" Margin="0,5,0,5"/>
-                <TextBlock Text="Item 2" Margin="0,0,0,5"/>
-                <TextBlock Text="Item 3" Margin="0,0,0,5"/>
             </StackPanel>
+            <StackPanel Grid.Row="1" Margin="10">
+                <TextBlock></TextBlock></StackPanel>
+            <StackPanel Grid.Row="2" Margin="10"></StackPanel>
+            <StackPanel Grid.Row="3" Margin="10"></StackPanel>
+
         </Grid>
 
         <!-- Right part -->
