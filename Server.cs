@@ -15,7 +15,9 @@ namespace ETCRegionManagementSimulator
         private List<int> ports;
 
         private ClientsManager clientManager;
-        private List<TcpListener> listeners;
+        // TODO: Need to Update listenerTaskList and Task management into Seperate Object
+        //       Object name : Connection 
+        private List<(TcpListener, Task)> listenerTaskList;
         public bool Running { get; set; }
 
         private bool disposedValue;
@@ -44,7 +46,7 @@ namespace ETCRegionManagementSimulator
             defaultIPAddress = IPAddress.Loopback;
             backupIPAddress = null;
             ports = new List<int>();
-            listeners = new List<TcpListener>();
+            listenerTaskList = new List<(TcpListener, Task)>();
             clientManager = new ClientsManager();
             Running = false;
         }
@@ -54,7 +56,7 @@ namespace ETCRegionManagementSimulator
             defaultIPAddress = IPAddress.Parse(defaultIP);
             backupIPAddress = IPAddress.Parse(backupIP);
             this.ports = ports;
-            listeners = new List<TcpListener>();
+            listenerTaskList = new List<(TcpListener, Task)>();
             clientManager = new ClientsManager();
             Running = false;
         }
@@ -68,11 +70,11 @@ namespace ETCRegionManagementSimulator
                 { 
                     TcpListener listener = new TcpListener(defaultIPAddress, port);
                     listener.Start();
-                    listeners.Add(listener);
                     Console.WriteLine($"Server started on port {port}");
 
                     // Start accepting clients Asynchronously
-                    await AcceptClientsAsync(listener, port);
+                    Task acceptTask =  AcceptClientsAsync(listener, port);
+                    listenerTaskList.Add((listener, acceptTask));
                 }
             }
         }
@@ -124,17 +126,29 @@ namespace ETCRegionManagementSimulator
 
         }
 
+        private void StopTasks()
+        {
+            if (Running)
+            {
+                Running = false;
+                // Stop all listeners and wait for associated tasks to complete
+                foreach (var (listener, task) in listenerTaskList)
+                {
+                    listener.Stop();
+                }
+                // Wait for all associated tasks to complete
+                Task.WhenAll(listenerTaskList.Select(pair => pair.Item2));
+                // Clear the listenerTasks list
+                listenerTaskList.Clear();
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    foreach (TcpListener listener in listeners)
-                    {
-                        listener.Stop();
-                    }
-
                     if (clientManager != null)
                     {
                         clientManager.RemoveAllClients();
@@ -146,6 +160,7 @@ namespace ETCRegionManagementSimulator
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
+                StopTasks();
                 Running = false;
                 disposedValue = true;
             }
