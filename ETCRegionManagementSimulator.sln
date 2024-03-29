@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.34601.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETCRegionManagementSimulator", "ETCRegionManagementSimulator.csproj", "{BB0B80EA-F75C-47D8-BE32-2F01E90245C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETCRegionManagementUnitTest", "ETCRegionManagementUnitTest\ETCRegionManagementUnitTest.csproj", "{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -41,6 +43,30 @@ Global
 		{BB0B80EA-F75C-47D8-BE32-2F01E90245C2}.Release|x86.ActiveCfg = Release|x86
 		{BB0B80EA-F75C-47D8-BE32-2F01E90245C2}.Release|x86.Build.0 = Release|x86
 		{BB0B80EA-F75C-47D8-BE32-2F01E90245C2}.Release|x86.Deploy.0 = Release|x86
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|ARM.ActiveCfg = Debug|ARM
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|ARM.Build.0 = Debug|ARM
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|ARM.Deploy.0 = Debug|ARM
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|ARM64.Build.0 = Debug|ARM64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|x64.ActiveCfg = Debug|x64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|x64.Build.0 = Debug|x64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|x64.Deploy.0 = Debug|x64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|x86.ActiveCfg = Debug|x86
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|x86.Build.0 = Debug|x86
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Debug|x86.Deploy.0 = Debug|x86
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|ARM.ActiveCfg = Release|ARM
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|ARM.Build.0 = Release|ARM
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|ARM.Deploy.0 = Release|ARM
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|ARM64.ActiveCfg = Release|ARM64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|ARM64.Build.0 = Release|ARM64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|ARM64.Deploy.0 = Release|ARM64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|x64.ActiveCfg = Release|x64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|x64.Build.0 = Release|x64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|x64.Deploy.0 = Release|x64
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|x86.ActiveCfg = Release|x86
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|x86.Build.0 = Release|x86
+		{BA81ABC6-2013-4F73-B67D-9DECE0C232F8}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -128,9 +128,9 @@ namespace ETCRegionManagementSimulator
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         ~MainPage()
         {
-            settingPage.Dispose();
+            //settingPage.Dispose();
             firstConnectionPage.Dispose();
-            secondConnectionPage.Dispose();
+            //secondConnectionPage.Dispose();
             thirdConnectionPage.Dispose();
             fourthConnectionPage.Dispose();
             fifthConnectionPage.Dispose();
