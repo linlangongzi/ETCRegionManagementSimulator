@@ -61,22 +61,24 @@ namespace ETCRegionManagementSimulator
             Running = false;
         }
 
-        public async Task Start()
+        public Task Start()
         {
             if (!Running)
             {
                 Running = true;
                 foreach(int port in ports)
-                { 
+                {
                     TcpListener listener = new TcpListener(defaultIPAddress, port);
                     listener.Start();
-                    Console.WriteLine($"Server started on port {port}");
+                    System.Diagnostics.Debug.WriteLine($"Server started on port {port}");
 
                     // Start accepting clients Asynchronously
-                    Task acceptTask =  AcceptClientsAsync(listener, port);
+                    Task acceptTask = AcceptClientsAsync(listener, port);
                     listenerTaskList.Add((listener, acceptTask));
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task AcceptClientsAsync(TcpListener listener, int port)
@@ -87,13 +89,13 @@ namespace ETCRegionManagementSimulator
                 {
                     TcpClient client = await listener.AcceptTcpClientAsync();
 
-                    Console.WriteLine($"Connection established on port {port}");
+                    System.Diagnostics.Debug.WriteLine($"Connection established on port {port}");
 
                     await Task.Run(() => HandleClientAsync(client));
                 }
                 catch(SocketException ex)
                 {
-                    Console.WriteLine($"Error accepting client connection on port {port} : {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"Error accepting client connection on port {port} : {ex.Message}");
                 }
             }
         }
@@ -115,7 +117,7 @@ namespace ETCRegionManagementSimulator
             if (readDataTask.IsFaulted)
             {
                 Exception readDataException = readDataTask.Exception;
-                Console.WriteLine($" Read Data Exception : {readDataException.Message}");
+                System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
                 // TODO: Handle read data exception
             }
             else

@@ -33,7 +33,7 @@ namespace ETCRegionManagementSimulator
             // Check if the file exists
             if (!File.Exists(ExcelFilePath))
             {
-                Console.WriteLine("File not found.");
+                System.Diagnostics.Debug.WriteLine("File not found.");
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace ETCRegionManagementSimulator
         {
             if (_package == null)
             {
-                Console.WriteLine("Excel file is not opened.");
+                System.Diagnostics.Debug.WriteLine("Excel file is not opened.");
                 return;
             }
             // Read the Excel file
@@ -59,7 +59,7 @@ namespace ETCRegionManagementSimulator
         private void ReadSheet(ExcelWorksheet worksheet)
         {
             // Get the number of rows and columns in the worksheet
-            Console.WriteLine($"Reading Sheet {worksheet.Name}");
+            System.Diagnostics.Debug.WriteLine($"Reading Sheet {worksheet.Name}");
             if (worksheet != null)
             {
                 int rowCount = worksheet.Dimension.Rows;
@@ -76,7 +76,7 @@ namespace ETCRegionManagementSimulator
                         // Do something with the cell value
                         Console.Write(cellValue + "\t");
                     }
-                    Console.WriteLine(); // Move to the next row
+                    System.Diagnostics.Debug.WriteLine("\n"); // Move to the next row
                 }
             }
         }

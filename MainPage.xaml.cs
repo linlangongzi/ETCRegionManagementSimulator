@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,19 +29,34 @@ namespace ETCRegionManagementSimulator
         public MainPage()
         {
             this.InitializeComponent();
+            //TestExcelReader();
+        }
 
-            string excelFilePath = @"D:\データ作成.xlsx";
-            // Create an instance of ExcelReader
-            ExcelReader excelReader = new ExcelReader(excelFilePath);
+        public void TestExcelReader()
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".xlsx");
+            IAsyncOperation<StorageFile> asyncFilePick = picker.PickSingleFileAsync();
 
-            // Open the Excel file
-            excelReader.OpenExcelFile();
+            StorageFile file = asyncFilePick.GetResults();
 
-            // Read the Excel file
-            excelReader.ReadExcelFile();
+            if (file != null)
+            {
+                string excelFilePath = file.Path;
+                // Create an instance of ExcelReader
+                ExcelReader excelReader = new ExcelReader(excelFilePath);
 
-            // Close the Excel file
-            excelReader.CloseExcelFile();
+                System.Diagnostics.Debug.WriteLine($"Test Excel Reader...{excelFilePath}....");
+                // Open the Excel file
+                excelReader.OpenExcelFile();
+
+                // Read the Excel file
+                excelReader.ReadExcelFile();
+
+                // Close the Excel file
+                excelReader.CloseExcelFile();
+            }    
+
         }
 
         private void MainNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

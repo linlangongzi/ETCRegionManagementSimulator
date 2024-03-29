@@ -37,12 +37,12 @@ namespace ETCRegionManagementSimulator
         public void AnalyzeData(string data)
         {
             // Your data analysis logic goes here
-            Console.WriteLine($"Analyzing data from client {Id}: {data}");
+            System.Diagnostics.Debug.WriteLine($"Analyzing data from client {Id}: {data}");
         }
 
         public void ToLog(string data)
         {
-            Console.WriteLine($"Analyzing data from client {Id}: {data}");
+            System.Diagnostics.Debug.WriteLine($"Analyzing data from client {Id}: {data}");
         }
 
         protected virtual void Dispose(bool disposing)
