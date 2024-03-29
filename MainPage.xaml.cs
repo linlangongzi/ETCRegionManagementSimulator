@@ -22,6 +22,13 @@ namespace ETCRegionManagementSimulator
 
     public sealed partial class MainPage : Page, IDisposable
     {
+        private SettingPage settingPage;
+        private FirstConnectionPage firstConnectionPage;
+        private SecondConnectionPage secondConnectionPage;
+        private ThirdConnectionPage thirdConnectionPage;
+        private FourthConnectionPage fourthConnectionPage;
+        private FifthConnectionPage fifthConnectionPage;
+
         private bool disposedValue;
 
 
@@ -29,6 +36,13 @@ namespace ETCRegionManagementSimulator
         public MainPage()
         {
             this.InitializeComponent();
+
+            settingPage = new SettingPage();
+            firstConnectionPage = new FirstConnectionPage();
+            secondConnectionPage = new SecondConnectionPage();
+            thirdConnectionPage = new ThirdConnectionPage();
+            fourthConnectionPage = new FourthConnectionPage();
+            fifthConnectionPage = new FifthConnectionPage();
             //TestExcelReader();
         }
 
@@ -59,18 +73,42 @@ namespace ETCRegionManagementSimulator
 
         }
 
-        private void MainNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if(args.IsSettingsSelected)
             {
-                
+                ContentFrame.Navigate(typeof(SettingPage),settingPage);
             }
             else 
             {
-            
+                NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
+                switch(selectedItem.Name.ToString())
+                {
+                    case "TabFirstPort":
+                        ContentFrame.Navigate(typeof(FirstConnectionPage), firstConnectionPage);
+                        break;
+                    case "TabSecondPort":
+                        ContentFrame.Navigate(typeof(SecondConnectionPage), secondConnectionPage);
+                        break;
+                    case "TabThirdPort":
+                        ContentFrame.Navigate(typeof(ThirdConnectionPage), thirdConnectionPage);
+                        break;
+                    case "TabFourthPort":
+                        ContentFrame.Navigate(typeof(FourthConnectionPage), fourthConnectionPage);
+                        break;
+                    case "TabFifthPort":
+                        ContentFrame.Navigate(typeof(FifthConnectionPage), fifthConnectionPage);
+                        break;
+                    default:
+
+                        break;
+                }
             }
         }
-
+        private void MainNavigation_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
+        }
 
         private void Dispose(bool disposing)
         {
@@ -78,28 +116,35 @@ namespace ETCRegionManagementSimulator
             {
                 if (disposing)
                 {
-                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
+                    // TODO: dispose managed state (managed objects)
                 }
 
-                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
-                // TODO: 大きなフィールドを null に設定します
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         ~MainPage()
         {
-            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            settingPage.Dispose();
+            firstConnectionPage.Dispose();
+            secondConnectionPage.Dispose();
+            thirdConnectionPage.Dispose();
+            fourthConnectionPage.Dispose();
+            fifthConnectionPage.Dispose();
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }
 
         public void Dispose()
         {
-            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
 
+        
     }
 }

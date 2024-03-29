@@ -122,7 +122,16 @@
     <Compile Include="Client.cs" />
     <Compile Include="ClientIdGenerator.cs" />
     <Compile Include="ClientsManager.cs" />
-    <Compile Include="ExcelReader.cs" />
+    <Compile Include="FifthConnectionPage.xaml.cs">
+      <DependentUpon>FifthConnectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstConnectionPage.xaml.cs">
+      <DependentUpon>FirstConnectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FourthConnectionPage.xaml.cs">
+      <DependentUpon>FourthConnectionPage.xaml</DependentUpon>
+    </Compile>
+	<Compile Include="ExcelReader.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -131,6 +140,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="ThirdConnectionPage.xaml.cs">
+      <DependentUpon>ThirdConnectionPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -152,13 +164,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="FifthConnectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstConnectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FourthConnectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SecondConnectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartUpPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ThirdConnectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

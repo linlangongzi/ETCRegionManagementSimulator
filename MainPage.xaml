@@ -9,25 +9,26 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <NavigationView x:Name="MainNavigation" Content="NavigationView" SelectionChanged="MainNavigation_SelectionChanged" IsPaneOpen="True" PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" >
+        <NavigationView x:Name="MainNavigation" SelectionChanged="MainNavigation_OnSelectionChanged" IsPaneOpen="True" PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" Loaded="MainNavigation_OnLoaded" >
             <!--TODO: Change Name and Display name-->
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="TabFirstPort" Content="回線１" >
+                <NavigationViewItem x:Name="TabFirstPort" Content="回線１" Tag="TabFirstPort">
                     
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabSecondPort" Content="回線２">
+                <NavigationViewItem x:Name="TabSecondPort" Content="回線２" Tag="TabSecondPort">
                     
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabThirdPort" Content="回線３">
+                <NavigationViewItem x:Name="TabThirdPort" Content="回線３" Tag="TabThirdPort">
+
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="TabFourthPort" Content="回線４" Tag="TabFourthPort">
                     
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabFourthPort" Content="回線４">
-                    
-                </NavigationViewItem>
-                <NavigationViewItem x:Name="TabFifthPort" Content="回線５">
+                <NavigationViewItem x:Name="TabFifthPort" Content="回線５" Tag="TabFifthPort">
                     
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+            <Frame x:Name="ContentFrame"/>
         </NavigationView>
     </Grid>
 </Page>
