@@ -122,7 +122,6 @@
     <Compile Include="Client.cs" />
     <Compile Include="ClientIdGenerator.cs" />
     <Compile Include="ClientsManager.cs" />
-    <Compile Include="MainApplication.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

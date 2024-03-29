@@ -20,13 +20,25 @@ namespace ETCRegionManagementSimulator
     /// <summary>
     /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
     /// </summary>
-    public sealed partial class MainPage : Page,IDisposable
+    public sealed partial class MainPage : Page, IDisposable
     {
         private bool disposedValue;
 
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private void MainNavigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if(args.IsSettingsSelected)
+            {
+                
+            }
+            else 
+            {
+            
+            }
         }
 
         private void Dispose(bool disposing)
@@ -57,5 +69,6 @@ namespace ETCRegionManagementSimulator
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
     }
 }

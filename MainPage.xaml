@@ -9,6 +9,25 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <NavigationView x:Name="MainNavigation" Content="NavigationView" SelectionChanged="MainNavigation_SelectionChanged" IsPaneOpen="True" PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" >
+            <!--TODO: Change Name and Display name-->
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="TabFirstPort" Content="回線１" >
+                    
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="TabSecondPort" Content="回線２">
+                    
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="TabThirdPort" Content="回線３">
+                    
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="TabFourthPort" Content="回線４">
+                    
+                </NavigationViewItem>
+                <NavigationViewItem x:Name="TabFifthPort" Content="回線５">
+                    
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+        </NavigationView>
     </Grid>
 </Page>
