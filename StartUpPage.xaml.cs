@@ -93,6 +93,7 @@ namespace ETCRegionManagementSimulator
                 {
                     // TODO: マネージド状態を破棄します (マネージド オブジェクト)
                     mainPage.Dispose();
+                    server.Dispose();
                 }
 
                 // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
