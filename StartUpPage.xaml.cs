@@ -7,6 +7,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,12 +27,15 @@ namespace ETCRegionManagementSimulator
         private Server server;
         private MainPage mainPage;
         private bool disposedValue;
+        private Window mainWindow;
 
         public StartUpPage()
         {
             this.InitializeComponent();
             server = new Server();
             mainPage = new MainPage();
+            
+            mainWindow = null;
         }
 
         private async void OnStart(object sender, RoutedEventArgs e)
@@ -49,11 +53,15 @@ namespace ETCRegionManagementSimulator
             else
             {
                 Console.WriteLine($"Shutting down Running Server ");
-                return;
+                server.Dispose();
+                server = new Server();
+                //return;
             }
             updateUI(serverRunningState);
-
-            startApplication();
+            if (server.Running)
+            {
+                startApplication();
+            }
         }
 
         private void updateUI(bool isServerRunning)
@@ -71,18 +79,31 @@ namespace ETCRegionManagementSimulator
         }
 
         private async void startApplication()
-        { 
-            if (mainPage != null)
+        {
+            if (mainWindow == null)
             {
-                int currentViewId = ApplicationView.GetForCurrentView().Id;
-                await CoreApplication.CreateNewView().Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                if (mainPage != null)
                 {
-                    Window.Current.Content = new Frame();
-                    ((Frame)Window.Current.Content).Navigate(typeof(MainPage), mainPage);
-                    Window.Current.Activate();
-                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Window.Current.CoreWindow), ViewSizePreference.Default, currentViewId, ViewSizePreference.Default);
-                });
+                    int currentViewId = ApplicationView.GetForCurrentView().Id;
+                    await CoreApplication.CreateNewView().Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                    {
+                        mainWindow = Window.Current;
+                        var mainView = ApplicationView.GetForCurrentView();
+                        mainView.Consolidated += mainView_Consolidated;
+                        //TODO Create new class to prevent overflow
+                        mainWindow.Content = new Frame();
+                        ((Frame)mainWindow.Content).Navigate(typeof(MainPage), mainPage);
+                        mainWindow.Activate();
+                        await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Window.Current.CoreWindow), ViewSizePreference.Default, currentViewId, ViewSizePreference.Default);
+                    });
+                }
             }
+        }
+
+        private void mainView_Consolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
+        {
+            sender.Consolidated -= mainView_Consolidated;
+            mainWindow = null;
         }
 
         private void Dispose(bool disposing)
