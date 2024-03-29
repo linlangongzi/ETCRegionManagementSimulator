@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -13,13 +16,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace ETCRegionManagementSimulator
 {
-    /// <summary>
-    /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
-    /// </summary>
+
     public sealed partial class MainPage : Page, IDisposable
     {
         private SettingPage settingPage;
@@ -31,6 +31,8 @@ namespace ETCRegionManagementSimulator
 
         private bool disposedValue;
 
+
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -41,6 +43,33 @@ namespace ETCRegionManagementSimulator
             thirdConnectionPage = new ThirdConnectionPage();
             fourthConnectionPage = new FourthConnectionPage();
             fifthConnectionPage = new FifthConnectionPage();
+            //TestExcelReader();
+        }
+
+        public void TestExcelReader()
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".xlsx");
+            IAsyncOperation<StorageFile> asyncFilePick = picker.PickSingleFileAsync();
+
+            StorageFile file = asyncFilePick.GetResults();
+
+            if (file != null)
+            {
+                string excelFilePath = file.Path;
+                // Create an instance of ExcelReader
+                ExcelReader excelReader = new ExcelReader(excelFilePath);
+
+                System.Diagnostics.Debug.WriteLine($"Test Excel Reader...{excelFilePath}....");
+                // Open the Excel file
+                excelReader.OpenExcelFile();
+
+                // Read the Excel file
+                excelReader.ReadExcelFile();
+
+                // Close the Excel file
+                excelReader.CloseExcelFile();
+            }    
 
         }
 
@@ -81,6 +110,7 @@ namespace ETCRegionManagementSimulator
         {
             MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
         }
+
         private void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -99,9 +129,9 @@ namespace ETCRegionManagementSimulator
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         ~MainPage()
         {
-            settingPage.Dispose();
+            //settingPage.Dispose();
             firstConnectionPage.Dispose();
-            secondConnectionPage.Dispose();
+            //secondConnectionPage.Dispose();
             thirdConnectionPage.Dispose();
             fourthConnectionPage.Dispose();
             fifthConnectionPage.Dispose();
