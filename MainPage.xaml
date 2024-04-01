@@ -58,8 +58,8 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" x:Name="Tag_FilePath" Text="FilePath:" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <TextBox Grid.Column="1" VerticalAlignment="Center" BorderBrush="Silver" BorderThickness="1,1,1,1" Margin="2,2,10,2" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                    <TextBox x:Name="textbox_filePath" Grid.Column="1" VerticalAlignment="Center" BorderBrush="Silver" BorderThickness="1,1,1,1" Margin="2,2,10,2" HorizontalAlignment="Stretch"/>
+                    <Button x:Name="button_filePicker" Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch" Click="button_FilePicker_OnClick"/>
                 </Grid>
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1" >

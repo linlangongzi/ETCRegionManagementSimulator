@@ -58,7 +58,7 @@ namespace ETCRegionManagementSimulator
             {
                 string excelFilePath = file.Path;
                 // Create an instance of ExcelReader
-                ExcelReader excelReader = new ExcelReader(excelFilePath);
+                ExcelReader excelReader = new ExcelReader(file.Path);
 
                 System.Diagnostics.Debug.WriteLine($"Test Excel Reader...{excelFilePath}....");
                 // Open the Excel file
@@ -170,6 +170,46 @@ namespace ETCRegionManagementSimulator
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        private async void button_FilePicker_OnClick(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".xlsx");
+
+            StorageFile file = await picker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                textbox_filePath.Text = file.Path;
+
+                ExcelReader workBook= new ExcelReader(file.Path);
+                workBook.OpenExcelFile();
+                workBook.ReadExcelFile();
+                workBook.CloseExcelFile();
+
+                //##
+                try
+                {
+                    // Attempt to access the file to check permissions
+                    using (var stream = await file.OpenAsync(FileAccessMode.Read))
+                    {
+                        // File can be opened for reading, so permissions are granted
+                        System.Diagnostics.Debug.WriteLine($"file {file.Path} exists");
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // Access to the file is denied due to lack of permissions
+                    System.Diagnostics.Debug.WriteLine($"file {file.Path} not permitted");
+                }
+                catch (FileNotFoundException)
+                {
+                    // File not found, could be due to incorrect path or missing file
+                    System.Diagnostics.Debug.WriteLine($"file {file.Path} not exist");
+                }
+                //##
+            } 
         }
     }
 }
