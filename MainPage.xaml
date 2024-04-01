@@ -13,7 +13,13 @@
             <ColumnDefinition Width="7*"></ColumnDefinition>
             <ColumnDefinition Width="6*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <NavigationView Grid.Column="0" x:Name="MainNavigation" SelectionChanged="MainNavigation_OnSelectionChanged" IsPaneOpen="True" PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" Loaded="MainNavigation_OnLoaded" >
+        <NavigationView x:Name="MainNavigation" 
+                        SelectionChanged="MainNavigation_OnSelectionChanged" 
+                        BackRequested="MainNavigation_OnBackRequested"
+                        IsPaneOpen="True" 
+                        PaneDisplayMode="Left" 
+                        IsPaneToggleButtonVisible="False" 
+                        Loaded="MainNavigation_OnLoaded" IsBackEnabled="True" IsBackButtonVisible="Visible" >
             <!--TODO: Change Name and Display name-->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="TabFirstPort" Content="回線１" Tag="TabFirstPort">

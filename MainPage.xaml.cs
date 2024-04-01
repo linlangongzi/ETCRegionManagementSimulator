@@ -31,7 +31,7 @@ namespace ETCRegionManagementSimulator
 
         private bool disposedValue;
 
-
+        private Server server;
 
         public MainPage()
         {
@@ -71,6 +71,21 @@ namespace ETCRegionManagementSimulator
                 excelReader.CloseExcelFile();
             }    
 
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter != null)
+            {
+                server = (Server)e.Parameter;
+            }
+        }
+
+        private void OnNewClientConneted(object sender, ClientConnectedEventArgs eventArgs)
+        {
+            string clientId = eventArgs.ClientId;
+            // TODO: Create New Page associated with new client
         }
 
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -128,7 +143,13 @@ namespace ETCRegionManagementSimulator
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
+                this.server = null;
             }
+        }
+
+        private void MainNavigation_OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            Frame.GoBack();
         }
 
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
@@ -150,6 +171,5 @@ namespace ETCRegionManagementSimulator
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

@@ -27,7 +27,6 @@ namespace ETCRegionManagementSimulator
         private Server server;
         private MainPage mainPage;
         private bool disposedValue;
-        private Window mainWindow;
 
         public StartUpPage()
         {
@@ -35,7 +34,6 @@ namespace ETCRegionManagementSimulator
             server = new Server();
             mainPage = new MainPage();
             
-            mainWindow = null;
         }
 
         private async void OnStart(object sender, RoutedEventArgs e)
@@ -48,18 +46,18 @@ namespace ETCRegionManagementSimulator
                 await server.Start();
                 server.Running = true;
                 serverRunningState = true;
-                Console.WriteLine($"Server is running");
+                System.Diagnostics.Debug.WriteLine($"Server is running");
             }
             else
             {
-                Console.WriteLine($"Shutting down Running Server ");
+                System.Diagnostics.Debug.WriteLine($"Shutting down Running Server ");
                 //TO DO: Stop server.
                 //return;
             }
             updateUI(serverRunningState);
             if (server.Running)
             {
-                startApplication();
+                _ = Frame.Navigate(typeof(MainPage), server);
             }
         }
 
@@ -77,32 +75,9 @@ namespace ETCRegionManagementSimulator
             }
         }
 
-        private async void startApplication()
-        {
-            if (mainWindow == null)
-            {
-                if (mainPage != null)
-                {
-                    int currentViewId = ApplicationView.GetForCurrentView().Id;
-                    await CoreApplication.CreateNewView().Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                    {
-                        mainWindow = Window.Current;
-                        var mainView = ApplicationView.GetForCurrentView();
-                        mainView.Consolidated += mainView_Consolidated;
-                        //TODO Create new class to prevent overflow
-                        mainWindow.Content = new Frame();
-                        ((Frame)mainWindow.Content).Navigate(typeof(MainPage), mainPage);
-                        mainWindow.Activate();
-                        await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Window.Current.CoreWindow), ViewSizePreference.Default, currentViewId, ViewSizePreference.Default);
-                    });
-                }
-            }
-        }
-
         private void mainView_Consolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)
         {
             sender.Consolidated -= mainView_Consolidated;
-            mainWindow = null;
         }
 
         private void Dispose(bool disposing)

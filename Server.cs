@@ -8,8 +8,24 @@ using System.Net.Sockets;
 
 namespace ETCRegionManagementSimulator
 {
-    class Server : IDisposable
+
+    // Custom event arguments for client connected event
+    public class ClientConnectedEventArgs : EventArgs
     {
+        public string ClientId { get; }
+
+        public ClientConnectedEventArgs(string clientId)
+        {
+            ClientId = clientId;
+        }
+        
+    }
+
+    public class Server : IDisposable
+    {
+
+        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
+
         private IPAddress defaultIPAddress;
         private IPAddress backupIPAddress;
         private List<int> ports;
@@ -81,6 +97,12 @@ namespace ETCRegionManagementSimulator
             return Task.CompletedTask;
         }
 
+        // Method to raise the ClientConnected event
+        protected virtual void OnClientConnected(string clientId)
+        {
+            ClientConnected?.Invoke(this, new ClientConnectedEventArgs(clientId));
+        }
+
         private async Task AcceptClientsAsync(TcpListener listener, int port)
         {
             while (Running)
@@ -106,26 +128,31 @@ namespace ETCRegionManagementSimulator
             string data = "test data";
             string clientId = ClientIdGenerator.GenerateClientId();
 
-            Client client = new Client(clientId, tcpClient);
-            clientManager.AddClient(clientId, client);
-
-            Task readDataTask = client.ReadDataAsync();
-            Task sendDataTask = client.SendDataAsync(data);
-
-            await Task.WhenAny(readDataTask, sendDataTask);
-
-            if (readDataTask.IsFaulted)
+            if (tcpClient != null)
             {
-                Exception readDataException = readDataTask.Exception;
-                System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
-                // TODO: Handle read data exception
-            }
-            else
-            {
-                Exception sendDataException = sendDataTask.Exception;
-                // TODO: Handle send data exception
-            }
+                Client client = new Client(clientId, tcpClient);
+                clientManager.AddClient(clientId, client);
 
+                // Raise the ClientConnected event;
+                OnClientConnected(clientId);
+
+                Task readDataTask = client.ReadDataAsync();
+                Task sendDataTask = client.SendDataAsync(data);
+
+                await Task.WhenAny(readDataTask, sendDataTask);
+
+                if (readDataTask.IsFaulted)
+                {
+                    Exception readDataException = readDataTask.Exception;
+                    System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
+                    // TODO: Handle read data exception
+                }
+                else
+                {
+                    Exception sendDataException = sendDataTask.Exception;
+                    // TODO: Handle send data exception
+                }
+            }
         }
 
         private void StopTasks()
