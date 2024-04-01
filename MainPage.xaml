@@ -34,7 +34,7 @@
             </NavigationView.MenuItems>
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="Grid_SendMsg">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="7*"/>
