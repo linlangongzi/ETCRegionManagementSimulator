@@ -9,26 +9,102 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <NavigationView x:Name="MainNavigation" SelectionChanged="MainNavigation_OnSelectionChanged" IsPaneOpen="True" PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" Loaded="MainNavigation_OnLoaded" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"></ColumnDefinition>
+            <ColumnDefinition Width="6*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <NavigationView Grid.Column="0" x:Name="MainNavigation" SelectionChanged="MainNavigation_OnSelectionChanged" IsPaneOpen="True" PaneDisplayMode="Left" IsPaneToggleButtonVisible="False" Loaded="MainNavigation_OnLoaded" >
             <!--TODO: Change Name and Display name-->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="TabFirstPort" Content="回線１" Tag="TabFirstPort">
-                    
+
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="TabSecondPort" Content="回線２" Tag="TabSecondPort">
-                    
+
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="TabThirdPort" Content="回線３" Tag="TabThirdPort">
 
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="TabFourthPort" Content="回線４" Tag="TabFourthPort">
-                    
+
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="TabFifthPort" Content="回線５" Tag="TabFifthPort">
-                    
+
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <!-- For example: -->
+            <StackPanel Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center">
+                <!-- Horizontal line with a tag, an input TextBox, and a Button -->
+                <Grid Margin="10" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="Tag_FilePath" Text="FilePath:" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBox Grid.Column="1" VerticalAlignment="Center" BorderBrush="Silver" BorderThickness="1,1,1,1" Margin="2,2,10,2" HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1" >
+                <TextBlock TextAlignment="Left" Text="Sheets"></TextBlock>
+                <ListBox x:Name="LBox_SheetList" VerticalAlignment="Stretch"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1">
+                <TextBlock TextAlignment="Left" Text="Entries"></TextBlock>
+                <!--TODO: Custom element Tableview-->
+                <ListBox x:Name="LBox_EntryList" VerticalAlignment="Stretch"/>
+            </StackPanel>
+            <StackPanel Margin="20,10,20,10" Grid.Row="3" VerticalAlignment="Center">
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*"></ColumnDefinition>
+                        <ColumnDefinition Width="4*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <ToggleSwitch HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+                        <ToggleSwitch.Header>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="伝送連番自動採番"/>
+                        </ToggleSwitch.Header>
+                        <ToggleSwitch.Style>
+                            <Style TargetType="ToggleSwitch">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleSwitch">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ContentPresenter Content="{TemplateBinding Header}" HorizontalAlignment="Stretch"/>
+                                                <ToggleSwitch x:Name="toggleSwitch" Grid.Column="1" Header="" OnContent="" OffContent="" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ToggleSwitch.Style>
+                    </ToggleSwitch>
+                    <Button Grid.Column="2" HorizontalAlignment="Stretch" Content="SelectAll" Margin="5,0,5,0"></Button>
+                    <Button Grid.Column="3" HorizontalAlignment="Stretch" Content="Send" Margin="5,0,5,0"></Button>
+                </Grid>
+            </StackPanel>
+            <StackPanel Margin="20,10,20,10" Grid.Row="4" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Text="サーバーステータス"></TextBlock>
+            </StackPanel>
+
+        </Grid>
+
     </Grid>
 </Page>

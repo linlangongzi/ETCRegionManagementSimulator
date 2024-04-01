@@ -146,6 +146,5 @@ namespace ETCRegionManagementSimulator
             GC.SuppressFinalize(this);
         }
 
-        
     }
 }

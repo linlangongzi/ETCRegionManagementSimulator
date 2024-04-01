@@ -12,67 +12,17 @@
         <!--File Read -->
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left part -->
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="7*"/>
-                <RowDefinition Height="7*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <!-- For example: -->
-            <StackPanel Grid.Row="0" Margin="10" VerticalAlignment="Center">
-                <!-- Horizontal line with a tag, an input TextBox, and a Button -->
-                <Grid Margin="10" VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="6*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="Tag_FilePath" Text="FilePath:" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <TextBox Grid.Column="1" Margin="5,0" VerticalAlignment="Center"/>
-                    <Button Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                </Grid>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1" >
-                <TextBlock TextAlignment="Left" Text="Sheets"></TextBlock>
-                <ListBox x:Name="LBox_SheetList" VerticalAlignment="Stretch"/>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1">
-                <TextBlock TextAlignment="Left" Text="Entries"></TextBlock>
-                <!--TODO: Custom element Tableview-->
-                <ListBox x:Name="LBox_EntryList" VerticalAlignment="Stretch"/>
-            </StackPanel>
-            <StackPanel Margin="20,10,20,10" Grid.Row="3" VerticalAlignment="Center">
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Column="0" Content="伝送連番自動採番" x:Name="CBox_SendSeq" HorizontalAlignment="Left"></CheckBox>
-                    <Button Grid.Column="3" HorizontalAlignment="Stretch" Content="SelectAll" Margin="5,0,5,0"></Button>
-                    <Button Grid.Column="4" HorizontalAlignment="Stretch" Content="Send" Margin="5,0,5,0"></Button>
-                </Grid>
-            </StackPanel>
-            <StackPanel Margin="20,10,20,10" Grid.Row="4" VerticalAlignment="Center">
-                <TextBlock VerticalAlignment="Center" Text="サーバーステータス"></TextBlock>
-            </StackPanel>
-
-        </Grid>
-
         <!-- Right part -->
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0">
             <!-- Add your right part content here -->
             <!-- For example: -->
             <TextBox x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True"/>
         </Grid>
+        
+        <!-- Left part -->
+
     </Grid>
 </Page>
