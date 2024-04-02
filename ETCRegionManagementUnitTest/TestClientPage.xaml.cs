@@ -22,15 +22,94 @@ namespace ETCRegionManagementUnitTest
     /// </summary>
     public sealed partial class TestClientPage : Page
     {
+        Client testClient;
         public TestClientPage()
         {
             this.InitializeComponent();
-            var customPage = new TestClientPage();
+            testClient = new Client();
+            UpdateStatus();
+            //var customPage = new TestClientPage();
 
             // Act: Simulate page initialization
 
             // Assert
-            Assert.IsNotNull(customPage);
+            //Assert.IsNotNull(customPage);
+        }
+
+        private async void UpdateStatus()
+        {
+            try
+            {
+                string status = await testClient.GetConnectionStatus();
+                if (testClient.IsConnected)
+                {
+                    togglebtn_connect.Content = "Disconnect";
+                }
+                else
+                {
+                    togglebtn_connect.Content = "Connect";
+                }
+                textblock_status.Text = status;
+            }
+            catch (Exception ex)
+            {
+                // Handle error while updating status
+                textblock_status.Text = $"Error: {ex.Message}";
+            }
+        }
+
+        private async void togglebtn_connect_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (testClient.IsConnected)
+            {
+                await testClient.DisconnectAsync();
+            }
+            else
+            {
+                string ipAddress = textbox_ip.Text.Trim();
+                string portText = textbox_port.Text.Trim();
+                int port;
+
+                if (string.IsNullOrWhiteSpace(ipAddress) || !IsValidIpAddress(ipAddress))
+                {
+                    textblock_status.Text = "Invalid IP address.";
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(portText) || !int.TryParse(portText, out port) || port <= 0 || port > 65535)
+                {
+                    textblock_status.Text = "Invalid port number.";
+                    return;
+                }
+
+                try
+                {
+                    await testClient.ConnectAsync(ipAddress, port);
+                }
+                catch (Exception ex)
+                {
+                    // Handle connection error
+                    textblock_status.Text = $"Error: {ex.Message}";
+                }
+            }
+            UpdateStatus(); // Update status after connecting or disconnecting
+
+        }
+
+        private bool IsValidIpAddress(string ipAddress)
+        {
+            string[] parts = ipAddress.Split('.');
+            if (parts.Length != 4)
+                return false;
+
+            foreach (string part in parts)
+            {
+                if (!byte.TryParse(part, out byte value))
+                    return false;
+            }
+
+            return true;
         }
     }
+
 }
