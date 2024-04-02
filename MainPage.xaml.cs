@@ -28,6 +28,7 @@ namespace ETCRegionManagementSimulator
         private ThirdConnectionPage thirdConnectionPage;
         private FourthConnectionPage fourthConnectionPage;
         private FifthConnectionPage fifthConnectionPage;
+        private ExcelReader workBook;
 
         private bool disposedValue;
 
@@ -182,18 +183,19 @@ namespace ETCRegionManagementSimulator
             if (file != null)
             {
                 textbox_filePath.Text = file.Path;
-
-                ExcelReader workBook= new ExcelReader(file.Path);
-                workBook.OpenExcelFile();
-                workBook.ReadExcelFile();
-                workBook.CloseExcelFile();
-
-                //##
                 try
                 {
                     // Attempt to access the file to check permissions
                     using (var stream = await file.OpenAsync(FileAccessMode.Read))
                     {
+                        workBook = new ExcelReader(file.Path,stream.AsStream());
+                        workBook.OpenExcelFile();
+                        workBook.ReadExcelFile();
+                        foreach (string sheetName in workBook.SheetNames)
+                        {
+                            listbox_SheetsList.Items.Add(sheetName);
+                        }
+                      
                         // File can be opened for reading, so permissions are granted
                         System.Diagnostics.Debug.WriteLine($"file {file.Path} exists");
                     }
@@ -210,6 +212,11 @@ namespace ETCRegionManagementSimulator
                 }
                 //##
             } 
+        }
+
+        private void listbox_SheetsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

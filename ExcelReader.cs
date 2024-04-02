@@ -13,6 +13,8 @@ namespace ETCRegionManagementSimulator
         public string ExcelFilePath { get; set; }
         public List<string> SheetNames { get; set; }
 
+        public Stream ExcelFileStream { get; set; }
+
         private ExcelPackage _package;
 
         private bool disposedValue;
@@ -28,18 +30,30 @@ namespace ETCRegionManagementSimulator
             SheetNames = new List<string>();
         }
 
+        public ExcelReader(string excelFilePath,Stream excelStream)
+        {
+            ExcelFileStream = excelStream;
+            ExcelFilePath = excelFilePath;
+            SheetNames = new List<string>();
+        }
 
         public void OpenExcelFile()
         {
             var file = new FileInfo(ExcelFilePath);
             // Check if the file exists
-   
-                // Open the Excel file
-                _package = new ExcelPackage(file);
-                if (_package != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"##########Package is not null##########");
-                }
+
+            // Open the Excel file
+           
+
+            if (ExcelFileStream!=null)
+            {
+                _package = new ExcelPackage(ExcelFileStream);
+            }
+            
+            if (_package != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"##########Package is not null##########");
+            }
             
         }
 
@@ -51,8 +65,6 @@ namespace ETCRegionManagementSimulator
 
                 return;
             }
-
-            System.Diagnostics.Debug.WriteLine($"---------------{_package.Workbook.Worksheets.Count}-------------------------.");
             // Read the Excel file
             foreach (ExcelWorksheet worksheet in _package.Workbook.Worksheets)
             {
