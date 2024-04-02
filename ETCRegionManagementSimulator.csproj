@@ -135,6 +135,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServerService.cs" />
     <Compile Include="SecondConnectionPage.xaml.cs">
       <DependentUpon>SecondConnectionPage.xaml</DependentUpon>
     </Compile>
@@ -149,6 +150,7 @@
     <Compile Include="ThirdConnectionPage.xaml.cs">
       <DependentUpon>ThirdConnectionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
