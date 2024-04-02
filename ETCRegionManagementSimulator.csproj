@@ -136,6 +136,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ServerService.cs" />
+    <Compile Include="SecondConnectionPage.xaml.cs">
+      <DependentUpon>SecondConnectionPage.xaml</DependentUpon>
+    </Compile>
+	<Compile Include="SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+	</Compile>
     <Compile Include="StartUpPage.xaml.cs">
       <DependentUpon>StartUpPage.xaml</DependentUpon>
     </Compile>

@@ -8,9 +8,45 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <!--TODO Dummy content, Replace later -->
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Settings</TextBlock>
 
-    </Grid>
+        <!--TODO Dummy content, Replace later -->
+    <StackPanel Margin="100,0,0,0">
+        <StackPanel 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" Margin="0,50,0,0" 
+           >
+            <TextBlock x:Name="Tag_LogSetting" FontSize="30" Text="LogSetting"></TextBlock>
+        </StackPanel>
+        <StackPanel 
+            HorizontalAlignment="Left" 
+            Orientation="Horizontal" 
+            VerticalAlignment="Top" Margin="0,0,0,0" 
+           >
+            <TextBlock x:Name="logPathTag" 
+                       Height="31" 
+                       Text="Log Path: " 
+                       TextWrapping="NoWrap" 
+                       Width="100" 
+                       VerticalAlignment="Center" FontSize="20"
+                       />
+            <TextBox x:Name="logPath" 
+                     Height="40"
+                     Text=""
+                     TextWrapping="Wrap"
+                     Width="360" 
+                     TextAlignment="Left" 
+                     HorizontalAlignment="Left" 
+                     Margin="10,0,10,0" BorderThickness="1,1,1,1" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
+                     />
+                <Button x:Name="openDir" 
+                    Content="Open"
+                    Height="40" 
+                    Width="66" 
+                    HorizontalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"
+                    />
+
+            </StackPanel>
+    </StackPanel>
+
+
 </Page>

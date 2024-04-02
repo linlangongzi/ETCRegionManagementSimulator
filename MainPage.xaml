@@ -40,7 +40,7 @@
             </NavigationView.MenuItems>
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="Grid_SendMsg">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="7*"/>
@@ -58,14 +58,28 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" x:Name="Tag_FilePath" Text="FilePath:" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <TextBox Grid.Column="1" VerticalAlignment="Center" BorderBrush="Silver" BorderThickness="1,1,1,1" Margin="2,2,10,2" HorizontalAlignment="Stretch"/>
-                    <Button Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                    <TextBox x:Name="textbox_filePath" Grid.Column="1" VerticalAlignment="Center" BorderBrush="Silver" BorderThickness="1,1,1,1" Margin="2,2,10,2" HorizontalAlignment="Stretch"/>
+                    <Button x:Name="button_filePicker" Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch" Click="button_FilePicker_OnClick"/>
                 </Grid>
             </StackPanel>
-            <StackPanel Grid.Row="1" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1" >
-                <TextBlock TextAlignment="Left" Text="Sheets"></TextBlock>
-                <ListBox x:Name="LBox_SheetList" VerticalAlignment="Stretch"/>
-            </StackPanel>
+            <Grid x:Name="grid" Grid.Row="1" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Auto height for the TextBlock -->
+                    <RowDefinition Height="*"/>
+                    <!-- Star height for the ListBox -->
+                </Grid.RowDefinitions>
+                <TextBlock TextAlignment="Left" Text="Sheets"/>
+                <ListBox x:Name="listbox_SheetsList" Grid.Row="1" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="listbox_SheetsList_SelectionChanged">
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="ListBox">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                </ListBox>
+            </Grid>
             <StackPanel Grid.Row="2" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1">
                 <TextBlock TextAlignment="Left" Text="Entries"></TextBlock>
                 <!--TODO: Custom element Tableview-->
