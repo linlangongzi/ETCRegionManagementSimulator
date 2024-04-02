@@ -131,10 +131,11 @@
     <Compile Include="FourthConnectionPage.xaml.cs">
       <DependentUpon>FourthConnectionPage.xaml</DependentUpon>
     </Compile>
-	<Compile Include="ExcelReader.cs" />
+    <Compile Include="ExcelReader.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServerService.cs" />
     <Compile Include="StartUpPage.xaml.cs">
       <DependentUpon>StartUpPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +144,7 @@
     <Compile Include="ThirdConnectionPage.xaml.cs">
       <DependentUpon>ThirdConnectionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

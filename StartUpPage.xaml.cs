@@ -31,34 +31,35 @@ namespace ETCRegionManagementSimulator
         public StartUpPage()
         {
             this.InitializeComponent();
-            server = new Server();
+            server = ServerService.Instance.Server;
+            server.Ports = Utility.GetAvailablePorts();
             mainPage = new MainPage();
-            
         }
 
         private async void OnStart(object sender, RoutedEventArgs e)
         {
-            bool serverRunningState = false;
-            if (!server.Running)
+            bool serverRunningState = server.Running;
+            if (!serverRunningState)
             {
                 string ipAddressStr = ip_address.Text.Trim();
                // IPAddress ipAddress;
                 await server.Start();
                 server.Running = true;
                 serverRunningState = true;
-                System.Diagnostics.Debug.WriteLine($"Server is running");
+                System.Diagnostics.Debug.WriteLine($"Server started successfully ");
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"Shutting down Running Server ");
+                System.Diagnostics.Debug.WriteLine($"Server is running {serverRunningState}");
                 //TO DO: Stop server.
                 //return;
+                
             }
-            updateUI(serverRunningState);
-            if (server.Running)
+            if (serverRunningState)
             {
                 _ = Frame.Navigate(typeof(MainPage), server);
             }
+            updateUI(serverRunningState);
         }
 
         private void updateUI(bool isServerRunning)
