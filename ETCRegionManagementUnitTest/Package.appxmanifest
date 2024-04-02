@@ -3,7 +3,8 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
+  xmlns:uap6="http://schemas.microsoft.com/appx/manifest/uap/windows10/6"
+  IgnorableNamespaces="uap mp uap6">
 
   <Identity Name="d179cb7b-60da-465d-bf1e-a19f9e7422b1"
             Publisher="CN=BP-linlan"
@@ -42,5 +43,7 @@
   <Capabilities>
     <Capability Name="internetClientServer" />
     <Capability Name="privateNetworkClientServer" />
+    <Capability Name="internetClient"/>
+    <uap6:Capability Name="graphicsCapture"/>
   </Capabilities>
 </Package>

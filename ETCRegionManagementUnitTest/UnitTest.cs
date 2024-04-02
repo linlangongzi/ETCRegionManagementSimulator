@@ -10,6 +10,7 @@ namespace ETCRegionManagementUnitTest
         [TestMethod]
         public void TestMethod1()
         {
+            System.Diagnostics.Debug.WriteLine("Starting Unit Test");
         }
     }
 }
