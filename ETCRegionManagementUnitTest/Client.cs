@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Networking;
-using Windows.Networking.Sockets;
-using Windows.Storage.Streams;
 
 namespace ETCRegionManagementUnitTest
 {
     class Client
     {
-        private StreamSocket socket;
-        private DataReader reader;
-        private DataWriter writer;
+        private TcpClient tcpClient;
+        private NetworkStream networkStream;
         private bool isConnected = false;
 
         public bool IsConnected
@@ -26,10 +22,9 @@ namespace ETCRegionManagementUnitTest
         {
             try
             {
-                socket = new StreamSocket();
-                await socket.ConnectAsync(new HostName(serverIpAddress), serverPort.ToString());
-                reader = new DataReader(socket.InputStream);
-                writer = new DataWriter(socket.OutputStream);
+                tcpClient = new TcpClient();
+                await tcpClient.ConnectAsync(serverIpAddress, serverPort);
+                networkStream = tcpClient.GetStream();
                 isConnected = true;
                 System.Diagnostics.Debug.WriteLine($"Connected to {serverIpAddress} : {serverPort}.");
                 return $"Connected to {serverIpAddress} : {serverPort}.";
@@ -45,38 +40,40 @@ namespace ETCRegionManagementUnitTest
         {
             if (!isConnected)
             {
-                throw new InvalidOperationException("Client is not connected.");
+                System.Diagnostics.Debug.WriteLine("Client is not connected.");
+                return;
             }
+            System.Diagnostics.Debug.WriteLine($"Attempt to send {Encoding.UTF8.GetString(data)}");
+            await networkStream.WriteAsync(data, 0, data.Length);
+            System.Diagnostics.Debug.WriteLine($"sent");
 
-            writer.WriteBytes(data);
-            await writer.StoreAsync();
-            await writer.FlushAsync();
         }
 
         public async Task<byte[]> ReceiveDataAsync()
         {
             if (!isConnected)
             {
-                throw new InvalidOperationException("Client is not connected.");
+                System.Diagnostics.Debug.WriteLine("Client is not connected.");
             }
 
             try
             {
-                uint bytesRead = await reader.LoadAsync(sizeof(uint));
-                if (bytesRead < sizeof(uint))
-                {
-                    throw new IOException("Could not read data size.");
-                }
-
-                uint dataSize = reader.ReadUInt32();
-                bytesRead = await reader.LoadAsync(dataSize);
-                if (bytesRead < dataSize)
-                {
-                    throw new IOException("Could not read full data.");
-                }
+                byte[] dataSizeBuffer = new byte[sizeof(int)];
+                await networkStream.ReadAsync(dataSizeBuffer, 0, dataSizeBuffer.Length);
+                int dataSize = BitConverter.ToInt32(dataSizeBuffer, 0);
 
                 byte[] receivedData = new byte[dataSize];
-                reader.ReadBytes(receivedData);
+                int totalBytesRead = 0;
+                while (totalBytesRead < dataSize)
+                {
+                    int bytesRead = await networkStream.ReadAsync(receivedData, totalBytesRead, dataSize - totalBytesRead);
+                    if (bytesRead == 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Connection closed while reading data.");
+                    }
+                    totalBytesRead += bytesRead;
+                }
+
                 return receivedData;
             }
             catch (Exception ex)
@@ -92,7 +89,7 @@ namespace ETCRegionManagementUnitTest
         {
             if (isConnected)
             {
-                return $"Connected to {socket.Information.RemoteAddress.DisplayName} : {socket.Information.RemotePort}.";
+                return $"Connected to {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address} : {((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port}, from{((IPEndPoint)tcpClient.Client.LocalEndPoint).Port}.";
             }
             else
             {
@@ -104,20 +101,15 @@ namespace ETCRegionManagementUnitTest
         {
             try
             {
-                if (socket != null)
+                if (tcpClient != null)
                 {
-                    socket.Dispose();
-                    socket = null;
+                    tcpClient.Close();
+                    tcpClient = null;
                 }
-                if (reader != null)
+                if (networkStream != null)
                 {
-                    reader.DetachStream();
-                    reader = null;
-                }
-                if (writer != null)
-                {
-                    writer.DetachStream();
-                    writer = null;
+                    networkStream.Close();
+                    networkStream = null;
                 }
                 isConnected = false;
                 return "Disconnected.";
@@ -129,4 +121,3 @@ namespace ETCRegionManagementUnitTest
         }
     }
 }
-

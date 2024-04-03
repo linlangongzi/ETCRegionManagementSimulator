@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -110,6 +111,11 @@ namespace ETCRegionManagementUnitTest
             }
 
             return true;
+        }
+
+        private async void btn_send_OnClick(object sender, RoutedEventArgs e)
+        {
+            await testClient.SendDataAsync(Encoding.UTF8.GetBytes(textbox_messages.Text));
         }
     }
 

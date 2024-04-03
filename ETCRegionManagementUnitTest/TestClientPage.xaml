@@ -27,7 +27,7 @@
             <Button x:Name="btn_send" 
                 Content="Send" 
                 Height="60" 
-                Width="200"/>
+                Width="200" Click="btn_send_OnClick"/>
         </StackPanel>
         <TextBlock x:Name="textblock_status" 
                    HorizontalAlignment="Left" 
