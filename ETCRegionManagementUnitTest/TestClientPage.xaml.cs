@@ -69,6 +69,7 @@ namespace ETCRegionManagementUnitTest
                 string ipAddress = textbox_ip.Text.Trim();
                 string portText = textbox_port.Text.Trim();
                 int port;
+                textblock_status.Text = $"Attempting to connect to {ipAddress} : {portText}";
 
                 if (string.IsNullOrWhiteSpace(ipAddress) || !IsValidIpAddress(ipAddress))
                 {
