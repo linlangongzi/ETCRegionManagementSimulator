@@ -25,6 +25,7 @@ namespace ETCRegionManagementSimulator
         {
             byte[] buffer = new byte[1024];
             int bytesRead = await Stream.ReadAsync(buffer, 0, buffer.Length);
+            System.Diagnostics.Debug.Write($"Received data from client({Id}): {Encoding.UTF8.GetString(buffer, 0, bytesRead)}");
             return Encoding.UTF8.GetString(buffer, 0, bytesRead);
         }
 
