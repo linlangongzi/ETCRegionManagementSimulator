@@ -116,41 +116,48 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="App\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Client.cs" />
-    <Compile Include="ClientIdGenerator.cs" />
-    <Compile Include="ClientsManager.cs" />
-    <Compile Include="FifthConnectionPage.xaml.cs">
+    <Compile Include="Interfaces\ETCDataFormat.cs" />
+    <Compile Include="Models\ByteRowModel.cs" />
+    <Compile Include="Models\DisplayModel.cs" />
+    <Compile Include="Server\Client.cs" />
+    <Compile Include="Server\ClientIdGenerator.cs" />
+    <Compile Include="Collections\ETCDataFormatCollection.cs" />
+    <Compile Include="Server\ConnectionsManager.cs" />
+    <Compile Include="DataFormats\ETCDataFormat.cs" />
+    <Compile Include="Data\ExcelDataPerSheet.cs" />
+    <Compile Include="Utilities\DataFormatConverter.cs" />
+    <Compile Include="Views\FifthConnectionPage.xaml.cs">
       <DependentUpon>FifthConnectionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FirstConnectionPage.xaml.cs">
+    <Compile Include="Views\FirstConnectionPage.xaml.cs">
       <DependentUpon>FirstConnectionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FourthConnectionPage.xaml.cs">
+    <Compile Include="Views\FourthConnectionPage.xaml.cs">
       <DependentUpon>FourthConnectionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExcelReader.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ServerService.cs" />
-    <Compile Include="SecondConnectionPage.xaml.cs">
+    <Compile Include="Server\ServerService.cs" />
+    <Compile Include="Views\SecondConnectionPage.xaml.cs">
       <DependentUpon>SecondConnectionPage.xaml</DependentUpon>
     </Compile>
-	<Compile Include="SettingPage.xaml.cs">
+    <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
-	</Compile>
-    <Compile Include="StartUpPage.xaml.cs">
+    </Compile>
+    <Compile Include="Views\StartUpPage.xaml.cs">
       <DependentUpon>StartUpPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
-    <Compile Include="ThirdConnectionPage.xaml.cs">
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Views\ThirdConnectionPage.xaml.cs">
       <DependentUpon>ThirdConnectionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility.cs" />
+    <Compile Include="Utilities\NetworkUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -168,39 +175,39 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="App\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="FifthConnectionPage.xaml">
+    <Page Include="Views\FifthConnectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FirstConnectionPage.xaml">
+    <Page Include="Views\FirstConnectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FourthConnectionPage.xaml">
+    <Page Include="Views\FourthConnectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SecondConnectionPage.xaml">
+    <Page Include="Views\SecondConnectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingPage.xaml">
+    <Page Include="Views\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StartUpPage.xaml">
+    <Page Include="Views\StartUpPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ThirdConnectionPage.xaml">
+    <Page Include="Views\ThirdConnectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,9 +219,15 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>7.1.3</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings.resw" />
+    <PRIResource Include="Resources\Strings.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

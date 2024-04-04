@@ -5,6 +5,7 @@
     xmlns:local="using:ETCRegionManagementSimulator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -80,10 +81,27 @@
                     </ListBox.Template>
                 </ListBox>
             </Grid>
-            <StackPanel Grid.Row="2" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1,1,1,1">
-                <TextBlock TextAlignment="Left" Text="Entries"></TextBlock>
-                <!--TODO: Custom element Tableview-->
-                <ListBox x:Name="LBox_EntryList" VerticalAlignment="Stretch"/>
+            <StackPanel 
+                Grid.Row="2" 
+                Margin="20,10,20,10" 
+                BorderBrush="Gray" 
+                BorderThickness="1,1,1,1">
+
+                <controls:DataGrid x:Name="excelDataGrid"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                   >
+                    <!--<controls:DataGrid.Columns>
+                        <controls:DataGridTextColumn Header="Frame No" Binding="{Binding FrameDataNo}"/>
+                        <controls:DataGridTextColumn Header="Title" Binding="{Binding FrameDataTitle}"/>
+                        <controls:DataGridTextColumn Header="Length" Binding="{Binding FrameDataLength}"/>
+                        --><!-- Define more columns as needed --><!--
+                    </controls:DataGrid.Columns>-->
+                </controls:DataGrid>
+
+
             </StackPanel>
             <StackPanel Margin="20,10,20,10" Grid.Row="3" VerticalAlignment="Center">
                 <Grid VerticalAlignment="Center">

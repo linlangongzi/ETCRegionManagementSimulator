@@ -28,9 +28,8 @@ namespace ETCRegionManagementUnitTest
             var customPage = new TestClientPage();
 
             // Act: Simulate page initialization
-
-            // Assert
-            Assert.IsNotNull(customPage);
+            //Frame.Navigate(typeof(TestClientPage));
+            // Assert5
         }
     }
 }

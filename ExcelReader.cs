@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OfficeOpenXml;
 using System.IO;
 
@@ -12,7 +9,6 @@ namespace ETCRegionManagementSimulator
     {
         public string ExcelFilePath { get; set; }
         public List<string> SheetNames { get; set; }
-
         public Stream ExcelFileStream { get; set; }
 
         private ExcelPackage _package;
@@ -23,54 +19,45 @@ namespace ETCRegionManagementSimulator
         {
             ExcelFilePath = null;
             SheetNames = new List<string>();
+            ExcelFileStream = null;
         }
         public ExcelReader(string excelFilePath)
         {
-            ExcelFilePath = excelFilePath;
             SheetNames = new List<string>();
+            ExcelFilePath = excelFilePath;
+            // TODO: need to replace the File.Exists() check method from the one in Storage Object
+            ExcelFileStream = File.Exists(excelFilePath) ? File.OpenRead(excelFilePath) : null;
         }
 
-        public ExcelReader(string excelFilePath,Stream excelStream)
+        public ExcelReader(string excelFilePath, Stream excelStream)
         {
             ExcelFileStream = excelStream;
             ExcelFilePath = excelFilePath;
             SheetNames = new List<string>();
         }
 
-        public void OpenExcelFile()
-        {
-            var file = new FileInfo(ExcelFilePath);
-            // Check if the file exists
-
-            // Open the Excel file
-           
-
-            if (ExcelFileStream!=null)
-            {
-                _package = new ExcelPackage(ExcelFileStream);
-            }
-            
-            if (_package != null)
-            {
-                System.Diagnostics.Debug.WriteLine($"##########Package is not null##########");
-            }
-            
-        }
-
         public void ReadExcelFile()
         {
-            if (_package == null)
+            if (ExcelFileStream != null)
             {
-                System.Diagnostics.Debug.WriteLine("Excel file is not opened.");
-
-                return;
+                _package = new ExcelPackage(ExcelFileStream);
+                if (_package != null)
+                {
+                    foreach (ExcelWorksheet worksheet in _package.Workbook.Worksheets)
+                    {
+                        SheetNames.Add(worksheet.Name);
+                        ReadSheet(worksheet);
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Excel file is not opened.");
+                    return;
+                }
             }
-            // Read the Excel file
-            foreach (ExcelWorksheet worksheet in _package.Workbook.Worksheets)
+            else
             {
-                SheetNames.Add(worksheet.Name);
-                System.Diagnostics.Debug.WriteLine($" Sheet added{ worksheet.Name}");
-                ReadSheet(worksheet);
+                System.Diagnostics.Debug.WriteLine("Read Excel File failed.");
             }
         }
 
@@ -83,6 +70,8 @@ namespace ETCRegionManagementSimulator
                 int rowCount = worksheet.Dimension.Rows;
                 int colCount = worksheet.Dimension.Columns;
 
+                System.Diagnostics.Debug.WriteLine($" Column Counts: {colCount}  Row Counts : {rowCount}");
+
                 // Iterate through each cell in the worksheet
                 for (int row = 1; row <= rowCount; row++)
                 {
@@ -90,11 +79,8 @@ namespace ETCRegionManagementSimulator
                     {
                         // Get the value of the cell
                         object cellValue = worksheet.Cells[row, col].Value;
-
                         // Do something with the cell value
-                        Console.Write(cellValue + "\t");
                     }
-                    System.Diagnostics.Debug.WriteLine("\n"); // Move to the next row
                 }
             }
         }
