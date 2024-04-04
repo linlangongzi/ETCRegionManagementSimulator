@@ -20,11 +20,14 @@
         <StackPanel HorizontalAlignment="Left" Margin="149,790,0,0" Orientation="Horizontal" VerticalAlignment="Top">
             <TextBox x:Name="textbox_ip" Height="60" Text="ip" TextWrapping="Wrap" Width="390" Margin="0,0,20,0"/>
             <TextBox x:Name="textbox_port" Text="port" TextWrapping="NoWrap" Width="140" Height="60" Margin="0,0,160,0" TextAlignment="Center" HorizontalTextAlignment="Center"/>
-
+            <ToggleButton x:Name="togglebtn_connect" 
+                Content="Connect" 
+                Height="60" 
+                Width="200" Click="togglebtn_connect_OnClick"/>
             <Button x:Name="btn_send" 
                 Content="Send" 
                 Height="60" 
-                Width="390"/>
+                Width="200" Click="btn_send_OnClick"/>
         </StackPanel>
         <TextBlock x:Name="textblock_status" 
                    HorizontalAlignment="Left" 
