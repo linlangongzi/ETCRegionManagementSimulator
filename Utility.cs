@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace ETCRegionManagementSimulator
 {
@@ -42,5 +43,21 @@ namespace ETCRegionManagementSimulator
                 return false;
             }
         }
+
+        public static bool IsValidIpAddress(string ipAddress)
+        {
+            // Regular expression pattern for IPv4 address
+            string pattern = @"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+
+            // Create Regex object
+            Regex regex = new Regex(pattern);
+
+            // Match the input string with the regex pattern
+            Match match = regex.Match(ipAddress);
+
+            // Return true if the input string matches the pattern, otherwise false
+            return match.Success;
+        }
+
     }
 }
