@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net.Sockets;
 
 namespace ETCRegionManagementSimulator
 {
-    class ClientsManager
+    class ConnectionsManager
     {
         private Dictionary<string, Client> clients = new Dictionary<string, Client>();
 

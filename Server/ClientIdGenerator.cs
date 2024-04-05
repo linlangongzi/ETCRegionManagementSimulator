@@ -5,6 +5,8 @@ namespace ETCRegionManagementSimulator
 {
     public static class ClientIdGenerator
     {
+        // TODO: Delete this utility class in future version
+        // In future version the server may open connections as many as it can
         private const string clientId1 = "DATA_UPSTREAM_LINE";
         private const string clientId2 = "SERVER_HEALTH_CHECK";
         private const string clientId3 = "DATA_DOWNSTREAM_LINE";

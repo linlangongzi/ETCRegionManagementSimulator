@@ -30,7 +30,7 @@ namespace ETCRegionManagementSimulator
         private IPAddress backupIPAddress;
         private List<int> ports;
 
-        private ClientsManager clientManager;
+        private ConnectionsManager clientManager;
         // TODO: Need to Update listenerTaskList and Task management into Seperate Object
         //       Object name : Connection 
         private List<(TcpListener, Task)> listenerTaskList;
@@ -63,7 +63,7 @@ namespace ETCRegionManagementSimulator
             backupIPAddress = null;
             ports = new List<int>();
             listenerTaskList = new List<(TcpListener, Task)>();
-            clientManager = new ClientsManager();
+            clientManager = new ConnectionsManager();
             Running = false;
         }
 
@@ -73,7 +73,7 @@ namespace ETCRegionManagementSimulator
             backupIPAddress = IPAddress.Parse(backupIP);
             this.ports = ports;
             listenerTaskList = new List<(TcpListener, Task)>();
-            clientManager = new ClientsManager();
+            clientManager = new ConnectionsManager();
             Running = false;
         }
 
