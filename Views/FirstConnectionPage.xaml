@@ -5,9 +5,9 @@
     xmlns:local="using:ETCRegionManagementSimulator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
     <Grid>
         <!--File Read -->
 
@@ -19,11 +19,13 @@
         <Grid Grid.Column="0">
             <!-- Add your right part content here -->
             <!-- For example: -->
-            <TextBox x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" BorderBrush="{x:Null}">
+            <controls:DropShadowPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BlurRadius="10" ShadowOpacity="0.1" >
+            <TextBox x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" BorderBrush="{x:Null}" Background="White" CornerRadius="5,5,5,5" FocusVisualSecondaryBrush="White" SelectionHighlightColorWhenNotFocused="White">
                 <TextBox.Shadow>
                     <ThemeShadow/>
                 </TextBox.Shadow>
             </TextBox>
+            </controls:DropShadowPanel>
         </Grid>
         
         <!-- Left part -->
