@@ -12,6 +12,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Width set to Auto for the GridSplitter -->
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
 
@@ -19,13 +21,12 @@
         <NavigationView x:Name="MainNavigation" 
                         Grid.Column="0"
                         SelectionChanged="MainNavigation_OnSelectionChanged" 
-                        BackRequested="MainNavigation_OnBackRequested"
-                        IsPaneOpen="True" 
+                        BackRequested="MainNavigation_OnBackRequested" 
                         PaneDisplayMode="Left" 
-                        IsPaneToggleButtonVisible="False" 
                         Loaded="MainNavigation_OnLoaded" 
                         IsBackEnabled="True" 
                         IsBackButtonVisible="Visible">
+
             <NavigationView.MenuItems>
                 <!-- NavigationView Items -->
                 <!-- Add your navigation items here -->
@@ -48,8 +49,11 @@
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
 
+        <controls:GridSplitter Grid.Column="1" Width="2" ResizeBehavior="PreviousAndNext" Background="LightGray" FocusVisualPrimaryBrush="LightGray" Foreground="LightGray" Opacity="0.05"/>
+
+
         <!-- Main Content -->
-        <Grid Grid.Column="1" x:Name="Grid_SendMsg">
+        <Grid Grid.Column="2" x:Name="Grid_SendMsg">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -79,6 +83,8 @@
                     <!-- ListBox Items -->
                 </ListBox>
             </Grid>
+            <controls:GridSplitter Grid.Row="1" Height="2" VerticalAlignment="Bottom" ResizeDirection="Rows" Background="LightGray" FocusVisualPrimaryBrush="LightGray" Foreground="LightGray" Opacity="0.05"/>
+
             <StackPanel 
                 Grid.Row="2" 
                 Margin="20,10,20,10" 
