@@ -11,15 +11,15 @@ namespace ETCRegionManagementSimulator
         public string FrameDataTitle { get; set; }
         public int FrameDataLength { get; set; }
         // Data Header Only
-        public ETCDataFormatCollection<ETCDataFormat> FrameCommonHeader { get; set; }
+        public ETCDataFormatCollection<IDataFormat> FrameCommonHeader { get; set; }
         // Data content after Header but without Header
-        public ETCDataFormatCollection<ETCDataFormat> FrameContent { get; set; }
+        public ETCDataFormatCollection<IDataFormat> FrameContent { get; set; }
         // Full Data that contains Header and actual content
-        public IEnumerable<ETCDataFormat> FrameData { get; set; }
+        public IEnumerable<IDataFormat> FrameData { get; set; }
 
         public ExcelRow(int frameNo, string frameTitle, int frameLength,
-            ETCDataFormatCollection<ETCDataFormat> frameHeader,
-            ETCDataFormatCollection<ETCDataFormat> frameContent)
+            ETCDataFormatCollection<IDataFormat> frameHeader,
+            ETCDataFormatCollection<IDataFormat> frameContent)
         {
             FrameDataNo = frameNo;
             FrameDataTitle = frameTitle;

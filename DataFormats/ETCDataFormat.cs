@@ -2,7 +2,7 @@
 
 namespace ETCRegionManagementSimulator
 {
-    public class BCD : ETCDataFormat
+    public class BCD : IDataFormat
     {
         private readonly byte[] data;
 
@@ -14,7 +14,7 @@ namespace ETCRegionManagementSimulator
         public byte[] ToBytes() => data;
     }
 
-    public class Hex : ETCDataFormat
+    public class Hex : IDataFormat
     {
         private readonly byte[] data;
 

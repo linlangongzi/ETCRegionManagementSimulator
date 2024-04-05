@@ -71,7 +71,11 @@
                     <!-- Star height for the ListBox -->
                 </Grid.RowDefinitions>
                 <TextBlock TextAlignment="Left" Text="Sheets"/>
-                <ListBox x:Name="listbox_SheetsList" Grid.Row="1" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="listbox_SheetsList_SelectionChanged">
+                <ListBox x:Name="listbox_SheetsList" 
+                         Grid.Row="1" 
+                         VerticalAlignment="Stretch" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                         SelectionChanged="listbox_SheetsList_SelectionChanged">
                     <ListBox.Template>
                         <ControlTemplate TargetType="ListBox">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">

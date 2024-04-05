@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ETCRegionManagementSimulator.Collections
 {
-    public class ETCDataFormatCollection<T> where T : ETCDataFormat
+    public class ETCDataFormatCollection<T> where T : IDataFormat
     {
         private List<T> items = new List<T>();
 

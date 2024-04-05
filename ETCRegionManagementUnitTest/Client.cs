@@ -13,10 +13,7 @@ namespace ETCRegionManagementUnitTest
         private NetworkStream networkStream;
         private bool isConnected = false;
 
-        public bool IsConnected
-        {
-            get { return isConnected; }
-        }
+        public bool IsConnected => isConnected;
 
         public async Task<string> ConnectAsync(string serverIpAddress, int serverPort)
         {
