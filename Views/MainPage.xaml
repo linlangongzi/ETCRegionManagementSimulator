@@ -88,16 +88,14 @@
                     <TextBlock Grid.Column="0" 
                                Text="FilePath:" 
                                VerticalAlignment="Center"/>
-                    <controls:DropShadowPanel Grid.Column="1" BlurRadius="10" ShadowOpacity="0.3" OffsetY="8" HorizontalContentAlignment="Stretch">
+                    <controls:DropShadowPanel Grid.Column="1" BlurRadius="10" ShadowOpacity="0.1" OffsetY="6" HorizontalContentAlignment="Stretch" OffsetX="7">
 
                         <TextBox x:Name="textbox_filePath" 
                              Grid.Column="1"
                              VerticalAlignment="Center" 
-                             BorderBrush="Silver" 
-                             BorderThickness="1" 
-                             Margin="5" Background="White" Foreground="{x:Null}"/>
+                             Margin="5" Background="White" Foreground="{x:Null}" BorderBrush="{x:Null}"/>
                     </controls:DropShadowPanel>
-                    <controls:DropShadowPanel Grid.Column="2" BlurRadius="10" ShadowOpacity="0.3" OffsetY="8">
+                    <controls:DropShadowPanel Grid.Column="2" BlurRadius="10" ShadowOpacity="0.1" OffsetY="7" OffsetX="5">
                         <Button x:Name="button_filePicker" 
                             Grid.Column="2"
                             Content="Open" 
@@ -112,7 +110,7 @@
             <Grid Grid.Row="1"
                   Margin="20,10">
                 <TextBlock Text="Sheets"/>
-                <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.5" CornerRadius="5,5,5,5">
+                <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.1" CornerRadius="5,5,5,5">
                     <Grid CornerRadius="5,5,5,5">
                         <ListBox x:Name="listbox_SheetsList"
                          Grid.Row="1" 
@@ -138,7 +136,7 @@
 
             <Grid Grid.Row="2" 
                         Margin="20,10">
-                <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.5" CornerRadius="5,5,5,5">
+                <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.1" CornerRadius="5,5,5,5">
                     <Grid CornerRadius="5,5,5,5">
                         <controls:DataGrid x:Name="excelDataGrid"
                        HorizontalAlignment="Stretch"
@@ -173,12 +171,12 @@
                               Header="伝送連番自動採番"
                               HorizontalAlignment="Left" 
                               VerticalAlignment="Center"/>
-                <controls:DropShadowPanel Grid.Column="2" BlurRadius="10" ShadowOpacity="0.3" OffsetY="13">
+                <controls:DropShadowPanel Grid.Column="2" BlurRadius="10" ShadowOpacity="0.1" OffsetY="11" OffsetX="4">
                     <Button Grid.Column="2" 
                         Content="Select All" 
                         Margin="5" Background="#FFCFCFCF" CornerRadius="3,3,3,3"/>
                 </controls:DropShadowPanel>
-                <controls:DropShadowPanel Grid.Column="3" BlurRadius="10" ShadowOpacity="0.3" OffsetY="13">
+                <controls:DropShadowPanel Grid.Column="3" BlurRadius="10" ShadowOpacity="0.1" OffsetY="11" OffsetX="4">
 
                     <Button Grid.Column="3"
                         Content="Send"
