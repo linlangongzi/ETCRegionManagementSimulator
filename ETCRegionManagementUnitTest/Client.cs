@@ -56,32 +56,36 @@ namespace ETCRegionManagementUnitTest
                 System.Diagnostics.Debug.WriteLine("Client is not connected.");
             }
 
-            try
+            while (true)
             {
-                byte[] dataSizeBuffer = new byte[sizeof(int)];
-                await networkStream.ReadAsync(dataSizeBuffer, 0, dataSizeBuffer.Length);
-                int dataSize = BitConverter.ToInt32(dataSizeBuffer, 0);
-
-                byte[] receivedData = new byte[dataSize];
-                int totalBytesRead = 0;
-                while (totalBytesRead < dataSize)
+                try
                 {
-                    int bytesRead = await networkStream.ReadAsync(receivedData, totalBytesRead, dataSize - totalBytesRead);
-                    if (bytesRead == 0)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Connection closed while reading data.");
-                    }
-                    totalBytesRead += bytesRead;
-                }
+                    byte[] dataSizeBuffer = new byte[sizeof(int)];
+                    await networkStream.ReadAsync(dataSizeBuffer, 0, dataSizeBuffer.Length);
+                    int dataSize = BitConverter.ToInt32(dataSizeBuffer, 0);
 
-                return receivedData;
-            }
-            catch (Exception ex)
-            {
-                // Handle error while receiving data
-                // ex.Message will contain the error message
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                return null;
+                    byte[] receivedData = new byte[dataSize];
+                    int totalBytesRead = 0;
+                    while (totalBytesRead < dataSize)
+                    {
+                        int bytesRead = await networkStream.ReadAsync(receivedData, totalBytesRead, dataSize - totalBytesRead);
+                        if (bytesRead == 0)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Connection closed while reading data.");
+                        }
+                        totalBytesRead += bytesRead;
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"###### MSGIN {Encoding.UTF8.GetString(receivedData)}");
+                    return receivedData;
+                }
+                catch (Exception ex)
+                {
+                    // Handle error while receiving data
+                    // ex.Message will contain the error message
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    return null;
+                }
             }
         }
 

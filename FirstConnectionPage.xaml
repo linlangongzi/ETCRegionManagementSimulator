@@ -19,7 +19,11 @@
         <Grid Grid.Column="0">
             <!-- Add your right part content here -->
             <!-- For example: -->
-            <TextBox x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+            <TextBox x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" BorderBrush="{x:Null}">
+                <TextBox.Shadow>
+                    <ThemeShadow/>
+                </TextBox.Shadow>
+            </TextBox>
         </Grid>
         
         <!-- Left part -->
