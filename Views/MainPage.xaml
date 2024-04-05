@@ -5,148 +5,189 @@
     xmlns:local="using:ETCRegionManagementSimulator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"></ColumnDefinition>
-            <ColumnDefinition Width="6*"></ColumnDefinition>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Width set to Auto for the GridSplitter -->
+            <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
+
+        <!-- NavigationView -->
         <NavigationView x:Name="MainNavigation" 
+                        Grid.Column="0"
                         SelectionChanged="MainNavigation_OnSelectionChanged" 
-                        BackRequested="MainNavigation_OnBackRequested"
-                        IsPaneOpen="True" 
+                        BackRequested="MainNavigation_OnBackRequested" 
                         PaneDisplayMode="Left" 
-                        IsPaneToggleButtonVisible="False" 
-                        Loaded="MainNavigation_OnLoaded" IsBackEnabled="True" IsBackButtonVisible="Visible" >
-            <!--TODO: Change Name and Display name-->
+                        Loaded="MainNavigation_OnLoaded" 
+                        IsBackEnabled="True" 
+                        IsBackButtonVisible="Visible">
+
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="TabFirstPort" Content="回線１" Tag="TabFirstPort">
+                <!-- NavigationView Items -->
+                <!-- Add your navigation items here -->
+                <NavigationViewItem x:Name="TabFirstPort" 
+                                    Content="回線１" 
+                                    Tag="TabFirstPort">
 
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabSecondPort" Content="回線２" Tag="TabSecondPort">
+                <NavigationViewItem x:Name="TabSecondPort" 
+                                    Content="回線２" Tag="TabSecondPort">
 
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabThirdPort" Content="回線３" Tag="TabThirdPort">
+                <NavigationViewItem x:Name="TabThirdPort" Content="回線３" 
+                                    Tag="TabThirdPort">
 
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabFourthPort" Content="回線４" Tag="TabFourthPort">
+                <NavigationViewItem x:Name="TabFourthPort" 
+                                    Content="回線４" 
+                                    Tag="TabFourthPort">
 
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="TabFifthPort" Content="回線５" Tag="TabFifthPort">
+                <NavigationViewItem x:Name="TabFifthPort" 
+                                    Content="回線５" 
+                                    Tag="TabFifthPort">
 
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
-        <Grid Grid.Column="1" x:Name="Grid_SendMsg">
+
+        <controls:GridSplitter Grid.Column="1" 
+                               Width="2" 
+                               ResizeBehavior="PreviousAndNext" 
+                               Background="LightGray"
+                               FocusVisualPrimaryBrush="LightGray"
+                               Foreground="LightGray"
+                               Opacity="0.05"/>
+
+
+        <!-- Main Content -->
+        <Grid Grid.Column="2" 
+              x:Name="Grid_SendMsg">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="7*"/>
-                <RowDefinition Height="7*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <!-- For example: -->
-            <StackPanel Grid.Row="0" Margin="5,5,5,5" VerticalAlignment="Center">
-                <!-- Horizontal line with a tag, an input TextBox, and a Button -->
-                <Grid Margin="10" VerticalAlignment="Center">
+
+            <!-- File Path -->
+            <StackPanel Grid.Row="0" Margin="20,10">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" x:Name="Tag_FilePath" Text="FilePath:" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <TextBox x:Name="textbox_filePath" Grid.Column="1" VerticalAlignment="Center" BorderBrush="Silver" BorderThickness="1,1,1,1" Margin="2,2,10,2" HorizontalAlignment="Stretch"/>
-                    <Button x:Name="button_filePicker" Grid.Column="2" Content="Open" VerticalAlignment="Center" HorizontalAlignment="Stretch" Click="button_FilePicker_OnClick"/>
+                    <TextBlock Grid.Column="0" 
+                               Text="FilePath:" 
+                               VerticalAlignment="Center"/>
+                    <controls:DropShadowPanel Grid.Column="1" BlurRadius="10" ShadowOpacity="0.1" OffsetY="6" HorizontalContentAlignment="Stretch" OffsetX="7">
+
+                        <TextBox x:Name="textbox_filePath" 
+                             Grid.Column="1"
+                             VerticalAlignment="Center" 
+                             Margin="5" Background="White" Foreground="{x:Null}" BorderBrush="{x:Null}"/>
+                    </controls:DropShadowPanel>
+                    <controls:DropShadowPanel Grid.Column="2" BlurRadius="10" ShadowOpacity="0.1" OffsetY="7" OffsetX="5">
+                        <Button x:Name="button_filePicker" 
+                            Grid.Column="2"
+                            Content="Open" 
+                            Margin="5" 
+                            Click="button_FilePicker_OnClick" Background="#FFCFCFCF" CornerRadius="3,3,3,3"/>
+                    </controls:DropShadowPanel>
                 </Grid>
+
             </StackPanel>
-            <Grid x:Name="grid" Grid.Row="1" Margin="20,10,20,10" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <!-- Auto height for the TextBlock -->
-                    <RowDefinition Height="*"/>
-                    <!-- Star height for the ListBox -->
-                </Grid.RowDefinitions>
-                <TextBlock TextAlignment="Left" Text="Sheets"/>
-                <ListBox x:Name="listbox_SheetsList" 
+
+            <!-- Sheets List -->
+            <Grid Grid.Row="1"
+                  Margin="20,10">
+                <TextBlock Text="Sheets"/>
+                <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.1" CornerRadius="5,5,5,5">
+                    <Grid CornerRadius="5,5,5,5">
+                        <ListBox x:Name="listbox_SheetsList"
                          Grid.Row="1" 
                          VerticalAlignment="Stretch" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                         SelectionChanged="listbox_SheetsList_SelectionChanged">
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="ListBox">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ListBox.Template>
-                </ListBox>
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         SelectionChanged="listbox_SheetsList_SelectionChanged" Background="White">
+                            <ListBox.Shadow>
+                                <ThemeShadow/>
+                            </ListBox.Shadow>
+                            <!-- ListBox Items -->
+                        </ListBox>
+                    </Grid>
+                </controls:DropShadowPanel>
             </Grid>
-            <StackPanel 
-                Grid.Row="2" 
-                Margin="20,10,20,10" 
-                BorderBrush="Gray" 
-                BorderThickness="1,1,1,1">
+            <controls:GridSplitter Grid.Row="1" 
+                                   Height="2"
+                                   VerticalAlignment="Bottom" 
+                                   ResizeDirection="Rows" 
+                                   Background="LightGray" 
+                                   FocusVisualPrimaryBrush="LightGray"
+                                   Foreground="LightGray"
+                                   Opacity="0.05"/>
 
-                <controls:DataGrid x:Name="excelDataGrid"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch"
-                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                   >
-                    <!--<controls:DataGrid.Columns>
-                        <controls:DataGridTextColumn Header="Frame No" Binding="{Binding FrameDataNo}"/>
-                        <controls:DataGridTextColumn Header="Title" Binding="{Binding FrameDataTitle}"/>
-                        <controls:DataGridTextColumn Header="Length" Binding="{Binding FrameDataLength}"/>
-                        --><!-- Define more columns as needed --><!--
-                    </controls:DataGrid.Columns>-->
-                </controls:DataGrid>
+            <Grid Grid.Row="2" 
+                        Margin="20,10">
+                <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.1" CornerRadius="5,5,5,5">
+                    <Grid CornerRadius="5,5,5,5">
+                        <controls:DataGrid x:Name="excelDataGrid"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="White">
+                            <controls:DataGrid.Shadow>
+                                <ThemeShadow/>
+                            </controls:DataGrid.Shadow>
+                            <!--<controls:DataGrid.Columns>
+            <controls:DataGridTextColumn Header="Frame No" Binding="{Binding FrameDataNo}"/>
+            <controls:DataGridTextColumn Header="Title" Binding="{Binding FrameDataTitle}"/>
+            <controls:DataGridTextColumn Header="Length" Binding="{Binding FrameDataLength}"/>
+            -->
+                            <!-- Define more columns as needed -->
+                            <!--
+        </controls:DataGrid.Columns>-->
+                        </controls:DataGrid>
+                    </Grid>
+                </controls:DropShadowPanel>
+            </Grid>
 
+            <!-- Toggle Switch and Buttons -->
+            <Grid Grid.Row="3" Margin="20,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ToggleSwitch Grid.Column="0" 
+                              Header="伝送連番自動採番"
+                              HorizontalAlignment="Left" 
+                              VerticalAlignment="Center"/>
+                <controls:DropShadowPanel Grid.Column="2" BlurRadius="10" ShadowOpacity="0.1" OffsetY="11" OffsetX="4">
+                    <Button Grid.Column="2" 
+                        Content="Select All" 
+                        Margin="5" Background="#FFCFCFCF" CornerRadius="3,3,3,3"/>
+                </controls:DropShadowPanel>
+                <controls:DropShadowPanel Grid.Column="3" BlurRadius="10" ShadowOpacity="0.1" OffsetY="11" OffsetX="4">
 
-            </StackPanel>
-            <StackPanel Margin="20,10,20,10" Grid.Row="3" VerticalAlignment="Center">
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="6*"></ColumnDefinition>
-                        <ColumnDefinition Width="4*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <ToggleSwitch HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
-                        <ToggleSwitch.Header>
-                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="伝送連番自動採番"/>
-                        </ToggleSwitch.Header>
-                        <ToggleSwitch.Style>
-                            <Style TargetType="ToggleSwitch">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ToggleSwitch">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <ContentPresenter Content="{TemplateBinding Header}" HorizontalAlignment="Stretch"/>
-                                                <ToggleSwitch x:Name="toggleSwitch" Grid.Column="1" Header="" OnContent="" OffContent="" VerticalAlignment="Center"/>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ToggleSwitch.Style>
-                    </ToggleSwitch>
-                    <Button Grid.Column="2" HorizontalAlignment="Stretch" Content="SelectAll" Margin="5,0,5,0"></Button>
-                    <Button Grid.Column="3" HorizontalAlignment="Stretch" Content="Send" Margin="5,0,5,0"></Button>
-                </Grid>
-            </StackPanel>
-            <StackPanel Margin="20,10,20,10" Grid.Row="4" VerticalAlignment="Center">
-                <TextBlock VerticalAlignment="Center" Text="サーバーステータス"></TextBlock>
-            </StackPanel>
+                    <Button Grid.Column="3"
+                        Content="Send"
+                        Margin="5" Background="#FFCFCFCF" CornerRadius="3,3,3,3"/>
+                </controls:DropShadowPanel>
+            </Grid>
 
+            <!-- Server Status -->
+            <TextBlock Grid.Row="4"
+                       Margin="20,10" 
+                       Text="サーバーステータス"/>
         </Grid>
-
     </Grid>
 </Page>

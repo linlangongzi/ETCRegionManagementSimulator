@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Text.RegularExpressions;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -100,17 +101,17 @@ namespace ETCRegionManagementUnitTest
 
         private bool IsValidIpAddress(string ipAddress)
         {
-            string[] parts = ipAddress.Split('.');
-            if (parts.Length != 4)
-                return false;
+            // Regular expression pattern for IPv4 address
+            string pattern = @"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
-            foreach (string part in parts)
-            {
-                if (!byte.TryParse(part, out byte value))
-                    return false;
-            }
+            // Create Regex object
+            Regex regex = new Regex(pattern);
 
-            return true;
+            // Match the input string with the regex pattern
+            Match match = regex.Match(ipAddress);
+
+            // Return true if the input string matches the pattern, otherwise false
+            return match.Success;
         }
 
         private async void btn_send_OnClick(object sender, RoutedEventArgs e)

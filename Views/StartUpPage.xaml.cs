@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -42,7 +43,18 @@ namespace ETCRegionManagementSimulator
             if (!serverRunningState)
             {
                 string ipAddressStr = ip_address.Text.Trim();
-               // IPAddress ipAddress;
+                
+                IPAddress ipAddr;
+                if (!IPAddress.TryParse(ipAddressStr, out ipAddr))
+                {
+                    System.Diagnostics.Debug.WriteLine($"{ipAddressStr} is an invalid ip address");
+                    return;
+                }
+                else if (ipAddr.AddressFamily!= System.Net.Sockets.AddressFamily.InterNetwork) {
+                    System.Diagnostics.Debug.WriteLine($"{ipAddressStr} is an invalid ip address");
+                    return;
+                }
+                server.DefaultIPAddress = ipAddr;
                 await server.Start();
                 server.Running = true;
                 serverRunningState = true;
