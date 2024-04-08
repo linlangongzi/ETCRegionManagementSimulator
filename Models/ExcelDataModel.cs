@@ -3,8 +3,6 @@ using ETCRegionManagementSimulator.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ETCRegionManagementSimulator.Models
 {
@@ -20,7 +18,12 @@ namespace ETCRegionManagementSimulator.Models
             OnDataChanged(new DataChangedEventArgs(DataChangedEventArgs.ChangeType.Added));
         }
 
-        public ExcelRow GetDataById(int id)
+        public IEnumerable<ExcelRow> GetData()
+        {
+            return _data;
+        }
+
+        public ExcelRow GetDataPerRowById(int id)
         {
             return _data.FirstOrDefault(d => d.FrameDataNo == id);
         }

@@ -32,7 +32,7 @@ namespace ETCRegionManagementSimulator.Utilities
 
         }
 
-        // Adaptation for ExcelRow
+        // Adaptor for ExcelRow
         public static List<DisplayModel> ConvertExcelRowToDisplayableList(ExcelRow row)
         {
             List<DisplayModel> displayList = new List<DisplayModel>

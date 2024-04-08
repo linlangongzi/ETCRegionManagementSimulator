@@ -13,7 +13,9 @@ namespace ETCRegionManagementSimulator.Interfaces
         event EventHandler<DataChangedEventArgs> DataChanged;
 
         void LoadData(IEnumerable<ExcelRow> data);
-        ExcelRow GetDataById(int id);
+        ExcelRow GetDataPerRowById(int id);
+
+        IEnumerable<ExcelRow> GetData();
         void AddData(ExcelRow data);
         void UpdateData(ExcelRow data);
         void RemoveData(int id);

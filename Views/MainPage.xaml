@@ -116,7 +116,7 @@
                          Grid.Row="1" 
                          VerticalAlignment="Stretch" 
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         SelectionChanged="listbox_SheetsList_SelectionChanged" Background="White">
+                         SelectionChanged="Listbox_SheetsList_SelectionChanged" Background="White">
                             <ListBox.Shadow>
                                 <ThemeShadow/>
                             </ListBox.Shadow>

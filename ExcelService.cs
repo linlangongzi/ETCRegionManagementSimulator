@@ -46,6 +46,8 @@ namespace ETCRegionManagementSimulator
             _package = ExcelFileStream != null ? new ExcelPackage(ExcelFileStream) : null;
         }
 
+        /// TODO: Need to optimize framework structure in the futiure to
+        /// make the method below behave more a Read method 
         public IEnumerable<ExcelRow> ReadExcelFile()
         {
             List<ExcelRow> rows = new List<ExcelRow>();
@@ -54,16 +56,22 @@ namespace ETCRegionManagementSimulator
             {
                 throw new InvalidOperationException("ExcelFilePath has not been set.");
             }
-            if (_package != null)
+
+            if (_package == null)
             {
-                foreach (ExcelWorksheet worksheet in _package.Workbook.Worksheets)
-                {
-                    SheetNames.Add(worksheet.Name);
-                }
+                _package = ExcelFileStream != null ? new ExcelPackage(ExcelFileStream) : null;
             }
-            else
+            //else
+            //{
+            //    System.Diagnostics.Debug.WriteLine("Excel file is not opened.");
+            //}
+            foreach (ExcelWorksheet worksheet in _package.Workbook.Worksheets)
             {
-                System.Diagnostics.Debug.WriteLine("Excel file is not opened.");
+                if (string.Equals(worksheet.Name, "目次"))
+                {
+                    continue;
+                }
+                SheetNames.Add(worksheet.Name);
             }
           
             return rows;
@@ -102,10 +110,10 @@ namespace ETCRegionManagementSimulator
                         for (int row = ACTUAL_DATA_ROW_NO; row <= rowCount; row++)
                         {
                             System.Diagnostics.Debug.WriteLine($" Assembling row: { row } ");
-
-                            int frameDataNo = (int)worksheet.Cells[row, 1].Value;
-                            string title = (string)worksheet.Cells[row, 2].Value;
-                            int frameDataLength = (int)worksheet.Cells[row, 3].Value;
+                            /// TODO: Use RAII to catch type convertion expections
+                            int frameDataNo = Convert.ToInt32(worksheet.Cells[row, 1].Value);
+                            string title = worksheet.Cells[row, 2].Value.ToString();
+                            int frameDataLength = Convert.ToInt32(worksheet.Cells[row, 3].Value);
                             // Header
                             for (int col = ACTUAL_DATA_COL_NO; col <= HEADER_TAIL_NO; col++)
                             {
@@ -141,6 +149,19 @@ namespace ETCRegionManagementSimulator
                 }
             }
             return rows;
+        }
+
+        private List<string> SheetsFilter(in List<string> names)
+        {
+            List<string> finalList = new List<string>();
+            foreach(string name in names)
+            {
+                if (!string.Equals(name, "目次"))
+                {
+                    finalList.Add(name);
+                }
+            }
+            return finalList;
         }
 
         public void CloseExcelFile()

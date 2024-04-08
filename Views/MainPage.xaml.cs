@@ -1,5 +1,4 @@
-﻿using ETCRegionManagementSimulator.Collections;
-using ETCRegionManagementSimulator.Controllers;
+﻿using ETCRegionManagementSimulator.Controllers;
 using ETCRegionManagementSimulator.Events;
 using ETCRegionManagementSimulator.Interfaces;
 using ETCRegionManagementSimulator.Models;
@@ -7,7 +6,6 @@ using ETCRegionManagementSimulator.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
@@ -25,7 +23,12 @@ namespace ETCRegionManagementSimulator
         private ThirdConnectionPage thirdConnectionPage;
         private FourthConnectionPage fourthConnectionPage;
         private FifthConnectionPage fifthConnectionPage;
-        private ExcelService workBook;
+
+        /// TODO: use DI to replace code below
+        private IExcelService excelService;
+        IDataModel model = new ExcelDataModel();
+        IView view;
+
 
         private bool disposedValue;
 
@@ -44,73 +47,9 @@ namespace ETCRegionManagementSimulator
             fourthConnectionPage = new FourthConnectionPage();
             fifthConnectionPage = new FifthConnectionPage();
 
-            // TODO: this is data for test; Delete there in the future
-            ETCDataFormatCollection<IDataFormat> collection1 = new ETCDataFormatCollection<IDataFormat>();
-            collection1.Add(new BCD(new byte[] { 0x01, 0x23 }));
-            collection1.Add(new BCD(new byte[] { 0xAA, 0xBB, 0xCC }));
-            collection1.Add(new BCD(new byte[] { 0x11, 0x22, 0x33, 0x44 }));
-            collection1.Add(new BCD(new byte[] { 0xDE, 0xAD, 0xBE, 0xEF, 0x00 }));
-            collection1.Add(new Hex(new byte[] { 0x88, 0x99 }));
-            collection1.Add(new Hex(new byte[] { 0x55, 0x66, 0x77, 0x88, 0x99 }));
-            collection1.Add(new Hex(new byte[] { 0x00, 0x11, 0x22, 0x33 }));
-
-            ETCDataFormatCollection<IDataFormat> collection2 = new ETCDataFormatCollection<IDataFormat>();
-            collection2.Add(new Hex(new byte[] { 0x45, 0x67 }));
-            collection2.Add(new Hex(new byte[] { 0x88, 0x99 }));
-            collection2.Add(new Hex(new byte[] { 0x55, 0x66, 0x77, 0x88, 0x99 }));
-            collection2.Add(new Hex(new byte[] { 0x00, 0x11, 0x22, 0x33 }));
-            collection2.Add(new BCD(new byte[] { 0xAA, 0xBB, 0xCC }));
-            collection2.Add(new BCD(new byte[] { 0x11, 0x22, 0x33, 0x44 }));
-            collection2.Add(new BCD(new byte[] { 0xDE, 0xAD, 0xBE, 0xEF, 0x00 }));
-
-            ExcelDataPerSheet testExcelData = new ExcelDataPerSheet
-            {
-                DataPerSheet = new List<ExcelRow>
-                {
-                    // Initialize with sample data
-                    new ExcelRow(1, "Row Title 1", 100, collection1, collection2),
-                    new ExcelRow(2, "Row Title 2", 150, collection1, collection2),
-                    new ExcelRow(3, "Row Title 3", 200, collection1, collection2),
-                    new ExcelRow(4, "Row Title 4", 250, collection1, collection2),
-                    new ExcelRow(5, "Row Title 5", 300, collection1, collection2),
-                    new ExcelRow(6, "Row Title 6", 350, collection1, collection2),
-                    new ExcelRow(7, "Row Title 7", 400, collection1, collection2),
-                    new ExcelRow(8, "Row Title 8", 450, collection1, collection2)
-                }
-            };
-
-            List<DisplayModel> displayableData = new List<DisplayModel>();
-            foreach (ExcelRow row in testExcelData.DataPerSheet)
-            {
-                displayableData.AddRange(DataFormatConverter.ConvertExcelRowToDisplayableList(row));
-            }
-
-            excelDataGrid.ItemsSource = displayableData;
-
-        }
-
-        public void TestExcelReader()
-        {
-            FileOpenPicker picker = new FileOpenPicker();
-            picker.FileTypeFilter.Add(".xlsx");
-            IAsyncOperation<StorageFile> asyncFilePick = picker.PickSingleFileAsync();
-
-            StorageFile file = asyncFilePick.GetResults();
-
-            if (file != null)
-            {
-                string excelFilePath = file.Path;
-                // Create an instance of ExcelReader
-                ExcelService excelReader = new ExcelService(file.Path);
-
-                System.Diagnostics.Debug.WriteLine($"Test Excel Reader...{excelFilePath}....");
-                // Read the Excel file
-                excelReader.ReadExcelFile();
-
-                // Close the Excel file
-                excelReader.CloseExcelFile();
-            }    
-
+            view = this;
+            excelService = new ExcelService();
+            ExcelDataController controller = new ExcelDataController(model, view, excelService);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -226,9 +165,12 @@ namespace ETCRegionManagementSimulator
                 {
                     using (Stream stream = (await file.OpenReadAsync()).AsStreamForRead())
                     {
-                        workBook = new ExcelService(file.Path, stream);
-                        workBook.ReadExcelFile();
-                        foreach (string sheetName in workBook.SheetNames)
+                        excelService.ExcelFilePath = file.Path;
+                        excelService.ExcelFileStream = stream;
+                        /// TODO: Code Here is not quite desirable; Consider a better way to make ReadExcelFile 
+                        /// an actual Read method
+                        excelService.ReadExcelFile();
+                        foreach (string sheetName in excelService.SheetNames)
                         {
                             listbox_SheetsList.Items.Add(sheetName);
                         }
@@ -247,7 +189,7 @@ namespace ETCRegionManagementSimulator
             }
         }
 
-        private void listbox_SheetsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Listbox_SheetsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedSheetName = listbox_SheetsList.SelectedItem.ToString();
             SheetSelected?.Invoke(this, new SheetSelectedEventArgs(selectedSheetName));
@@ -255,14 +197,22 @@ namespace ETCRegionManagementSimulator
 
         public void UpdateView()
         {
-
+            List<DisplayModel> displayableData = new List<DisplayModel>();
+            if (model != null)
+            {
+                /// TODO : Maybe consider to make the model convertion process as a member of DataModel
+                IEnumerable<ExcelRow> enumerable = model.GetData();
+                foreach (ExcelRow row in enumerable)
+                {
+                    displayableData.AddRange(DataFormatConverter.ConvertExcelRowToDisplayableList(row));
+                }
+                excelDataGrid.ItemsSource = displayableData;
+            }
         }
 
         public void SetController(IController controller)
         {
             SheetSelected += (sender, e) => controller.LoadDataFromSheet(e.SheetName);
         }
-
-
     }
 }
