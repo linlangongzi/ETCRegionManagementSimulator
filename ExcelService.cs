@@ -128,8 +128,6 @@ namespace ETCRegionManagementSimulator
                             for (int col = HEADER_TAIL_NO + 1; col <= colCount; col++)
                             {
                                 object cellValue = worksheet.Cells[row, col].Value;
-                                /// TODO: Add Data by its representitive Type BCD or HEX
-                                // Here i made the all to bcd for test, modify it later
                                 byte[] bytes = DataFormatConverter.ObjectToByteArray(cellValue);
                                 /// TODO: Add Data by its representitive Type BCD or HEX
                                 // Here i made the all to bcd for test, modify it later
