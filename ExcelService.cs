@@ -118,10 +118,20 @@ namespace ETCRegionManagementSimulator
                             for (int col = ACTUAL_DATA_COL_NO; col <= HEADER_TAIL_NO; col++)
                             {
                                 object cellValue = worksheet.Cells[row, col].Value;
-                                byte[] bytes = DataFormatConverter.ObjectToByteArray(cellValue);
+                                //byte[] bytes = DataFormatConverter.ObjectToByteArray(cellValue);
                                 /// TODO: Add Data by its representitive Type BCD or HEX
                                 // Here i made the all to bcd for test, modify it later
-                                frameCommonHeader.Add(new BCD(bytes));
+                                //frameCommonHeader.Add(new Binary(Convert.ToUInt32(cellValue)));
+                                if (UInt32.TryParse(cellValue.ToString(), out var uintValue))
+                                {
+                                    frameCommonHeader.Add(new Binary(uintValue));
+                                }
+                                else
+                                {
+                                    // Handle invalid conversion
+                                    System.Diagnostics.Debug.WriteLine($"Value '{cellValue}' cannot be converted to UInt32.");
+                                    // Similar to the try-catch, decide how to handle this case
+                                }
                                 System.Diagnostics.Debug.WriteLine($" column : {col}, Cell : {cellValue}  ");
                             }
                             // Content

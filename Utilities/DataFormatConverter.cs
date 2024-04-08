@@ -83,22 +83,25 @@ namespace ETCRegionManagementSimulator.Utilities
 
         public static string ConvertToDisplayableString(IEnumerable<IDataFormat> enumerable)
         {
-            //List<string> readableByteArray = new List<string>();
-            //foreach (ETCDataFormat item in enumerable)
-            //{
-            //    byte[] bytes = item.ToBytes();
-            //    readableByteArray.Add(ToHexString(bytes));
-            //}
-            //string result = string.Join(" ", readableByteArray);
-            //return result;
-            if (!enumerable.Any())
+            return string.Join(", ", enumerable.Select(item =>
             {
-                return ""; // TODO: maybe return some default message indicating empty data
-            }
-
-            return enumerable
-                .Select(item => ToHexString(item.ToBytes()))
-                .Aggregate((acc, next) => $"{acc}, {next}");
+                if (item is BCD bcd)
+                {
+                    return $"{bcd.ToDecimalString()} ";
+                }
+                else if (item is Hex hex)
+                {
+                    return $"{hex.ToHexString()} ";
+                }
+                else if (item is Binary binary)
+                {
+                    return $"{binary.ToString()} "; // Assuming Binary.ToString() is overridden to return a desired representation
+                }
+                else
+                {
+                    return $"Unknown Type: {item.ToString()}";
+                }
+            }));
         }
 
         private static string SummarizeDataFormatCollection(ETCDataFormatCollection<IDataFormat> collection)

@@ -201,7 +201,7 @@ namespace ETCRegionManagementSimulator
             if (model != null)
             {
                 /// TODO : Maybe consider to make the model convertion process as a member of DataModel
-                IEnumerable<ExcelRow> enumerable = model.GetData();
+                IEnumerable<ExcelRow> enumerable = model.GetAllData();
                 foreach (ExcelRow row in enumerable)
                 {
                     displayableData.AddRange(DataFormatConverter.ConvertExcelRowToDisplayableList(row));

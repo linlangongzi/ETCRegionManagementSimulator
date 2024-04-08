@@ -15,7 +15,7 @@ namespace ETCRegionManagementSimulator.Interfaces
         void LoadData(IEnumerable<ExcelRow> data);
         ExcelRow GetDataPerRowById(int id);
 
-        IEnumerable<ExcelRow> GetData();
+        IEnumerable<ExcelRow> GetAllData();
         void AddData(ExcelRow data);
         void UpdateData(ExcelRow data);
         void RemoveData(int id);

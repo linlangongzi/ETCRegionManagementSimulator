@@ -18,7 +18,7 @@ namespace ETCRegionManagementSimulator.Models
             OnDataChanged(new DataChangedEventArgs(DataChangedEventArgs.ChangeType.Added));
         }
 
-        public IEnumerable<ExcelRow> GetData()
+        public IEnumerable<ExcelRow> GetAllData()
         {
             return _data;
         }
