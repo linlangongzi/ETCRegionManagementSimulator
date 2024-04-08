@@ -73,12 +73,13 @@ namespace ETCRegionManagementSimulator
             if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(SettingPage),settingPage);
-                Grid.SetColumnSpan(MainNavigation, 2);
+                Grid.SetColumnSpan(ContentFrame, 3);
                 Grid_SendMsg.Visibility = Visibility.Collapsed;
+                Splitter_v.Visibility = Visibility.Collapsed;
             }
             else 
             {
-                Grid.SetColumnSpan(MainNavigation, 1);
+                Grid.SetColumnSpan(ContentFrame, 1);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 switch(selectedItem.Name.ToString())
                 {
@@ -102,6 +103,8 @@ namespace ETCRegionManagementSimulator
                         break;
                 }
                 Grid_SendMsg.Visibility = Visibility.Visible;
+                Splitter_v.Visibility = Visibility.Visible;
+
 
             }
         }

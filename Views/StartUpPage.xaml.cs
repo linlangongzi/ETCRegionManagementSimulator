@@ -35,6 +35,13 @@ namespace ETCRegionManagementSimulator
             server = ServerService.Instance.Server;
             server.Ports = Utility.GetAvailablePorts();
             mainPage = new MainPage();
+
+            connectionPortFirst.Text = server.Ports[0].ToString();
+            connectionPortSecond.Text = server.Ports[1].ToString();
+            connectionPortThird.Text = server.Ports[2].ToString();
+            connectionPortForth.Text = server.Ports[3].ToString();
+            connectionPortFifth.Text = server.Ports[4].ToString();
+
         }
 
         private async void OnStart(object sender, RoutedEventArgs e)
