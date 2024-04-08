@@ -125,7 +125,7 @@ namespace ETCRegionManagementSimulator
         private async Task HandleClientAsync(TcpClient tcpClient)
         {
             // TODO: To change the Data retrieve method , should get this data from UI or Reading file
-            string data = "test data";
+            string data = "this is test data from server  \n";
             string clientId = ClientIdGenerator.GenerateClientId();
 
             if (tcpClient != null)
@@ -135,22 +135,33 @@ namespace ETCRegionManagementSimulator
 
                 // Raise the ClientConnected event;
                 OnClientConnected(clientId);
-
-                Task readDataTask = client.ReadDataAsync();
-                Task sendDataTask = client.SendDataAsync(data);
-
-                await Task.WhenAny(readDataTask, sendDataTask);
-
-                if (readDataTask.IsFaulted)
+                while (tcpClient.Connected)
                 {
-                    Exception readDataException = readDataTask.Exception;
-                    System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
-                    // TODO: Handle read data exception
-                }
-                else
-                {
-                    Exception sendDataException = sendDataTask.Exception;
-                    // TODO: Handle send data exception
+                    try
+                    {
+                        Task readDataTask = client.ReadDataAsync();
+                        Task sendDataTask = client.SendDataAsync(data);
+                
+                        await Task.WhenAny(readDataTask, sendDataTask);
+
+                        if (readDataTask.IsFaulted)
+                        {
+                            Exception readDataException = readDataTask.Exception;
+                            System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
+                            // TODO: Handle read data exception
+                        }
+                        else
+                        {
+                            Exception sendDataException = sendDataTask.Exception;
+                            // TODO: Handle send data exception
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in communication with the client {clientId}: {ex.Message}");
+                        break;
+                    }
                 }
             }
         }
