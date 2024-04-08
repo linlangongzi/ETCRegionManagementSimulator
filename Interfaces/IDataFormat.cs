@@ -1,6 +1,6 @@
 ﻿namespace ETCRegionManagementSimulator.Interfaces
 {
-    public interface ETCDataFormat
+    public interface IDataFormat
     {
         byte[] ToBytes();
     }

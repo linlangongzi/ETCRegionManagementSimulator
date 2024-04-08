@@ -1,4 +1,6 @@
 ﻿using ETCRegionManagementSimulator.Collections;
+using ETCRegionManagementSimulator.Controllers;
+using ETCRegionManagementSimulator.Events;
 using ETCRegionManagementSimulator.Interfaces;
 using ETCRegionManagementSimulator.Models;
 using ETCRegionManagementSimulator.Utilities;
@@ -15,8 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator
 {
-
-    public sealed partial class MainPage : Page, IDisposable
+    public sealed partial class MainPage : Page, IView, IDisposable
     {
         private SettingPage settingPage;
         private FirstConnectionPage firstConnectionPage;
@@ -24,11 +25,13 @@ namespace ETCRegionManagementSimulator
         private ThirdConnectionPage thirdConnectionPage;
         private FourthConnectionPage fourthConnectionPage;
         private FifthConnectionPage fifthConnectionPage;
-        private ExcelReader workBook;
+        private ExcelService workBook;
 
         private bool disposedValue;
 
         private Server server;
+
+        public event EventHandler<SheetSelectedEventArgs> SheetSelected;
 
         public MainPage()
         {
@@ -42,7 +45,7 @@ namespace ETCRegionManagementSimulator
             fifthConnectionPage = new FifthConnectionPage();
 
             // TODO: this is data for test; Delete there in the future
-            ETCDataFormatCollection<ETCDataFormat> collection1 = new ETCDataFormatCollection<ETCDataFormat>();
+            ETCDataFormatCollection<IDataFormat> collection1 = new ETCDataFormatCollection<IDataFormat>();
             collection1.Add(new BCD(new byte[] { 0x01, 0x23 }));
             collection1.Add(new BCD(new byte[] { 0xAA, 0xBB, 0xCC }));
             collection1.Add(new BCD(new byte[] { 0x11, 0x22, 0x33, 0x44 }));
@@ -51,7 +54,7 @@ namespace ETCRegionManagementSimulator
             collection1.Add(new Hex(new byte[] { 0x55, 0x66, 0x77, 0x88, 0x99 }));
             collection1.Add(new Hex(new byte[] { 0x00, 0x11, 0x22, 0x33 }));
 
-            ETCDataFormatCollection<ETCDataFormat> collection2 = new ETCDataFormatCollection<ETCDataFormat>();
+            ETCDataFormatCollection<IDataFormat> collection2 = new ETCDataFormatCollection<IDataFormat>();
             collection2.Add(new Hex(new byte[] { 0x45, 0x67 }));
             collection2.Add(new Hex(new byte[] { 0x88, 0x99 }));
             collection2.Add(new Hex(new byte[] { 0x55, 0x66, 0x77, 0x88, 0x99 }));
@@ -77,12 +80,13 @@ namespace ETCRegionManagementSimulator
             };
 
             List<DisplayModel> displayableData = new List<DisplayModel>();
-            foreach (var row in testExcelData.DataPerSheet)
+            foreach (ExcelRow row in testExcelData.DataPerSheet)
             {
                 displayableData.AddRange(DataFormatConverter.ConvertExcelRowToDisplayableList(row));
             }
 
             excelDataGrid.ItemsSource = displayableData;
+
         }
 
         public void TestExcelReader()
@@ -97,7 +101,7 @@ namespace ETCRegionManagementSimulator
             {
                 string excelFilePath = file.Path;
                 // Create an instance of ExcelReader
-                ExcelReader excelReader = new ExcelReader(file.Path);
+                ExcelService excelReader = new ExcelService(file.Path);
 
                 System.Diagnostics.Debug.WriteLine($"Test Excel Reader...{excelFilePath}....");
                 // Read the Excel file
@@ -222,7 +226,7 @@ namespace ETCRegionManagementSimulator
                 {
                     using (Stream stream = (await file.OpenReadAsync()).AsStreamForRead())
                     {
-                        workBook = new ExcelReader(file.Path, stream);
+                        workBook = new ExcelService(file.Path, stream);
                         workBook.ReadExcelFile();
                         foreach (string sheetName in workBook.SheetNames)
                         {
@@ -245,7 +249,18 @@ namespace ETCRegionManagementSimulator
 
         private void listbox_SheetsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var selectedSheetName = listbox_SheetsList.SelectedItem.ToString();
+            SheetSelected?.Invoke(this, new SheetSelectedEventArgs(selectedSheetName));
+        }
 
+        public void UpdateView()
+        {
+
+        }
+
+        public void SetController(IController controller)
+        {
+            SheetSelected += (sender, e) => controller.LoadDataFromSheet(e.SheetName);
         }
 
 

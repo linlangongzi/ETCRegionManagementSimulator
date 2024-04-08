@@ -116,12 +116,21 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="App\AppConfig.cs" />
     <Compile Include="App\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ETCDataFormat.cs" />
-    <Compile Include="Models\ByteRowModel.cs" />
-    <Compile Include="Models\DisplayModel.cs" />
+    <Compile Include="Controllers\ExcelDataController.cs" />
+    <Compile Include="Events\DataChangedEventArgs.cs" />
+    <Compile Include="Events\SheetSelectedEventArgs.cs" />
+    <Compile Include="Interfaces\IController.cs" />
+    <Compile Include="Interfaces\IDataFormat.cs" />
+    <Compile Include="Interfaces\IDataModel.cs" />
+    <Compile Include="Interfaces\IExcelService.cs" />
+    <Compile Include="Interfaces\IView.cs" />
+    <Compile Include="Models\ExcelDataModel.cs" />
+    <Compile Include="ViewModels\ByteRowModel.cs" />
+    <Compile Include="ViewModels\DisplayModel.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="Server\ClientIdGenerator.cs" />
     <Compile Include="Collections\ETCDataFormatCollection.cs" />
@@ -138,7 +147,7 @@
     <Compile Include="Views\FourthConnectionPage.xaml.cs">
       <DependentUpon>FourthConnectionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExcelReader.cs" />
+    <Compile Include="ExcelService.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -226,9 +235,7 @@
   <ItemGroup>
     <PRIResource Include="Resources\Strings.resw" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
