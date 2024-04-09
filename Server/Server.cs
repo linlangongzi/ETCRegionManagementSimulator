@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
 
 namespace ETCRegionManagementSimulator
 {
@@ -135,34 +136,43 @@ namespace ETCRegionManagementSimulator
 
                 // Raise the ClientConnected event;
                 OnClientConnected(clientId);
-                while (tcpClient.Connected)
+                while (true)
                 {
                     try
                     {
                         Task readDataTask = client.ReadDataAsync();
                         Task sendDataTask = client.SendDataAsync(data);
-                
-                        await Task.WhenAny(readDataTask, sendDataTask);
 
-                        if (readDataTask.IsFaulted)
-                        {
-                            Exception readDataException = readDataTask.Exception;
-                            System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
-                            // TODO: Handle read data exception
-                        }
-                        else
-                        {
-                            Exception sendDataException = sendDataTask.Exception;
-                            // TODO: Handle send data exception
-                        }
+                        Task completedTask = await Task.WhenAny(readDataTask, sendDataTask);
+                        await completedTask; // Await the completed task to propagate exceptions
 
+                        if (readDataTask.IsCompletedSuccessfully && !sendDataTask.IsCompleted)
+                        {
+                            await sendDataTask;
+                        }
+                        else if (sendDataTask.IsCompletedSuccessfully && !readDataTask.IsCompleted)
+                        {
+                            await readDataTask;
+                        }
+                    }
+                    catch (Exception ex) when (ex is SocketException || ex is IOException)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Network error in communication with the client {clientId}: {ex.Message}");
+                        break;  // Exit the loop on network errors
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Error in communication with the client {clientId}: {ex.Message}");
+                        System.Diagnostics.Debug.WriteLine($"Unhandled error with the client {clientId} : {ex.Message}");
                         break;
                     }
+
+                    if (!tcpClient.Connected)
+                    {
+                        break; // Exit loop if the tcpClient is no longer connected
+                    }
                 }
+                tcpClient.Close();
+                System.Diagnostics.Debug.WriteLine($"Connection with client {clientId} closed.");
             }
         }
 
