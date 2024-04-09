@@ -122,7 +122,9 @@
     </Compile>
     <Compile Include="Controllers\ExcelDataController.cs" />
     <Compile Include="Events\DataChangedEventArgs.cs" />
+    <Compile Include="Events\MessageReceivedEventArgs.cs" />
     <Compile Include="Events\SheetSelectedEventArgs.cs" />
+    <Compile Include="Interfaces\IClientPage.cs" />
     <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IDataFormat.cs" />
     <Compile Include="Interfaces\IDataModel.cs" />
@@ -138,23 +140,11 @@
     <Compile Include="DataFormats\ETCDataFormat.cs" />
     <Compile Include="Data\ExcelDataPerSheet.cs" />
     <Compile Include="Utilities\DataFormatConverter.cs" />
-    <Compile Include="Views\FifthConnectionPage.xaml.cs">
-      <DependentUpon>FifthConnectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FirstConnectionPage.xaml.cs">
-      <DependentUpon>FirstConnectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FourthConnectionPage.xaml.cs">
-      <DependentUpon>FourthConnectionPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ExcelService.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Server\ServerService.cs" />
-    <Compile Include="Views\SecondConnectionPage.xaml.cs">
-      <DependentUpon>SecondConnectionPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -163,9 +153,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\Server.cs" />
-    <Compile Include="Views\ThirdConnectionPage.xaml.cs">
-      <DependentUpon>ThirdConnectionPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Utilities\NetworkUtility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -188,23 +175,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\FifthConnectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FirstConnectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FourthConnectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SecondConnectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,10 +186,6 @@
     <Page Include="Views\StartUpPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ThirdConnectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

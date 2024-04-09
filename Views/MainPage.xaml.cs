@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,34 +19,26 @@ namespace ETCRegionManagementSimulator
     public sealed partial class MainPage : Page, IView, IDisposable
     {
         private SettingPage settingPage;
-        private FirstConnectionPage firstConnectionPage;
-        private SecondConnectionPage secondConnectionPage;
-        private ThirdConnectionPage thirdConnectionPage;
-        private FourthConnectionPage fourthConnectionPage;
-        private FifthConnectionPage fifthConnectionPage;
 
         /// TODO: use DI to replace code below
         private IExcelService excelService;
         IDataModel model = new ExcelDataModel();
         IView view;
 
-
         private bool disposedValue;
 
         private Server server;
 
+        /// TODO: Implementa central event aggregator to manage All the EventHandlers in the future release 
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
 
         public MainPage()
         {
             this.InitializeComponent();
 
+            Client.MessageReceived += OnMessageReceived;
+
             settingPage = new SettingPage();
-            firstConnectionPage = new FirstConnectionPage();
-            secondConnectionPage = new SecondConnectionPage();
-            thirdConnectionPage = new ThirdConnectionPage();
-            fourthConnectionPage = new FourthConnectionPage();
-            fifthConnectionPage = new FifthConnectionPage();
 
             view = this;
             excelService = new ExcelService();
@@ -64,9 +57,27 @@ namespace ETCRegionManagementSimulator
         private void OnNewClientConneted(object sender, ClientConnectedEventArgs eventArgs)
         {
             string clientId = eventArgs.ClientId;
+            System.Diagnostics.Debug.WriteLine("------------------New---------CLient ---------coming---------- \n");
             // TODO: Create New Page associated with new client
         }
 
+        private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            string message = e.Message;
+            string senderId = e.ClientId;
+            UpdateUIWith(senderId, message);
+        }
+
+        private async void UpdateUIWith(string senderId, string message)
+        {
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                /// TODO: update your TextBlock or any UI element with the messages here
+                /// Priority: Highest
+                System.Diagnostics.Debug.WriteLine($"MainPage Receive : {message} \nFrom Sender: {senderId} \n");
+                
+            });
+        }
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             //TODO: Remove IsSettingsSelected check
@@ -81,36 +92,15 @@ namespace ETCRegionManagementSimulator
             {
                 Grid.SetColumnSpan(ContentFrame, 1);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
-                switch(selectedItem.Name.ToString())
-                {
-                    case "TabFirstPort":
-                        ContentFrame.Navigate(typeof(FirstConnectionPage), firstConnectionPage);
-                        break;
-                    case "TabSecondPort":
-                        ContentFrame.Navigate(typeof(SecondConnectionPage), secondConnectionPage);
-                        break;
-                    case "TabThirdPort":
-                        ContentFrame.Navigate(typeof(ThirdConnectionPage), thirdConnectionPage);
-                        break;
-                    case "TabFourthPort":
-                        ContentFrame.Navigate(typeof(FourthConnectionPage), fourthConnectionPage);
-                        break;
-                    case "TabFifthPort":
-                        ContentFrame.Navigate(typeof(FifthConnectionPage), fifthConnectionPage);
-                        break;
-                    default:
-
-                        break;
-                }
+                //selectedItem.Name.ToString()
+                //ContentFrame.Navigate(typeof(FifthConnectionPage), fifthConnectionPage);
                 Grid_SendMsg.Visibility = Visibility.Visible;
                 Splitter_v.Visibility = Visibility.Visible;
-
-
             }
         }
         private void MainNavigation_OnLoaded(object sender, RoutedEventArgs e)
         {
-            MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
+            //MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
         }
 
         private void Dispose(bool disposing)
@@ -124,6 +114,7 @@ namespace ETCRegionManagementSimulator
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
+                Client.MessageReceived -= OnMessageReceived;
                 disposedValue = true;
                 this.server = null;
             }
@@ -137,12 +128,7 @@ namespace ETCRegionManagementSimulator
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         ~MainPage()
         {
-            //settingPage.Dispose();
-            firstConnectionPage.Dispose();
-            //secondConnectionPage.Dispose();
-            thirdConnectionPage.Dispose();
-            fourthConnectionPage.Dispose();
-            fifthConnectionPage.Dispose();
+            settingPage.Dispose();
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }

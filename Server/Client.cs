@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using ETCRegionManagementSimulator.Events;
 
 namespace ETCRegionManagementSimulator
 {
@@ -13,6 +12,13 @@ namespace ETCRegionManagementSimulator
         public string Id { get; }
         public TcpClient TcpClient { get; }
         public NetworkStream Stream { get; }
+
+        // make the following EventHandler static so that it can be accessed by multiple pages
+        public static event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        public static void OnMessageReceived(string message, string senderId)
+        {
+            MessageReceived?.Invoke(null, new MessageReceivedEventArgs(message, senderId));
+        }
 
         public Client(string id, TcpClient client)
         {
@@ -25,8 +31,12 @@ namespace ETCRegionManagementSimulator
         {
             byte[] buffer = new byte[1024];
             int bytesRead = await Stream.ReadAsync(buffer, 0, buffer.Length);
-            System.Diagnostics.Debug.Write($"Received data from client({Id}): {Encoding.UTF8.GetString(buffer, 0, bytesRead)} \n");
-            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            // Raise the Event
+            OnMessageReceived(message, Id);
+
+            System.Diagnostics.Debug.Write($"Received data from client({Id}): {message} \n");
+            return message;
         }
 
         public async Task SendDataAsync(string data)
