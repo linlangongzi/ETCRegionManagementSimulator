@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
 
 namespace ETCRegionManagementSimulator
 {
@@ -30,7 +31,7 @@ namespace ETCRegionManagementSimulator
         private IPAddress backupIPAddress;
         private List<int> ports;
 
-        private ConnectionsManager clientManager;
+        private ConnectionsManager connectionManager;
         // TODO: Need to Update listenerTaskList and Task management into Seperate Object
         //       Object name : Connection 
         private List<(TcpListener, Task)> listenerTaskList;
@@ -63,7 +64,7 @@ namespace ETCRegionManagementSimulator
             backupIPAddress = null;
             ports = new List<int>();
             listenerTaskList = new List<(TcpListener, Task)>();
-            clientManager = new ConnectionsManager();
+            connectionManager = new ConnectionsManager();
             Running = false;
         }
 
@@ -73,7 +74,7 @@ namespace ETCRegionManagementSimulator
             backupIPAddress = IPAddress.Parse(backupIP);
             this.ports = ports;
             listenerTaskList = new List<(TcpListener, Task)>();
-            clientManager = new ConnectionsManager();
+            connectionManager = new ConnectionsManager();
             Running = false;
         }
 
@@ -105,15 +106,21 @@ namespace ETCRegionManagementSimulator
 
         private async Task AcceptClientsAsync(TcpListener listener, int port)
         {
+            string clientId = ClientIdGenerator.GenerateClientId();
             while (Running)
             {
                 try
                 {
-                    TcpClient client = await listener.AcceptTcpClientAsync();
+                    TcpClient tcpClient = await listener.AcceptTcpClientAsync();
+
+                    Client client = new Client(clientId, tcpClient);
+                    connectionManager.AddClient(clientId, client);
 
                     System.Diagnostics.Debug.WriteLine($"Connection established on port {port}");
 
                     await Task.Run(() => HandleClientAsync(client));
+                    // Raise the ClientConnected event;
+                    OnClientConnected(clientId);
                 }
                 catch(SocketException ex)
                 {
@@ -122,35 +129,58 @@ namespace ETCRegionManagementSimulator
             }
         }
 
-        private async Task HandleClientAsync(TcpClient tcpClient)
+        private async Task HandleClientAsync(Client client)
         {
             // TODO: To change the Data retrieve method , should get this data from UI or Reading file
-            string data = "test data";
-            string clientId = ClientIdGenerator.GenerateClientId();
+            string data = "this is test data from server \n";
 
-            if (tcpClient != null)
+            if (client != null)
             {
-                Client client = new Client(clientId, tcpClient);
-                clientManager.AddClient(clientId, client);
-
-                // Raise the ClientConnected event;
-                OnClientConnected(clientId);
-
-                Task readDataTask = client.ReadDataAsync();
-                Task sendDataTask = client.SendDataAsync(data);
-
-                await Task.WhenAny(readDataTask, sendDataTask);
-
-                if (readDataTask.IsFaulted)
+                try
                 {
-                    Exception readDataException = readDataTask.Exception;
-                    System.Diagnostics.Debug.WriteLine($" Read Data Exception : {readDataException.Message}");
-                    // TODO: Handle read data exception
+                    while (true)
+                    {
+                        Task readDataTask = client.ReadDataAsync();
+                        Task sendDataTask = client.SendDataAsync(data);
+
+                        Task completedTask = await Task.WhenAny(readDataTask, sendDataTask);
+                        await completedTask; // Await the completed task to propagate exceptions
+
+                        if (readDataTask.IsCompletedSuccessfully && !sendDataTask.IsCompleted)
+                        {
+                            await sendDataTask;
+                        }
+                        else if (sendDataTask.IsCompletedSuccessfully && !readDataTask.IsCompleted)
+                        {
+                            await readDataTask;
+                        }
+
+                        if (!client.TcpClient.Connected)
+                        {
+                            break; // Exit loop if the tcpClient is no longer connected
+                        }
+                    }
+
                 }
-                else
+                catch (Exception ex) when (ex is SocketException || ex is IOException)
                 {
-                    Exception sendDataException = sendDataTask.Exception;
-                    // TODO: Handle send data exception
+                    System.Diagnostics.Debug.WriteLine($"Network error in communication with the client {client.Id}: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Unhandled error with the client {client.Id} : {ex.Message}");
+                }
+                finally
+                {
+                    // sending a specific message to the client indicating disconnection
+                    if (client.TcpClient.Connected)
+                    {
+                        /// TODO; signal the client that the server is closing the connection in the future release
+                    }
+                    // Ensure the connection is closed and resources are freed
+                    client.TcpClient.Close();
+                    connectionManager.RemoveClient(client.Id);
+                    System.Diagnostics.Debug.WriteLine($"Connection with client {client.Id} closed.");
                 }
             }
         }
@@ -178,10 +208,10 @@ namespace ETCRegionManagementSimulator
             {
                 if (disposing)
                 {
-                    if (clientManager != null)
+                    if (connectionManager != null)
                     {
-                        clientManager.RemoveAllClients();
-                        clientManager = null;
+                        connectionManager.RemoveAllClients();
+                        connectionManager = null;
                     }
 
                     // TODO: dispose managed state (managed objects)

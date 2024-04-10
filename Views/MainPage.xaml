@@ -27,29 +27,6 @@
             <NavigationView.MenuItems>
                 <!-- NavigationView Items -->
                 <!-- Add your navigation items here -->
-                <NavigationViewItem x:Name="TabFirstPort" 
-                                    Content="回線１" 
-                                    Tag="TabFirstPort">
-
-                </NavigationViewItem>
-                <NavigationViewItem x:Name="TabSecondPort" 
-                                    Content="回線２" Tag="TabSecondPort">
-
-                </NavigationViewItem>
-                <NavigationViewItem x:Name="TabThirdPort" Content="回線３" 
-                                    Tag="TabThirdPort">
-
-                </NavigationViewItem>
-                <NavigationViewItem x:Name="TabFourthPort" 
-                                    Content="回線４" 
-                                    Tag="TabFourthPort">
-
-                </NavigationViewItem>
-                <NavigationViewItem x:Name="TabFifthPort" 
-                                    Content="回線５" 
-                                    Tag="TabFifthPort">
-
-                </NavigationViewItem>
             </NavigationView.MenuItems>
             <Grid>
                 <Grid.ColumnDefinitions>
