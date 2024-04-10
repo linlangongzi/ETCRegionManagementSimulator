@@ -35,7 +35,7 @@ namespace ETCRegionManagementSimulator
             // Raise the Event
             OnMessageReceived(message, Id);
 
-            System.Diagnostics.Debug.Write($"Received data from client({Id}): {message} \n");
+            //System.Diagnostics.Debug.Write($"Received data from client({Id}): {message} \n");
             return message;
         }
 

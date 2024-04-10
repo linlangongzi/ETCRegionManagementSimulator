@@ -36,7 +36,6 @@ namespace ETCRegionManagementSimulator.Controllers
             _view.UpdateView();
         }
 
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

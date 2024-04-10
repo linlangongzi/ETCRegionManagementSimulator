@@ -19,13 +19,13 @@ namespace ETCRegionManagementSimulator
         {
             ClientId = clientId;
         }
-        
+
     }
 
     public class Server : IDisposable
     {
 
-        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
+        public event EventHandler<ClientConnectedEventArgs> NewClientConnected;
 
         private IPAddress defaultIPAddress;
         private IPAddress backupIPAddress;
@@ -101,7 +101,7 @@ namespace ETCRegionManagementSimulator
         // Method to raise the ClientConnected event
         protected virtual void OnClientConnected(string clientId)
         {
-            ClientConnected?.Invoke(this, new ClientConnectedEventArgs(clientId));
+            NewClientConnected?.Invoke(this, new ClientConnectedEventArgs(clientId));
         }
 
         private async Task AcceptClientsAsync(TcpListener listener, int port)
@@ -115,12 +115,12 @@ namespace ETCRegionManagementSimulator
 
                     Client client = new Client(clientId, tcpClient);
                     connectionManager.AddClient(clientId, client);
+                    // Raise the ClientConnected event;
+                    OnClientConnected(clientId);
 
                     System.Diagnostics.Debug.WriteLine($"Connection established on port {port}");
 
                     await Task.Run(() => HandleClientAsync(client));
-                    // Raise the ClientConnected event;
-                    OnClientConnected(clientId);
                 }
                 catch(SocketException ex)
                 {
