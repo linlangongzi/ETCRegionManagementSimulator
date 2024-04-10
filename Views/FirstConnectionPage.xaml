@@ -5,10 +5,12 @@
     xmlns:local="using:ETCRegionManagementSimulator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
+        <ui:AttachedDropShadow x:Key="CommonShadow" Offset="0" CastTo="{x:Bind ShadowTarget}" BlurRadius="10" Opacity="0.1"/>
         <Style x:Key="TextBoxStyle1" TargetType="TextBox">
             <Setter Property="Foreground" Value="{ThemeResource TextControlForeground}"/>
             <Setter Property="Background" Value="{ThemeResource TextControlBackground}"/>
@@ -163,13 +165,13 @@
         <Grid Grid.Column="0">
             <!-- Add your right part content here -->
             <!-- For example: -->
-            <controls:DropShadowPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BlurRadius="10" ShadowOpacity="0.1" OffsetY="9" OffsetX="10" >
-            <TextBox Style="{StaticResource TextBoxStyle1}" x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" BorderBrush="{x:Null}" Background="White" CornerRadius="5,5,5,5" FocusVisualSecondaryBrush="White" SelectionHighlightColorWhenNotFocused="White">
+            <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="ShadowTarget"></Border>
+            <TextBox ui:Effects.Shadow="{StaticResource CommonShadow}" Style="{StaticResource TextBoxStyle1}" x:Name="TBox_FirstConnectionLog" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" BorderBrush="{x:Null}" Background="White" CornerRadius="5,5,5,5" FocusVisualSecondaryBrush="White" SelectionHighlightColorWhenNotFocused="White">
                 <TextBox.Shadow>
                     <ThemeShadow/>
                 </TextBox.Shadow>
             </TextBox>
-            </controls:DropShadowPanel>
+            
         </Grid>
         
         <!-- Left part -->
