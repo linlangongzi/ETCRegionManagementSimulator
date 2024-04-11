@@ -141,12 +141,17 @@
     <Compile Include="Data\ExcelDataPerSheet.cs" />
     <Compile Include="Utilities\DataFormatConverter.cs" />
     <Compile Include="ExcelService.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
+    <Compile Include="Views\ClientPageFactory.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Server\ServerService.cs" />
     <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StandardPage.xaml.cs">
+      <DependentUpon>StandardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StartUpPage.xaml.cs">
       <DependentUpon>StartUpPage.xaml</DependentUpon>
@@ -180,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StandardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

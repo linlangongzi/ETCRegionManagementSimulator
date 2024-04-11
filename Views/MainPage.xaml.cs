@@ -3,8 +3,12 @@ using ETCRegionManagementSimulator.Events;
 using ETCRegionManagementSimulator.Interfaces;
 using ETCRegionManagementSimulator.Models;
 using ETCRegionManagementSimulator.Utilities;
+using ETCRegionManagementSimulator.ViewModels;
+using ETCRegionManagementSimulator.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -32,22 +36,53 @@ namespace ETCRegionManagementSimulator
         /// TODO: Implementa central event aggregator to manage All the EventHandlers in the future release 
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
 
+        public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>(); 
+        
         public MainPage()
         {
             this.InitializeComponent();
 
+            server = ServerService.Instance.Server;
+            server.NewClientConnected += OnNewClientConneted;
             Client.MessageReceived += OnMessageReceived;
+            //MainNavigation.ItemInvoked += OnMainNavigation_ItemInvoked;
 
             settingPage = new SettingPage();
 
             view = this;
             excelService = new ExcelService();
+
             ExcelDataController controller = new ExcelDataController(model, view, excelService);
         }
+
+        //private void OnMainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        //{
+        //    NavigationViewItem invokedItem = args.InvokedItem as NavigationViewItem;
+        //    if (invokedItem != null)
+        //    {
+        //        //switch (invokedItem.Tag)
+        //        //{
+        //        //    case "home":
+        //        //        ContentFrame.Navigate(typeof(StandardPage));
+        //        //        break;
+        //        //    case "contacts":
+        //        //        ContentFrame.Navigate(typeof(StandardPage));
+        //        //        break;
+        //        //    case "settings":
+        //        //        ContentFrame.Navigate(typeof(SettingPage));
+        //        //        break;
+        //        //        // Add more cases as needed for other menu items
+        //        //}
+        //        if (invokedItem.is)
+        //        ContentFrame.Navigate(typeof(StandardPage));
+        //    }
+
+        //}
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            /// TODO: delete the reduntant code below
             if (e.Parameter != null)
             {
                 server = (Server)e.Parameter;
@@ -57,25 +92,47 @@ namespace ETCRegionManagementSimulator
         private void OnNewClientConneted(object sender, ClientConnectedEventArgs eventArgs)
         {
             string clientId = eventArgs.ClientId;
-            System.Diagnostics.Debug.WriteLine("------------------New---------CLient ---------coming---------- \n");
-            // TODO: Create New Page associated with new client
+
+            StandardPage clientPage = (StandardPage) ClientPageFactory.Instance.CreateClientPage(clientId);
+
+            NavigationViewItem menuItem = new NavigationViewItem
+            {
+                Content = clientId,
+                Icon = new SymbolIcon(Symbol.Memo),
+                Tag = clientId.ToLower()
+            };
+            Debug.WriteLine($"A New Client :  {clientId} is connected \n");
+            // Add it to the NavigationView
+            MainNavigation.MenuItems.Add(menuItem);
+            MainNavigation.SelectedItem = menuItem;
+            ContentFrame.Navigate(typeof(StandardPage), clientId);
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
             string message = e.Message;
             string senderId = e.ClientId;
-            UpdateUIWith(senderId, message);
+            UpdateClientPageMessageView(senderId, message);
         }
 
-        private async void UpdateUIWith(string senderId, string message)
+        private async void UpdateClientPageMessageView(string senderId, string message)
         {
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            StandardPage currentPage = (StandardPage) ClientPageFactory.Instance.GetPageById(senderId);
+            if (currentPage != null)
             {
-                /// TODO: update your TextBlock or any UI element with the messages here
-                /// Priority: Highest
-                System.Diagnostics.Debug.WriteLine($"MainPage Receive : {message} \nFrom Sender: {senderId} \n");
-                
+                Debug.WriteLine($" >> Sender ID : {senderId} \n >>  CurrentPage is  : {currentPage.ClientPageId} Receive : {message} \n");
+                currentPage.UpdateMessageView(message);
+            }
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                //    /// TODO: update UI element with the messages here
+                //    currentPage.SourceMessages.Add(new MessageViewModel() { Message = message });
+                testSource.Add(message);
+
+                foreach(var t in testSource)
+                {
+                    Debug.WriteLine($" +-- test source {t} \n");
+                }
             });
         }
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -88,12 +145,17 @@ namespace ETCRegionManagementSimulator
                 Grid_SendMsg.Visibility = Visibility.Collapsed;
                 Splitter_v.Visibility = Visibility.Collapsed;
             }
-            else 
+            else
             {
                 Grid.SetColumnSpan(ContentFrame, 1);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
+                if (selectedItem != null)
+                {
+                    string v = selectedItem.Content.ToString();
+                    StandardPage currentPage = (StandardPage)ClientPageFactory.Instance.GetPageById(v);
+                    ContentFrame.Navigate(typeof(StandardPage), v);
+                }
                 //selectedItem.Name.ToString()
-                //ContentFrame.Navigate(typeof(FifthConnectionPage), fifthConnectionPage);
                 Grid_SendMsg.Visibility = Visibility.Visible;
                 Splitter_v.Visibility = Visibility.Visible;
             }
@@ -202,6 +264,25 @@ namespace ETCRegionManagementSimulator
         public void SetController(IController controller)
         {
             SheetSelected += (sender, e) => controller.LoadDataFromSheet(e.SheetName);
+        }
+
+        private void SendRow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void excelDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedRow = excelDataGrid.SelectedItem;
+
+            var selectedRows = excelDataGrid.SelectedItems;
+
+            if (selectedRow is ExcelRow s)
+            {
+                Debug.WriteLine($"Selected item: {s.FrameDataNo}");
+            }
+            Debug.WriteLine($"Selected item: {selectedRow}");
+
         }
     }
 }

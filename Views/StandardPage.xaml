@@ -1,0 +1,51 @@
+﻿<Page
+    x:Class="ETCRegionManagementSimulator.Views.StandardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ETCRegionManagementSimulator.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:localModel="using:ETCRegionManagementSimulator.ViewModels"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="900"></ColumnDefinition>
+            <ColumnDefinition Width="900"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="600"/>
+            <RowDefinition Height="400"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="MessageView" 
+                  Grid.Row="0"
+                  ItemsSource="{x:Bind SourceMessages, Mode=OneWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate 
+                    x:DataType="localModel:MessageViewModel">
+                    <TextBlock
+                        Text="{x:Bind Message }"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="50"
+                        />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ScrollViewer 
+            Grid.Row="1"
+            Grid.Column="0"
+            VerticalScrollBarVisibility="Auto">
+            <RichTextBlock 
+                x:Name="TestMessageRichEditBox"/>
+            
+            <!--<TextBlock x:Name="MessagesTextBlock"
+                       Text="TEST" 
+                       TextAlignment="Center" 
+                       VerticalAlignment="Center"
+                       FontSize="50"/>-->
+        </ScrollViewer>
+
+    </Grid>
+</Page>

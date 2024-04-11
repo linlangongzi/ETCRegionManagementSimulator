@@ -30,7 +30,30 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Frame  Grid.Column="0" x:Name="ContentFrame"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="500"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ListView x:Name="TestView" 
+                  Grid.Row="0"
+                  ItemsSource="{x:Bind testSource, Mode=OneWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                Text="{ Binding }" 
+                                TextAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                        />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Frame  Grid.Column="0" 
+                        Grid.Row="1"
+                        x:Name="ContentFrame"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"
+                        />
                 <controls:GridSplitter x:Name="Splitter_v"
                                 Grid.Column="1" 
                                Width="2" 
@@ -111,22 +134,18 @@
                         Margin="20,10">
                         <controls:DropShadowPanel BlurRadius="10" ShadowOpacity="0.1" CornerRadius="5,5,5,5">
                             <Grid CornerRadius="5,5,5,5">
-                                <controls:DataGrid x:Name="excelDataGrid"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                       ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="White">
+                                <controls:DataGrid 
+                                    x:Name="excelDataGrid"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                    SelectionMode="Extended"
+                                    SelectionChanged="excelDataGrid_SelectionChanged"
+                                    Background="White">
                                     <controls:DataGrid.Shadow>
                                         <ThemeShadow/>
                                     </controls:DataGrid.Shadow>
-                                    <!--<controls:DataGrid.Columns>
-            <controls:DataGridTextColumn Header="Frame No" Binding="{Binding FrameDataNo}"/>
-            <controls:DataGridTextColumn Header="Title" Binding="{Binding FrameDataTitle}"/>
-            <controls:DataGridTextColumn Header="Length" Binding="{Binding FrameDataLength}"/>
-            -->
-                                    <!-- Define more columns as needed -->
-                                    <!--
-        </controls:DataGrid.Columns>-->
                                 </controls:DataGrid>
                             </Grid>
                         </controls:DropShadowPanel>
@@ -151,9 +170,14 @@
                         </controls:DropShadowPanel>
                         <controls:DropShadowPanel Grid.Column="3" BlurRadius="10" ShadowOpacity="0.1" OffsetY="11" OffsetX="4">
 
-                            <Button Grid.Column="3"
-                        Content="Send"
-                        Margin="5" Background="#FFCFCFCF" CornerRadius="3,3,3,3"/>
+                            <Button 
+                                x:Name="SendRow"
+                                Grid.Column="3"
+                                Content="Send"
+                                Margin="5" 
+                                Background="#FFCFCFCF"
+                                Click="SendRow_Click"
+                                CornerRadius="3,3,3,3"/>
                         </controls:DropShadowPanel>
                     </Grid>
 
