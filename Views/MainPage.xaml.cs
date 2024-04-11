@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
@@ -36,8 +37,8 @@ namespace ETCRegionManagementSimulator
         /// TODO: Implementa central event aggregator to manage All the EventHandlers in the future release 
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
 
-        public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>(); 
-        
+        public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>();
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -47,6 +48,9 @@ namespace ETCRegionManagementSimulator
             Client.MessageReceived += OnMessageReceived;
             //MainNavigation.ItemInvoked += OnMainNavigation_ItemInvoked;
 
+            TB_LocalHostIP.Text = $"Local server IP address: {server.DefaultIPAddress}.";
+            TB_OpenPorts.Text = $"Local server opened ports: [ {string.Join(" ; ", server.Ports.Select(i => i.ToString()))} ].";
+            TB_Remote_Client.Text = $"No active client.";
             settingPage = new SettingPage();
 
             view = this;

@@ -15,6 +15,11 @@
     </Page.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="19*"/>
+            <RowDefinition Height="1*" 
+                           MaxHeight="25"/>
+        </Grid.RowDefinitions>
         <NavigationView
             x:Name="MainNavigation"
             Grid.Column="0"
@@ -38,8 +43,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="500"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="17*"/>
+                    <RowDefinition Height="0*"/>
                 </Grid.RowDefinitions>
 
                 <ListView
@@ -83,7 +88,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
@@ -209,14 +213,30 @@
                             Click="SendRow_Click"
                             CornerRadius="3,3,3,3"/>
                     </Grid>
-
-                    <!-- Server Status -->
-                    <TextBlock
-                        Grid.Row="4"
-                        Margin="20,10"
-                        Text="サーバーステータス"/>
                 </Grid>
             </Grid>
         </NavigationView>
+        <StackPanel  Background="LightCyan"
+                     Orientation="Horizontal"
+                     Grid.Row="1">
+            <TextBlock Padding="10,0,10,0"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center" 
+                       x:Name="TB_LocalHostIP">LOCAL SERVER IP: ###.###.###.###</TextBlock>
+            <TextBlock Padding="10,0,10,0"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       x:Name="TB_OpenPorts">OPENED PORTS:</TextBlock>
+            <TextBlock Padding="10,0,10,0"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       x:Name="TB_Remote_Client">REMOTE CLIENT: ###.###.###.###:*****</TextBlock>
+            <SymbolIcon Height=" 20" 
+                        Width="27" 
+                        VerticalAlignment="Center"
+                        Symbol="DisconnectDrive" 
+                        x:Name="ConnectionIndicator"
+></SymbolIcon>
+        </StackPanel>
     </Grid>
 </Page>
