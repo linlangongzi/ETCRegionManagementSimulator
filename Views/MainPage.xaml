@@ -13,7 +13,7 @@
         <ui:AttachedDropShadow x:Key="CommonShadow" Offset="0" CastTo="{x:Bind ShadowTarget}" BlurRadius="10" Opacity="0.1"/> 
     </Page.Resources>
     <Grid>
-        <Border x:Name="ShadowTarget"></Border>
+        
         <!-- NavigationView -->
         <NavigationView x:Name="MainNavigation" 
                         Grid.Column="0"
@@ -76,7 +76,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
+                    <Border x:Name="ShadowTarget"></Border>
                     <!-- File Path -->
                     <StackPanel Grid.Row="0" Margin="20,10">
                         <Grid>
