@@ -42,7 +42,7 @@
                     Content="Open"
                     Height="40" 
                     Width="66" 
-                    HorizontalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"
+                    HorizontalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Click="openDir_Click"
                     />
 
             </StackPanel>

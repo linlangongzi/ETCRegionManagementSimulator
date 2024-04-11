@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,10 +25,12 @@ namespace ETCRegionManagementSimulator
     public sealed partial class SettingPage : Page, IDisposable
     {
         private bool disposedValue;
+        private Logger logger;
 
         public SettingPage()
         {
             this.InitializeComponent();
+            logger = Logger.Instance();
         }
 
         private void Dispose(bool disposing)
@@ -56,6 +60,29 @@ namespace ETCRegionManagementSimulator
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        private async void openDir_Click(object sender, RoutedEventArgs e)
+        {
+            // Create a file name based on the specified convention
+            string fileName = $"log_{DateTime.Now:yyyyMMddHHmmss}.log";
+
+            // Create a file picker instance
+            var filePicker = new FileSavePicker();
+            filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            filePicker.FileTypeChoices.Add("Log files", new string[] { ".log" });
+            filePicker.DefaultFileExtension = ".log";
+            filePicker.SuggestedFileName = fileName;
+
+            // Show file picker and wait for user selection
+            StorageFile file = await filePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                logPath.Text = file.Path;
+                await logger.Start(file);
+
+                logger.Log("SYSTEM","LoggerBEGUN");
+            }
         }
     }
 }

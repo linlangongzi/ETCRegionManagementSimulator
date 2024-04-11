@@ -143,6 +143,7 @@
     <Compile Include="ExcelService.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="Views\ClientPageFactory.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

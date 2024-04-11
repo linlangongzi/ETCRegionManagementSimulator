@@ -23,6 +23,8 @@ namespace ETCRegionManagementSimulator
 {
     public sealed partial class MainPage : Page, IView, IDisposable
     {
+        public event EventHandler<string> SendButtonClicked;
+
         private SettingPage settingPage;
 
         /// TODO: use DI to replace code below
