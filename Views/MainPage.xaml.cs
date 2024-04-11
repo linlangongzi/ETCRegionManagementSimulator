@@ -102,7 +102,7 @@ namespace ETCRegionManagementSimulator
             NavigationViewItem menuItem = new NavigationViewItem
             {
                 Content = clientId,
-                Icon = new SymbolIcon(Symbol.Memo),
+                Icon = new SymbolIcon(Symbol.MapDrive),
                 Tag = clientId.ToLower()
             };
             Debug.WriteLine($"A New Client :  {clientId} is connected \n");
