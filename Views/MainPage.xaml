@@ -169,7 +169,6 @@
                                 Background="#FFCFCFCF"
                                 Click="SendRow_Click"
                                 CornerRadius="3,3,3,3"/>
-                        </controls:DropShadowPanel>
                     </Grid>
 
                     <!-- Server Status -->
