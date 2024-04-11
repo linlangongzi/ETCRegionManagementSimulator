@@ -104,7 +104,7 @@
 
                             <TextBlock
                                 Grid.Column="0"
-                                Text="FilePath:"
+                                Text="ファイル名"
                                 VerticalAlignment="Center"/>
 
                             <TextBox
@@ -121,7 +121,7 @@
                                 ui:Effects.Shadow="{StaticResource CommonShadow}"
                                 x:Name="button_filePicker"
                                 Grid.Column="2"
-                                Content="Open"
+                                Content="参照"
                                 Margin="5"
                                 Click="button_FilePicker_OnClick"
                                 Background="#FFCFCFCF"
@@ -199,7 +199,7 @@
                         <Button
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
                             Grid.Column="2"
-                            Content="Select All"
+                            Content="全体選択"
                             Margin="5"
                             Background="#FFCFCFCF"
                             CornerRadius="3,3,3,3"/>
@@ -207,7 +207,7 @@
                         <Button
                             x:Name="SendRow"
                             Grid.Column="3"
-                            Content="Send"
+                            Content="電文送信"
                             Margin="5"
                             Background="#FFCFCFCF"
                             Click="SendRow_Click"

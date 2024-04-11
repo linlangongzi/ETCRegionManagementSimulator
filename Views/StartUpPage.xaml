@@ -38,7 +38,7 @@
 
             <!-- Row 0 -->
             <TextBlock x:Name="tag_ip" 
-                       Text="IP Address :" 
+                       Text="本機IPアドレス" 
                        TextWrapping="Wrap"
                        FontSize="20" 
                        Width="200" 
@@ -61,11 +61,9 @@
 
             <!-- Row 1 -->
             <TextBlock x:Name="tag_port" 
-                       Text="Connection Port No.1 :" 
+                       Text="制御回線:" 
                        x:Uid="ConnectionPortNo.1"
                        TextWrapping="Wrap" 
-                       Width="200"
-                       Height="40" 
                        FontSize="19" 
                        Grid.Row="1" 
                        TextAlignment="Center" 
@@ -86,11 +84,9 @@
 
             <!-- Row 2 -->
             <TextBlock x:Name="tag_port_Copy" 
-                       Text="Connection Port No.2 :"
+                       Text="ヘルスチェック（サーバ）:"
                        x:Uid="ConnectionPortNo.2"
                        TextWrapping="Wrap" 
-                       Width="200" 
-                       Height="40"
                        FontSize="19" 
                        Grid.Row="2" 
                        Grid.Column="0" 
@@ -111,11 +107,9 @@
 
             <!-- Row 3 -->
             <TextBlock x:Name="tag_port_Copy1" 
-                       Text="Connection Port No.3 :" 
+                       Text="ヘルスチェック（クライアント）:" 
                        x:Uid="ConnectionPortNo.3"
                        TextWrapping="Wrap" 
-                       Height="40" 
-                       Width="200" 
                        FontSize="19" 
                        Grid.Row="3"
                        Grid.Column="0" 
@@ -135,7 +129,7 @@
 
             <!-- Row 4 -->
             <TextBlock x:Name="tag_port_Copy2"
-                       Text="Connection Port No.4 :"
+                       Text="上り回線"
                        x:Uid="ConnectionPortNo.4"
                        TextWrapping="Wrap" 
                        Height="40" 
@@ -160,7 +154,7 @@
 
             <!-- Row 5 -->
             <TextBlock x:Name="tag_port_Copy3" 
-                       Text="Connection Port No.5 :" 
+                       Text="下り回線:" 
                        x:Uid="ConnectionPortNo.5"
                        Height="40" 
                        Width="200" 
@@ -187,7 +181,7 @@
         <Button x:Name="startServer" 
             Width="120"
             Height="120" 
-            Content="Start" 
+            Content="一括接続" 
             Background="Red"
             BorderThickness="0" 
             Click="OnStart" 
