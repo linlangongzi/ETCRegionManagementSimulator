@@ -50,7 +50,7 @@ namespace ETCRegionManagementSimulator
             settingPage = new SettingPage();
 
             view = this;
-            excelService = new ExcelService();
+            excelService = new ExcelReader();
 
             ExcelDataController controller = new ExcelDataController(model, view, excelService);
         }
@@ -255,7 +255,7 @@ namespace ETCRegionManagementSimulator
                 IEnumerable<ExcelRow> enumerable = model.GetAllData();
                 foreach (ExcelRow row in enumerable)
                 {
-                    displayableData.AddRange(DataFormatConverter.ConvertExcelRowToDisplayableList(row));
+                    displayableData.AddRange(ExcelDisplayAdaptor.ConvertToDisplayableList(row));
                 }
                 excelDataGrid.ItemsSource = displayableData;
             }

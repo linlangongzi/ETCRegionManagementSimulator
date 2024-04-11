@@ -30,6 +30,7 @@ namespace ETCRegionManagementSimulator
             FrameData = FrameCommonHeader.GetAll().Concat(FrameContent.GetAll());
         }
     }
+
     public class ExcelDataPerSheet
     {
         public List<ExcelRow> DataPerSheet { get; set; }

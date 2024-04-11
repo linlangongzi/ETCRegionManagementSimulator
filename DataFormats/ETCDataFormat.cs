@@ -1,75 +1,89 @@
-﻿using ETCRegionManagementSimulator.Interfaces;
+﻿using ETCRegionManagementSimulator.DataFormats;
+using ETCRegionManagementSimulator.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ETCRegionManagementSimulator
 {
-
-    public class Binary : IDataFormat
+    public enum DataFormat
     {
-        private readonly uint data;
-
-        public Binary(uint data)
+        X1,
+        BCD,
+        BIN,
+        HEX
+    }
+    public class Binary : DataFormatBase
+    {
+        private readonly object data;
+        private readonly IConversionStrategy conversionStrategy;
+        public Binary(object data) : base(data)
         {
             this.data = data;
+
+            switch (data)
+            {
+                case int _:
+                    conversionStrategy = new IntConversionStrategy();
+                    break;
+                case uint _:
+                    conversionStrategy = new UintConversionStrategy();
+                    break;
+                default:
+                    conversionStrategy = new BinaryStringConversionStrategy();
+                    break;
+            }
         }
 
-        // ensures the byte[] is in big-endian order regardless of the system's native byte order
-        public byte[] ToBytes()
+        public override byte[] ToBytes()
         {
-            byte[] bytes = BitConverter.GetBytes(data);
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(bytes);
-            }
-            return bytes;
+            return conversionStrategy.ConvertToBytes(data);
         }
-        public string ToBinaryString()
-        {
-            // Convert to a binary string and pad with leading zeros for a full 32-bit representation
-            return Convert.ToString(data, 2).PadLeft(32, '0');
-        }
+
         public override string ToString()
         {
             return data.ToString();
         }
+
     }
 
-    public class BCD : IDataFormat
+    public class BCD : DataFormatBase
     {
-        private readonly byte[] data;
+        private readonly object data;
+        private readonly IConversionStrategy conversionStrategy;
 
-        public BCD(byte[] data)
+        public BCD(object data) : base(data)
         {
             this.data = data;
-        }
 
-        public BCD(int number)
-        {
-            byte[] digits = number.ToString().Select(digit => Convert.ToByte(digit.ToString())).ToArray();
-            List<byte> bcdList = new List<byte>();
-
-            // pack two BCD digits into each byte by default,
-            // where the first digit occupies the high nibble and the second digit the low nibble.
-            for (int i = 0; i < digits.Length; i += 2)
+            switch (data)
             {
-                byte high = i < digits.Length ? (byte)(digits[i] << 4) : (byte)0;
-                byte low = (i + 1) < digits.Length ? digits[i + 1] : (byte)0;
-                bcdList.Add((byte)(high | low));
+                case int _:
+                    conversionStrategy = new IntConversionStrategy();
+                    break;
+                case uint _:
+                    conversionStrategy = new UintConversionStrategy();
+                    break;
+                default:
+                    conversionStrategy = new BCDStringConversionStrategy();
+                    break;
             }
 
-            this.data = bcdList.ToArray();
         }
 
-        public byte[] ToBytes() => data;
+        public override byte[] ToBytes()
+        {
+            return conversionStrategy.ConvertToBytes(data);
+        }
 
         //This method assumes that each byte in data contains two decimal digits:
         //one in the high nibble and one in the low nibble.
         //It extracts these digits and converts them to their decimal string representation
         public string ToDecimalString()
         {
-            return string.Concat(data.SelectMany(b => new[] { (b >> 4) & 0x0F, b & 0x0F })
+            byte[] bytes = ToBytes();
+            return string.Concat(bytes.SelectMany(b => new[] { (b >> 4) & 0x0F, b & 0x0F })
                                       .Select(n => n.ToString()));
         }
 
@@ -79,19 +93,27 @@ namespace ETCRegionManagementSimulator
         }
     }
 
-    public class Hex : IDataFormat
+    public class Hex : DataFormatBase
     {
-        private readonly byte[] data;
+        private readonly object data;
+        private readonly IConversionStrategy conversionStrategy;
 
-        public Hex(byte[] data)
+        public Hex(object data) : base(data)
         {
             this.data = data;
+            conversionStrategy = new HexStringConversionStrategy();
         }
 
-        public byte[] ToBytes() => data;
-
+        public override byte[] ToBytes()
+        {
+            return conversionStrategy.ConvertToBytes(data);
+        }
         //converts the byte array to a string of hexadecimal pairs
-        public string ToHexString() => string.Concat(data.Select(b => b.ToString("X2")));
+        public string ToHexString()
+        {
+            byte[] bytes = ToBytes();
+            return string.Concat(bytes.Select(b => b.ToString("X2")));
+        }
 
         public override string ToString()
         {

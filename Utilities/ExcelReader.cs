@@ -6,14 +6,31 @@ using OfficeOpenXml;
 using ETCRegionManagementSimulator.Interfaces;
 using ETCRegionManagementSimulator.Collections;
 using ETCRegionManagementSimulator.Utilities;
+using System.Diagnostics;
 
 namespace ETCRegionManagementSimulator
 {
-    public class ExcelService : IExcelService, IDisposable
+    public class ExcelReader : IExcelService, IDisposable
     {
         public List<string> SheetNames { get; set; }
         public Stream ExcelFileStream { get; set; }
         public string ExcelFilePath { get; set; }
+
+        enum CellDataType
+        {
+            bin,
+            hex,
+            bcd,
+            x1
+        }
+
+        private readonly Dictionary<string, CellDataType> _typeMappings = new Dictionary<string, CellDataType>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "bin", CellDataType.bin },
+            { "bcd", CellDataType.bcd },
+            // Assuming "hex" is the default, it does not need to be in the dictionary
+        };
+
         //private readonly ILogger _logger;
         //private readonly IConfiguration _configuration;
 
@@ -21,24 +38,23 @@ namespace ETCRegionManagementSimulator
 
         private bool disposedValue;
 
-        public ExcelService()
+        public ExcelReader()
         {
             ExcelFilePath = null;
             SheetNames = new List<string>();
             ExcelFileStream = null;
             _package = null;
         }
-        public ExcelService(string excelFilePath)
+        public ExcelReader(string excelFilePath)
         {
             SheetNames = new List<string>();
             ExcelFilePath = excelFilePath;
             // TODO: need to replace the File.Exists() check method from the one in Storage Object
             ExcelFileStream = File.Exists(ExcelFilePath) ? File.OpenRead(ExcelFilePath) : null;
             _package = ExcelFileStream != null ? new ExcelPackage(ExcelFileStream) : null;
-
         }
 
-        public ExcelService(string excelFilePath, Stream excelStream)
+        public ExcelReader(string excelFilePath, Stream excelStream)
         {
             ExcelFilePath = excelFilePath;
             ExcelFileStream = excelStream;
@@ -73,92 +89,117 @@ namespace ETCRegionManagementSimulator
                 }
                 SheetNames.Add(worksheet.Name);
             }
-          
+
             return rows;
         }
 
         public IEnumerable<ExcelRow> ReadSheet(string sheetName)
         {
             List<ExcelRow> rows = new List<ExcelRow>();
-            // Get the number of rows and columns in the worksheet
-            // TODO: Priority level: Very low.
-            // Delete all the Debug output inside of this method after fully functioned
             if (!string.IsNullOrEmpty(sheetName))
             {
-                System.Diagnostics.Debug.WriteLine($"Reading Sheet {sheetName}");
                 if (_package != null)
                 {
                     ExcelWorksheet worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws => string.Equals(ws.Name, sheetName));
                     if (worksheet != null)
                     {
-
-                        /// TODO: make following code into a seperated method
                         int rowCount = worksheet.Dimension?.Rows ?? 0;
-                        int colCount = worksheet.Dimension?.Columns ?? 0;
                         
-                        ETCDataFormatCollection<IDataFormat> frameCommonHeader = new ETCDataFormatCollection<IDataFormat>();
-                        ETCDataFormatCollection<IDataFormat> frameContent = new ETCDataFormatCollection<IDataFormat>();
 
-                        System.Diagnostics.Debug.WriteLine($" Column Counts: {colCount}  Row Counts : {rowCount}");
-                        /// TODO : Change the Capital Writing local variable into
-                        // something else that can be configured in the future
-                        // Definitly Can NOT be hardcoded
-                        
-                        int ACTUAL_DATA_ROW_NO = 15;
-                        int ACTUAL_DATA_COL_NO = 4;
-                        int HEADER_TAIL_NO = 11;
-                        for (int row = ACTUAL_DATA_ROW_NO; row <= rowCount; row++)
+                        // Process the Actual Data
+                        for (int row = FixedColumnIndex.ACTUAL_DATA_ROW; row <= rowCount; row++)
                         {
-                            System.Diagnostics.Debug.WriteLine($" Assembling row: { row } ");
-                            /// TODO: Use RAII to catch type convertion expections
-                            int frameDataNo = Convert.ToInt32(worksheet.Cells[row, 1].Value);
-                            string title = worksheet.Cells[row, 2].Value.ToString();
-                            int frameDataLength = Convert.ToInt32(worksheet.Cells[row, 3].Value);
-                            // Header
-                            for (int col = ACTUAL_DATA_COL_NO; col <= HEADER_TAIL_NO; col++)
-                            {
-                                object cellValue = worksheet.Cells[row, col].Value;
-                                //byte[] bytes = DataFormatConverter.ObjectToByteArray(cellValue);
-                                /// TODO: Add Data by its representitive Type BCD or HEX
-                                // Here i made the all to bcd for test, modify it later
-                                //frameCommonHeader.Add(new Binary(Convert.ToUInt32(cellValue)));
-                                if (UInt32.TryParse(cellValue.ToString(), out var uintValue))
-                                {
-                                    frameCommonHeader.Add(new Binary(uintValue));
-                                }
-                                else
-                                {
-                                    // Handle invalid conversion
-                                    System.Diagnostics.Debug.WriteLine($"Value '{cellValue}' cannot be converted to UInt32.");
-                                    // Similar to the try-catch, decide how to handle this case
-                                }
-                                System.Diagnostics.Debug.WriteLine($" column : {col}, Cell : {cellValue}  ");
-                            }
-                            // Content
-                            for (int col = HEADER_TAIL_NO + 1; col <= colCount; col++)
-                            {
-                                object cellValue = worksheet.Cells[row, col].Value;
-                                byte[] bytes = DataFormatConverter.ObjectToByteArray(cellValue);
-                                /// TODO: Add Data by its representitive Type BCD or HEX
-                                // Here i made the all to bcd for test, modify it later
-                                frameContent.Add(new BCD(bytes));
-                                System.Diagnostics.Debug.WriteLine($" column : {col}, Cell : {cellValue}  ");
-                            }
-
-                            ExcelRow excelRow = new ExcelRow(frameDataNo, title, frameDataLength, frameCommonHeader, frameContent);
+                            ExcelRow excelRow = AssemblyExcelRow(worksheet, row);
                             rows.Add(excelRow);
-                            System.Diagnostics.Debug.WriteLine("\n");
                         }
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"Worksheet with name '{sheetName}' not found.");
+                        Debug.WriteLine($"Worksheet with name '{sheetName}' not found.\n");
                     }
                 }
             }
             return rows;
         }
 
+        private List<CellDataType> TypeList(ExcelWorksheet worksheet)
+        {
+            List<CellDataType> typeList = new List<CellDataType>();
+            int colCount = worksheet.Dimension?.Columns ?? 0;
+
+            for (int column = FixedColumnIndex.ACTUAL_DATA_COL; column <= colCount; column++)
+            {
+                string typeString = worksheet.Cells[FixedColumnIndex.TYPE_ROW, column].Value.ToString();
+                if (_typeMappings.TryGetValue(typeString, out CellDataType cellType))
+                {
+                    typeList.Add(cellType);
+                }
+                else
+                {
+                    typeList.Add(CellDataType.hex); // Default to hex if not found
+                }
+            }
+            return typeList;
+        }
+
+        private ExcelRow AssemblyExcelRow(ExcelWorksheet worksheet, int row)
+        {
+            int frameDataNo = Convert.ToInt32(worksheet.Cells[row, FixedColumnIndex.FRAME_NO_COL].Value);
+            string frameDataTitle = worksheet.Cells[row, FixedColumnIndex.FRAME_DATA_TITLE].Value.ToString();
+            int frameDataLength = Convert.ToInt32(worksheet.Cells[row, FixedColumnIndex.FRAME_LENGTH].Value);
+
+            ETCDataFormatCollection<IDataFormat> frameCommonHeader = new ETCDataFormatCollection<IDataFormat>();
+            ETCDataFormatCollection<IDataFormat> frameContent = new ETCDataFormatCollection<IDataFormat>();
+
+            /// TODO: Use RAII to catch type convertion expections
+            List<CellDataType> typeList = TypeList(worksheet);
+            // Header
+            for (int col = FixedColumnIndex.ACTUAL_DATA_COL; col <= FixedColumnIndex.HEADER_TAIL; col++)
+            {
+                object cellValue = worksheet.Cells[row, col].Value;
+                switch (typeList[col])
+                {
+                    case CellDataType.bcd:
+                        frameCommonHeader.Add(new BCD(cellValue));
+                        break;
+                    case CellDataType.bin:
+                        frameCommonHeader.Add(new Binary(cellValue));
+                        break;
+                    default:
+                        frameCommonHeader.Add(new Hex(cellValue));
+                        break;
+                }
+            }
+            // Content
+            int typeListOffset = FixedColumnIndex.ACTUAL_DATA_COL - 1;
+            int colCount = worksheet.Dimension?.Columns ?? 0;
+            for (int col = FixedColumnIndex.HEADER_TAIL + 1; col <= colCount; col++)
+            {
+                int typeIndex = col - typeListOffset - 1;
+                if (typeIndex < 0 || typeIndex >= typeList.Count)
+                {
+                    continue; 
+                }
+                object cellValue = worksheet.Cells[row, col].Value;
+                CellDataType cellType = typeList[typeIndex];
+                switch (cellType)
+                {
+                    case CellDataType.bcd:
+                        frameContent.Add(new BCD(cellValue));
+                        break;
+                    case CellDataType.bin:
+                        frameContent.Add(new Binary(cellValue));
+                        break;
+                    default:
+                        frameContent.Add(new Hex(cellValue));
+                        break;
+                }
+            }
+
+            ExcelRow excelRow = new ExcelRow(frameDataNo, frameDataTitle, frameDataLength, frameCommonHeader, frameContent);
+            return excelRow;
+        }
+   
         private List<string> SheetsFilter(in List<string> names)
         {
             List<string> finalList = new List<string>();
@@ -199,7 +240,7 @@ namespace ETCRegionManagementSimulator
         }
 
         // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        ~ExcelService()
+        ~ExcelReader()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
