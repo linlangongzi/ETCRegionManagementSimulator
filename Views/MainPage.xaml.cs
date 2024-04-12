@@ -273,7 +273,7 @@ namespace ETCRegionManagementSimulator
 
         private void excelDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedRow = excelDataGrid.SelectedItem;
+            object selectedRow = excelDataGrid.SelectedItem;
 
             var selectedRows = excelDataGrid.SelectedItems;
 
