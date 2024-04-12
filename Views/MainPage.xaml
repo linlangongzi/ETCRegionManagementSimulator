@@ -162,23 +162,20 @@
                         Foreground="LightGray"
                         Opacity="0.05"/>
 
-                    <Grid Grid.Row="2" Margin="20,10">
-                        <Grid
-                            ui:Effects.Shadow="{StaticResource CommonShadow}"
-                            CornerRadius="5,5,5,5">
-
-                            <controls:DataGrid
-                                x:Name="excelDataGrid"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                Background="White">
-                                <controls:DataGrid.Shadow>
-                                    <ThemeShadow/>
-                                </controls:DataGrid.Shadow>
-                            </controls:DataGrid>
-                        </Grid>
+                    <Grid Grid.Row="2" 
+                        Margin="20,10">
+                            <Grid  ui:Effects.Shadow="{StaticResource CommonShadow}" CornerRadius="5,5,5,5">
+                                <controls:DataGrid x:Name="excelDataGrid"
+                                                   HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   SelectionChanged="excelDataGrid_SelectionChanged"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="White">
+                                    <controls:DataGrid.Shadow>
+                                        <ThemeShadow/>
+                                    </controls:DataGrid.Shadow>
+                                </controls:DataGrid>
+                            </Grid>
                     </Grid>
 
                     <!-- Toggle Switch and Buttons -->

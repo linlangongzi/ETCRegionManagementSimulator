@@ -121,16 +121,21 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controllers\ExcelDataController.cs" />
+    <Compile Include="DataFormats\BCDStringConversionStrategy.cs" />
+    <Compile Include="DataFormats\DataFormatBase.cs" />
     <Compile Include="Events\DataChangedEventArgs.cs" />
     <Compile Include="Events\MessageReceivedEventArgs.cs" />
     <Compile Include="Events\SheetSelectedEventArgs.cs" />
     <Compile Include="Interfaces\IClientPage.cs" />
     <Compile Include="Interfaces\IController.cs" />
+    <Compile Include="Interfaces\IConversionStrategy.cs" />
     <Compile Include="Interfaces\IDataFormat.cs" />
     <Compile Include="Interfaces\IDataModel.cs" />
     <Compile Include="Interfaces\IExcelService.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
+    <Compile Include="Utilities\ExcelDisplayAdaptor.cs" />
+    <Compile Include="Utilities\FixedColumnIndex.cs" />
     <Compile Include="ViewModels\ByteRowModel.cs" />
     <Compile Include="ViewModels\DisplayModel.cs" />
     <Compile Include="Server\Client.cs" />
@@ -140,7 +145,7 @@
     <Compile Include="DataFormats\ETCDataFormat.cs" />
     <Compile Include="Data\ExcelDataPerSheet.cs" />
     <Compile Include="Utilities\DataFormatConverter.cs" />
-    <Compile Include="ExcelService.cs" />
+    <Compile Include="Utilities\ExcelReader.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="Views\ClientPageFactory.cs" />
     <Compile Include="Utilities\Logger.cs" />
