@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
@@ -22,6 +23,8 @@ namespace ETCRegionManagementSimulator
 {
     public sealed partial class MainPage : Page, IView, IDisposable
     {
+        public event EventHandler<string> SendButtonClicked;
+
         private SettingPage settingPage;
 
         /// TODO: use DI to replace code below
@@ -37,8 +40,8 @@ namespace ETCRegionManagementSimulator
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
         public static event EventHandler<SendSelectedDataEventArgs> SendSelectedData;
 
-        public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>(); 
-        
+        public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>();
+
         public MainPage()
         {
             InitializeComponent();
@@ -49,12 +52,17 @@ namespace ETCRegionManagementSimulator
             Client.MessageReceived += OnMessageReceived;
             //MainNavigation.ItemInvoked += OnMainNavigation_ItemInvoked;
 
+            ///TODO migrate JIS strings to resource dictionary
+            TB_LocalHostIP.Text = $"本機IPアドレス: {server.DefaultIPAddress}.";
+            TB_OpenPorts.Text = $"オーペンポート: [ {string.Join(" ; ", server.Ports.Select(i => i.ToString()))} ].";
+            TB_Remote_Client.Text = $"接続されていない.";
             settingPage = new SettingPage();
 
             view = this;
             excelService = new ExcelReader();
 
             ExcelDataController controller = new ExcelDataController(model, view, excelService);
+            
         }
 
         //private void OnMainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -99,7 +107,7 @@ namespace ETCRegionManagementSimulator
             NavigationViewItem menuItem = new NavigationViewItem
             {
                 Content = clientId,
-                Icon = new SymbolIcon(Symbol.Memo),
+                Icon = new SymbolIcon(Symbol.MapDrive),
                 Tag = clientId.ToLower()
             };
             Debug.WriteLine($"A New Client :  {clientId} is connected \n");
@@ -143,12 +151,17 @@ namespace ETCRegionManagementSimulator
             {
                 ContentFrame.Navigate(typeof(SettingPage),settingPage);
                 Grid.SetColumnSpan(ContentFrame, 3);
+                Grid.SetRowSpan(ContentFrame, 2);
+                Grid.SetRow(ContentFrame, 0);
                 Grid_SendMsg.Visibility = Visibility.Collapsed;
                 Splitter_v.Visibility = Visibility.Collapsed;
+                TestView.Visibility = Visibility.Collapsed;
             }
             else
             {
                 Grid.SetColumnSpan(ContentFrame, 1);
+                Grid.SetRowSpan(ContentFrame,1);
+                Grid.SetRow(ContentFrame,1);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {
@@ -159,11 +172,15 @@ namespace ETCRegionManagementSimulator
                 //selectedItem.Name.ToString()
                 Grid_SendMsg.Visibility = Visibility.Visible;
                 Splitter_v.Visibility = Visibility.Visible;
+                TestView.Visibility = Visibility.Visible;
             }
         }
         private void MainNavigation_OnLoaded(object sender, RoutedEventArgs e)
         {
             //MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
+            var setting = (NavigationViewItem)MainNavigation.SettingsItem;
+            ///TODO migrate the JIS content to dictionary
+            setting.Content = "設定";
         }
 
         private void Dispose(bool disposing)
@@ -291,6 +308,11 @@ namespace ETCRegionManagementSimulator
                 Debug.WriteLine($"Selected item: {s.FullFrameDataSummary}");
             }
             Debug.WriteLine($"Selected item: {selectedRow} at {index}");
+
+        }
+
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
 
         }
     }
