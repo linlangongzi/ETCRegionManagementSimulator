@@ -112,9 +112,7 @@ namespace ETCRegionManagementSimulator
         ///  Ensure that the resetting of waitForSendSignal happens in a thread-safe manner to avoid potential race conditions.
         ///  This might involve locking or using thread-safe structures if multiple threads are accessing it.
         /// </summary>
-        /// <param name="listener"></param>
-        /// <param name="port"></param>
-        /// <returns></returns>
+
         private async Task AcceptClientsAsync(TcpListener listener, int port)
         {
             string clientId = ClientIdGenerator.GenerateClientId();
@@ -181,8 +179,8 @@ namespace ETCRegionManagementSimulator
                     // Cancel the reading task if it's still running
                     if (!cancellationTokenSource.IsCancellationRequested)
                     {
+                        cancellationTokenSource.Cancel();
                     }
-                    cancellationTokenSource.Cancel();
                     // sending a specific message to the client indicating disconnection
                     if (client.TcpClient.Connected)
                     {
