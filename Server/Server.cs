@@ -9,6 +9,7 @@ using System.IO;
 using ETCRegionManagementSimulator.Events;
 using System.Diagnostics;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace ETCRegionManagementSimulator
 {
@@ -26,6 +27,9 @@ namespace ETCRegionManagementSimulator
         // TODO: Need to Update listenerTaskList and Task management into Seperate Object
         //       Object name : Connection 
         private List<(TcpListener, Task)> listenerTaskList = new List<(TcpListener, Task)>();
+
+        private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
+
         public bool Running { get; set; } = false;
 
         private bool disposedValue;
@@ -65,7 +69,12 @@ namespace ETCRegionManagementSimulator
         private void OnMainPage_SendSelectedData(object sender, EventArgs e)
         {
             // Signal the TaskCompletionSource
-            _ = waitForSendSignal.TrySetResult(true);
+            if (e is SendSelectedDataEventArgs args)
+            {
+                string data = args.SelectedData;
+                dataQueue.Enqueue(data);
+                _ = waitForSendSignal.TrySetResult(true);
+            }
         }
 
         public Task Start()
@@ -77,7 +86,7 @@ namespace ETCRegionManagementSimulator
                 {
                     TcpListener listener = new TcpListener(defaultIPAddress, port);
                     listener.Start();
-                    System.Diagnostics.Debug.WriteLine($"Server started on port {port}");
+                    Debug.WriteLine($"Server started on port {port}");
 
                     // Start accepting clients Asynchronously
                     Task acceptTask = AcceptClientsAsync(listener, port);
@@ -133,9 +142,6 @@ namespace ETCRegionManagementSimulator
 
         private async Task HandleClientAsync(Client client)
         {
-            // TODO: To change the Data retrieve method , should get this data from UI or Reading file
-            string data = "this is test data from server \n";
-
             if (client != null)
             {
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -146,7 +152,15 @@ namespace ETCRegionManagementSimulator
                     while (client.TcpClient.Connected)
                     {
                         await waitForSendSignal.Task;
-                        await client.SendDataAsync(data);
+
+                        if (dataQueue.TryDequeue(out string dataToSend))
+                        {
+                            await client.SendDataAsync(dataToSend);
+                        }
+                        else
+                        {
+                            Debug.WriteLine("No data to send \n");
+                        }
                         waitForSendSignal = new TaskCompletionSource<bool>();
                     }
                     await readDataTask;
