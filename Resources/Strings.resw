@@ -132,4 +132,40 @@
   <data name="ConnectionPortNo.5" xml:space="preserve">
     <value>制御回線</value>
   </data>
+  <data name="Log_ConnectBegin" xml:space="preserve">
+    <value>******料金所サーバーへ接続開始******</value>
+  </data>
+  <data name="Log_ConnectComplete" xml:space="preserve">
+    <value>******料金所サーバーへ接続完了******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckConnectFail" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)接続失敗ので接続リトライ******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckConnectSuccess" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)接続成功******</value>
+  </data>
+  <data name="Log_OnControlConnectFail" xml:space="preserve">
+    <value>******制御回線接続失敗ので接続リトライ******</value>
+  </data>
+  <data name="Log_OnControlConnectSuccess" xml:space="preserve">
+    <value>******制御回線接続成功******</value>
+  </data>
+  <data name="Log_OnDownLinkDataConnectFail" xml:space="preserve">
+    <value>******データ回線(下り)接続失敗ので接続リトライ******</value>
+  </data>
+  <data name="Log_OnDownLinkDataConnectSuccess" xml:space="preserve">
+    <value>******データ回線(下り)接続成功******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckConnectFail" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)接続失敗ので接続リトライ******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckConnectSuccess" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)接続成功******</value>
+  </data>
+  <data name="Log_OnUpLinkDataConnectFail" xml:space="preserve">
+    <value>******データ回線(上り)接続失敗ので接続リトライ******</value>
+  </data>
+  <data name="Log_OnUpLinkDataConnectSuccess" xml:space="preserve">
+    <value>******データ回線(上り)接続成功******</value>
+  </data>
 </root>
