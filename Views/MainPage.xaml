@@ -64,10 +64,10 @@
 
                 <Frame
                     Grid.Column="0"
-                    Grid.Row="1"
+                    Grid.Row="0"
                     x:Name="ContentFrame"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"/>
+                    VerticalAlignment="Stretch" Navigated="ContentFrame_Navigated"/>
 
                 <controls:GridSplitter
                     x:Name="Splitter_v"
@@ -195,6 +195,11 @@
                             Header="伝送連番自動採番"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"/>
+                        <ToggleSwitch
+                            Grid.Column="1"
+                            Header="受信電文自動応答"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"/>
 
                         <Button
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
@@ -222,15 +227,18 @@
             <TextBlock Padding="10,0,10,0"
                        VerticalAlignment="Center"
                        TextAlignment="Center" 
-                       x:Name="TB_LocalHostIP">LOCAL SERVER IP: ###.###.###.###</TextBlock>
+                       x:Name="TB_LocalHostIP"
+                       Text="本機IP:               ."/>
             <TextBlock Padding="10,0,10,0"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
-                       x:Name="TB_OpenPorts">OPENED PORTS:</TextBlock>
+                       x:Name="TB_OpenPorts"
+                       Text="オーペンポート:[                             ]."/>
             <TextBlock Padding="10,0,10,0"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
-                       x:Name="TB_Remote_Client">REMOTE CLIENT: ###.###.###.###:*****</TextBlock>
+                       x:Name="TB_Remote_Client"
+                       Text="クライアント:                     ."/>
             <SymbolIcon Height=" 20" 
                         Width="27" 
                         VerticalAlignment="Center"

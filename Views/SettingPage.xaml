@@ -15,20 +15,22 @@
             HorizontalAlignment="Left" 
             VerticalAlignment="Top" Margin="0,50,0,0" 
            >
-            <TextBlock x:Name="Tag_LogSetting" FontSize="30" Text="LogSetting"></TextBlock>
+            <TextBlock x:Name="Tag_LogSetting" FontSize="30" Text="ログ設定"></TextBlock>
         </StackPanel>
         <StackPanel 
             HorizontalAlignment="Left" 
             Orientation="Horizontal" 
-            VerticalAlignment="Top" Margin="0,0,0,0" 
+            VerticalAlignment="Top" 
+            Margin="0,10,0,0" 
            >
             <TextBlock x:Name="logPathTag" 
                        Height="31" 
-                       Text="Log Path: " 
                        TextWrapping="NoWrap" 
                        Width="100" 
-                       VerticalAlignment="Center" FontSize="20"
-                       />
+                       VerticalAlignment="Center" 
+                       FontSize="20"
+                       Margin="10,0,10,0"
+                       ><Run Text="ログフォルダー"/><Run Text=": "/></TextBlock>
             <TextBox x:Name="logPath" 
                      Height="40"
                      Text=""
@@ -36,13 +38,21 @@
                      Width="360" 
                      TextAlignment="Left" 
                      HorizontalAlignment="Left" 
-                     Margin="10,0,10,0" BorderThickness="1,1,1,1" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
+                     Margin="10,0,10,0" 
+                     BorderThickness="1,1,1,1" 
+                     VerticalContentAlignment="Bottom" 
+                     HorizontalContentAlignment="Left"
                      />
                 <Button x:Name="openDir" 
-                    Content="Open"
-                    Height="40" 
-                    Width="66" 
-                    HorizontalAlignment="Center" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Click="openDir_Click"
+                        Content="参照"
+                        Height="40" 
+                        Width="66" 
+                        HorizontalAlignment="Center" 
+                        FontSize="20" 
+                        HorizontalContentAlignment="Center"
+                        Margin="10,0,10,0" 
+                        VerticalContentAlignment="Top" 
+                        Click="openDir_Click"
                     />
 
             </StackPanel>
