@@ -144,11 +144,47 @@
   <data name="Log_OnClientHealthCheckConnectSuccess" xml:space="preserve">
     <value>******ヘルスチェック(クライアント)接続成功******</value>
   </data>
+  <data name="Log_OnClientHealthCheckReceive" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)受信開始******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckReceiveComplete" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)受信完了******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckReceiveFail" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)受信失敗******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckSend" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)送信開始******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckSendComplete" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)送信完了******</value>
+  </data>
+  <data name="Log_OnClientHealthCheckSendFail" xml:space="preserve">
+    <value>******ヘルスチェック(クライアント)送信失敗******</value>
+  </data>
   <data name="Log_OnControlConnectFail" xml:space="preserve">
     <value>******制御回線接続失敗ので接続リトライ******</value>
   </data>
   <data name="Log_OnControlConnectSuccess" xml:space="preserve">
     <value>******制御回線接続成功******</value>
+  </data>
+  <data name="Log_OnControlReceive" xml:space="preserve">
+    <value>******制御回線受信開始******</value>
+  </data>
+  <data name="Log_OnControlReceiveComplete" xml:space="preserve">
+    <value>******制御回線受信完了******</value>
+  </data>
+  <data name="Log_OnControlReceiveFail" xml:space="preserve">
+    <value>******制御回線受信失敗******</value>
+  </data>
+  <data name="Log_OnControlSend" xml:space="preserve">
+    <value>******制御回線送信開始******</value>
+  </data>
+  <data name="Log_OnControlSendComplete" xml:space="preserve">
+    <value>******制御回線送信完了******</value>
+  </data>
+  <data name="Log_OnControlSendFail" xml:space="preserve">
+    <value>******制御回線送信失敗******</value>
   </data>
   <data name="Log_OnDownLinkDataConnectFail" xml:space="preserve">
     <value>******データ回線(下り)接続失敗ので接続リトライ******</value>
@@ -156,16 +192,70 @@
   <data name="Log_OnDownLinkDataConnectSuccess" xml:space="preserve">
     <value>******データ回線(下り)接続成功******</value>
   </data>
+  <data name="Log_OnDownLinkDataReceive" xml:space="preserve">
+    <value>******データ回線(下り)受信開始******</value>
+  </data>
+  <data name="Log_OnDownLinkDataReceiveComplete" xml:space="preserve">
+    <value>******データ回線(下り)受信完了******</value>
+  </data>
+  <data name="Log_OnDownLinkDataReceiveFail" xml:space="preserve">
+    <value>******データ回線(下り)受信失敗******</value>
+  </data>
+  <data name="Log_OnDownLinkDataSend" xml:space="preserve">
+    <value>******データ回線(下り)送信開始******</value>
+  </data>
+  <data name="Log_OnDownLinkDataSendComplete" xml:space="preserve">
+    <value>******データ回線(下り)送信完了******</value>
+  </data>
+  <data name="Log_OnDownLinkDataSendFail" xml:space="preserve">
+    <value>******データ回線(下り)送信失敗******</value>
+  </data>
   <data name="Log_OnServerHealthCheckConnectFail" xml:space="preserve">
     <value>******ヘルスチェック(サーバー)接続失敗ので接続リトライ******</value>
   </data>
   <data name="Log_OnServerHealthCheckConnectSuccess" xml:space="preserve">
     <value>******ヘルスチェック(サーバー)接続成功******</value>
   </data>
+  <data name="Log_OnServerHealthCheckReceive" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)受信開始******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckReceiveComplete" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)受信完了******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckReceiveFail" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)受信失敗******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckSend" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)送信開始******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckSendComplete" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)送信完了******</value>
+  </data>
+  <data name="Log_OnServerHealthCheckSendFail" xml:space="preserve">
+    <value>******ヘルスチェック(サーバー)送信失敗******</value>
+  </data>
   <data name="Log_OnUpLinkDataConnectFail" xml:space="preserve">
     <value>******データ回線(上り)接続失敗ので接続リトライ******</value>
   </data>
   <data name="Log_OnUpLinkDataConnectSuccess" xml:space="preserve">
     <value>******データ回線(上り)接続成功******</value>
+  </data>
+  <data name="Log_OnUpLinkDataReceive" xml:space="preserve">
+    <value>******データ回線(上り)受信開始******</value>
+  </data>
+  <data name="Log_OnUpLinkDataReceiveComplete" xml:space="preserve">
+    <value>******データ回線(上り)受信成功******</value>
+  </data>
+  <data name="Log_OnUpLinkDataReceiveFail" xml:space="preserve">
+    <value>******データ回線(上り)受信失敗******</value>
+  </data>
+  <data name="Log_OnUpLinkDataSend" xml:space="preserve">
+    <value>******データ回線(上り)送信開始******</value>
+  </data>
+  <data name="Log_OnUpLinkDataSendComplete" xml:space="preserve">
+    <value>******データ回線(上り)送信成功******</value>
+  </data>
+  <data name="Log_OnUpLinkDataSendFail" xml:space="preserve">
+    <value>******データ回線(上り)送信失敗******</value>
   </data>
 </root>

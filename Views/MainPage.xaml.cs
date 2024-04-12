@@ -314,9 +314,5 @@ namespace ETCRegionManagementSimulator
 
         }
 
-        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-
-        }
     }
 }
