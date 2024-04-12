@@ -291,7 +291,10 @@ namespace ETCRegionManagementSimulator
             if (selectedRow is DisplayModel d)
             {
                 Debug.WriteLine($"Click on at Item: {d.FullFrameDataSummary} at index : {index} \n");
+                /// TODO: Use Share Model to Send Data in future release!
+                /// Priority: High!
                 SendSelectedData?.Invoke(this, new SendSelectedDataEventArgs(index, d.FullFrameDataSummary));
+                testSource.Add("Data Sent: " + d.FullFrameDataSummary);
             }
         }
 
