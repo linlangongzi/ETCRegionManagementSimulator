@@ -17,6 +17,8 @@ namespace ETCRegionManagementSimulator
     {
 
         public event EventHandler<ClientConnectedEventArgs> NewClientConnected;
+        public event EventHandler<ClientDisconnetedEventArgs> ClientDisconnected;
+
         private TaskCompletionSource<bool> waitForSendSignal = new TaskCompletionSource<bool>();
 
         private IPAddress defaultIPAddress = IPAddress.Loopback;
@@ -103,7 +105,11 @@ namespace ETCRegionManagementSimulator
             NewClientConnected?.Invoke(this, new ClientConnectedEventArgs(clientId));
         }
         /// <summary>
-        ///  TODO:
+        ///  TODO: Await Pattern and Loop Logic 
+        ///  Your current implementation waits for either the read or send task to complete, 
+        ///  then checks if one has completed but the other hasn't,
+        ///  and awaits the incomplete task. This logic could be simplified, 
+        ///  and the usage of waitForSendSignal might need to be adjusted to align with your requirements.
         ///  consider the following adjustments: 
         ///  Isolate TaskCompletionSource per Client:
         ///  It might be better to have a TaskCompletionSource instance per client connection rather than a shared one.This way, 
@@ -112,9 +118,7 @@ namespace ETCRegionManagementSimulator
         ///  Ensure that the resetting of waitForSendSignal happens in a thread-safe manner to avoid potential race conditions.
         ///  This might involve locking or using thread-safe structures if multiple threads are accessing it.
         /// </summary>
-        /// <param name="listener"></param>
-        /// <param name="port"></param>
-        /// <returns></returns>
+
         private async Task AcceptClientsAsync(TcpListener listener, int port)
         {
             string clientId = ClientIdGenerator.GenerateClientId();
@@ -181,8 +185,8 @@ namespace ETCRegionManagementSimulator
                     // Cancel the reading task if it's still running
                     if (!cancellationTokenSource.IsCancellationRequested)
                     {
+                        cancellationTokenSource.Cancel();
                     }
-                    cancellationTokenSource.Cancel();
                     // sending a specific message to the client indicating disconnection
                     if (client.TcpClient.Connected)
                     {
@@ -192,6 +196,7 @@ namespace ETCRegionManagementSimulator
                     //// Ensure the connection is closed and resources are freed
                     //client.TcpClient.Close();
                     connectionManager.RemoveClient(client.Id);
+                    client.Dispose();
                     Debug.WriteLine($"Connection with client {client.Id} closed.");
                     cancellationTokenSource.Dispose();
                 }
@@ -219,6 +224,8 @@ namespace ETCRegionManagementSimulator
                     }
                     else
                     {
+                        Debug.WriteLine($"No data received from client {client.Id}, possible disconnection.");
+                        ClientDisconnected?.Invoke(this, new ClientDisconnetedEventArgs(client.Id));
                         break;
                     }
                 }
@@ -240,6 +247,7 @@ namespace ETCRegionManagementSimulator
                     client.TcpClient.Close();
                 }
                 connectionManager.RemoveClient(client.Id);
+                client.Dispose();
                 Debug.WriteLine($"Stopped reading data from client {client.Id}.");
             }
         }

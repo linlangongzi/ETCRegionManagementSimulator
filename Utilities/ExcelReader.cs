@@ -16,7 +16,7 @@ namespace ETCRegionManagementSimulator
         public Stream ExcelFileStream { get; set; }
         public string ExcelFilePath { get; set; }
 
-        enum CellDataType
+        private enum CellDataType
         {
             bin,
             hex,
@@ -62,8 +62,8 @@ namespace ETCRegionManagementSimulator
             _package = ExcelFileStream != null ? new ExcelPackage(ExcelFileStream) : null;
         }
 
-        /// TODO: Need to optimize framework structure in the futiure to
-        /// make the method below behave more a Read method 
+        /// TODO: Need to optimize framework structure in the future to
+        /// make the method below behave more like a Read File method 
         public IEnumerable<ExcelRow> ReadExcelFile()
         {
             List<ExcelRow> rows = new List<ExcelRow>();
@@ -104,8 +104,6 @@ namespace ETCRegionManagementSimulator
                     if (worksheet != null)
                     {
                         int rowCount = worksheet.Dimension?.Rows ?? 0;
-                        
-
                         // Process the Actual Data
                         for (int row = FixedColumnIndex.ACTUAL_DATA_ROW; row <= rowCount; row++)
                         {
@@ -136,7 +134,7 @@ namespace ETCRegionManagementSimulator
                 }
                 else
                 {
-                    typeList.Add(CellDataType.hex); // Default to hex if not found
+                    typeList.Add(CellDataType.hex); // Default to hex
                 }
             }
             return typeList;
