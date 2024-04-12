@@ -15,7 +15,7 @@
                    Width="520" 
                    FontSize="30"
                    FontWeight="Bold" 
-                   Text="地域サーバシミュレータ" 
+                   x:Uid="Title" 
                    TextWrapping="Wrap" 
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center" 
@@ -38,7 +38,7 @@
 
             <!-- Row 0 -->
             <TextBlock x:Name="tag_ip" 
-                       Text="本機IPアドレス" 
+                       x:Uid="Tag_LocalIP"
                        TextWrapping="Wrap"
                        FontSize="20" 
                        Width="200" 
@@ -57,12 +57,12 @@
                      VerticalAlignment="Center"
                      TextAlignment="Center"
                      FontSize="20" 
-                     Grid.Column="2" Height="40" BorderThickness="0,0,0,2" />
+                     Grid.Column="2" Height="40" 
+                     BorderThickness="0,0,0,2" />
 
             <!-- Row 1 -->
             <TextBlock x:Name="tag_port" 
-                       Text="制御回線:" 
-                       x:Uid="ConnectionPortNo.1"
+                       x:Uid="ConnectionPortNo1"
                        TextWrapping="Wrap" 
                        FontSize="19" 
                        Grid.Row="1" 
@@ -72,7 +72,7 @@
                        />
 
             <TextBlock x:Name="connectionPortFirst" 
-                       Text="ポート番号" 
+                       x:Uid="Tag_PortNoPlaceholder"
                        Grid.Row="1" 
                        Width="280" 
                        Height="40" 
@@ -84,8 +84,7 @@
 
             <!-- Row 2 -->
             <TextBlock x:Name="tag_port_Copy" 
-                       Text="ヘルスチェック（サーバ）:"
-                       x:Uid="ConnectionPortNo.2"
+                       x:Uid="ConnectionPortNo2"
                        TextWrapping="Wrap" 
                        FontSize="19" 
                        Grid.Row="2" 
@@ -96,7 +95,7 @@
                        />
 
             <TextBlock x:Name="connectionPortSecond" 
-                       Text="ポート番号"
+                       x:Uid="Tag_PortNoPlaceholder"
                        Height="40" 
                        Width="280" 
                        VerticalAlignment="Center"
@@ -108,8 +107,7 @@
 
             <!-- Row 3 -->
             <TextBlock x:Name="tag_port_Copy1" 
-                       Text="ヘルスチェック（クライアント）:" 
-                       x:Uid="ConnectionPortNo.3"
+                       x:Uid="ConnectionPortNo3"
                        TextWrapping="Wrap" 
                        FontSize="19" 
                        Grid.Row="3"
@@ -119,7 +117,8 @@
                        VerticalAlignment="Center"
                        />
 
-            <TextBlock x:Name="connectionPortThird" Text="ポート番号" 
+            <TextBlock x:Name="connectionPortThird" 
+                       x:Uid="Tag_PortNoPlaceholder"
                        Width="280" 
                        Height="40" 
                        Grid.Column="2"
@@ -130,8 +129,7 @@
 
             <!-- Row 4 -->
             <TextBlock x:Name="tag_port_Copy2"
-                       Text="上り回線"
-                       x:Uid="ConnectionPortNo.4"
+                       x:Uid="ConnectionPortNo4"
                        TextWrapping="Wrap" 
                        Height="40" 
                        Width="200" 
@@ -144,7 +142,7 @@
                        />
 
             <TextBlock x:Name="connectionPortForth" 
-                       Text="ポート番号" 
+                       x:Uid="Tag_PortNoPlaceholder"
                        Width="280" 
                        Height="40" 
                        TextAlignment="Center" 
@@ -156,8 +154,7 @@
 
             <!-- Row 5 -->
             <TextBlock x:Name="tag_port_Copy3" 
-                       Text="下り回線:" 
-                       x:Uid="ConnectionPortNo.5"
+                       x:Uid="ConnectionPortNo5"
                        Height="40" 
                        Width="200" 
                        TextWrapping="Wrap" 
@@ -170,7 +167,7 @@
                        />
 
             <TextBlock x:Name="connectionPortFifth" 
-                       Text="ポート番号" 
+                       x:Uid="Tag_PortNoPlaceholder"
                        Width="280" 
                        Height="40" 
                        HorizontalAlignment="Center"  
@@ -183,8 +180,8 @@
         
         <Button x:Name="startServer" 
             Width="120"
-            Height="120" 
-            Content="一括接続" 
+            Height="120"
+            x:Uid="Btn_Connect"
             Background="Red"
             BorderThickness="0" 
             Click="OnStart" 

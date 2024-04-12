@@ -147,9 +147,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 SelectionChanged="Listbox_SheetsList_SelectionChanged"
                                 Background="White">
-                                <ListBox.Shadow>
-                                    <ThemeShadow/>
-                                </ListBox.Shadow>
                                 <!-- ListBox Items -->
                             </ListBox>
                         </Grid>
@@ -167,13 +164,17 @@
 
                     <Grid Grid.Row="2" 
                         Margin="20,10">
-                            <Grid  ui:Effects.Shadow="{StaticResource CommonShadow}" CornerRadius="5,5,5,5">
+                            <Grid  ui:Effects.Shadow="{StaticResource CommonShadow}" 
+                                   CornerRadius="5,5,5,5"
+                                   Background="White">
                                 <controls:DataGrid x:Name="excelDataGrid"
                                                    HorizontalAlignment="Stretch"
                                                    VerticalAlignment="Stretch"
                                                    SelectionChanged="excelDataGrid_SelectionChanged"
                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="White">
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                                   Background="White"
+                                                   Visibility="Collapsed">
                                     <controls:DataGrid.Shadow>
                                         <ThemeShadow/>
                                     </controls:DataGrid.Shadow>
