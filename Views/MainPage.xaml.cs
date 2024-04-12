@@ -18,7 +18,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-
 namespace ETCRegionManagementSimulator
 {
     public sealed partial class MainPage : Page, IView, IDisposable
@@ -48,6 +47,7 @@ namespace ETCRegionManagementSimulator
 
             server = ServerService.Instance.Server;
             server.NewClientConnected += OnNewClientConneted;
+            server.ClientDisconnected += OnClientDisconnected;
 
             Client.MessageReceived += OnMessageReceived;
             //MainNavigation.ItemInvoked += OnMainNavigation_ItemInvoked;
@@ -115,6 +115,12 @@ namespace ETCRegionManagementSimulator
             MainNavigation.MenuItems.Add(menuItem);
             MainNavigation.SelectedItem = menuItem;
             ContentFrame.Navigate(typeof(StandardPage), clientId);
+        }
+
+        private void OnClientDisconnected(object sender, ClientDisconnetedEventArgs eventArgs)
+        {
+            /// TODO: Update UI to reduce the NavigationItem in NavigationView
+            testSource.Add($"Disconneted from client : {eventArgs.DisconnectClientId}");
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -248,12 +254,12 @@ namespace ETCRegionManagementSimulator
                 catch (UnauthorizedAccessException)
                 {
                     // Access to the file is denied due to lack of permissions
-                    System.Diagnostics.Debug.WriteLine($"file {file.Path} not permitted");
+                    Debug.WriteLine($"file {file.Path} not permitted");
                 }
                 catch (FileNotFoundException)
                 {
                     // File not found, could be due to incorrect path or missing file
-                    System.Diagnostics.Debug.WriteLine($"file {file.Path} not exist");
+                    Debug.WriteLine($"file {file.Path} not exist");
                 }
             }
         }
