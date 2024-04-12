@@ -142,9 +142,6 @@ namespace ETCRegionManagementSimulator
 
         private async Task HandleClientAsync(Client client)
         {
-            // TODO: To change the Data retrieve method , should get this data from UI or Reading file
-            string data = "this is test data from server \n";
-
             if (client != null)
             {
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
