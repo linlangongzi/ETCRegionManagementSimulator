@@ -6,36 +6,27 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using ETCRegionManagementSimulator.Events;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ETCRegionManagementSimulator
 {
-
-    // Custom event arguments for client connected event
-    public class ClientConnectedEventArgs : EventArgs
-    {
-        public string ClientId { get; }
-
-        public ClientConnectedEventArgs(string clientId)
-        {
-            ClientId = clientId;
-        }
-
-    }
-
     public class Server : IDisposable
     {
 
         public event EventHandler<ClientConnectedEventArgs> NewClientConnected;
+        private TaskCompletionSource<bool> waitForSendSignal = new TaskCompletionSource<bool>();
 
-        private IPAddress defaultIPAddress;
-        private IPAddress backupIPAddress;
-        private List<int> ports;
+        private IPAddress defaultIPAddress = IPAddress.Loopback;
+        private IPAddress backupIPAddress = null;
+        private List<int> ports = new List<int>();
 
-        private ConnectionsManager connectionManager;
+        private ConnectionsManager connectionManager = new ConnectionsManager();
         // TODO: Need to Update listenerTaskList and Task management into Seperate Object
         //       Object name : Connection 
-        private List<(TcpListener, Task)> listenerTaskList;
-        public bool Running { get; set; }
+        private List<(TcpListener, Task)> listenerTaskList = new List<(TcpListener, Task)>();
+        public bool Running { get; set; } = false;
 
         private bool disposedValue;
 
@@ -60,12 +51,7 @@ namespace ETCRegionManagementSimulator
         // Default constructor
         public Server()
         {
-            defaultIPAddress = IPAddress.Loopback;
-            backupIPAddress = null;
-            ports = new List<int>();
-            listenerTaskList = new List<(TcpListener, Task)>();
-            connectionManager = new ConnectionsManager();
-            Running = false;
+            MainPage.SendSelectedData += OnMainPage_SendSelectedData;
         }
 
         public Server(string defaultIP, string backupIP, List<int> ports)
@@ -73,9 +59,13 @@ namespace ETCRegionManagementSimulator
             defaultIPAddress = IPAddress.Parse(defaultIP);
             backupIPAddress = IPAddress.Parse(backupIP);
             this.ports = ports;
-            listenerTaskList = new List<(TcpListener, Task)>();
-            connectionManager = new ConnectionsManager();
-            Running = false;
+            MainPage.SendSelectedData += OnMainPage_SendSelectedData;
+        }
+
+        private void OnMainPage_SendSelectedData(object sender, EventArgs e)
+        {
+            // Signal the TaskCompletionSource
+            _ = waitForSendSignal.TrySetResult(true);
         }
 
         public Task Start()
@@ -103,7 +93,19 @@ namespace ETCRegionManagementSimulator
         {
             NewClientConnected?.Invoke(this, new ClientConnectedEventArgs(clientId));
         }
-
+        /// <summary>
+        ///  TODO:
+        ///  consider the following adjustments: 
+        ///  Isolate TaskCompletionSource per Client:
+        ///  It might be better to have a TaskCompletionSource instance per client connection rather than a shared one.This way, 
+        ///  the signal to send data is specific to each client and can be controlled more granularly.
+        ///  Reset TaskCompletionSource Safely: 
+        ///  Ensure that the resetting of waitForSendSignal happens in a thread-safe manner to avoid potential race conditions.
+        ///  This might involve locking or using thread-safe structures if multiple threads are accessing it.
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         private async Task AcceptClientsAsync(TcpListener listener, int port)
         {
             string clientId = ClientIdGenerator.GenerateClientId();
@@ -118,13 +120,13 @@ namespace ETCRegionManagementSimulator
                     // Raise the ClientConnected event;
                     OnClientConnected(clientId);
 
-                    System.Diagnostics.Debug.WriteLine($"Connection established on port {port}");
+                    Debug.WriteLine($"Connection established on port {port}");
 
                     await Task.Run(() => HandleClientAsync(client));
                 }
                 catch(SocketException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Error accepting client connection on port {port} : {ex.Message}");
+                    Debug.WriteLine($"Error accepting client connection on port {port} : {ex.Message}");
                 }
             }
         }
@@ -136,52 +138,95 @@ namespace ETCRegionManagementSimulator
 
             if (client != null)
             {
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 try
                 {
-                    while (true)
+                    Task readDataTask = Task.Run(() => ReadDataContinuously(client, cancellationTokenSource.Token));
+
+                    while (client.TcpClient.Connected)
                     {
-                        Task readDataTask = client.ReadDataAsync();
-                        Task sendDataTask = client.SendDataAsync(data);
-
-                        Task completedTask = await Task.WhenAny(readDataTask, sendDataTask);
-                        await completedTask; // Await the completed task to propagate exceptions
-
-                        if (readDataTask.IsCompletedSuccessfully && !sendDataTask.IsCompleted)
-                        {
-                            await sendDataTask;
-                        }
-                        else if (sendDataTask.IsCompletedSuccessfully && !readDataTask.IsCompleted)
-                        {
-                            await readDataTask;
-                        }
-
-                        if (!client.TcpClient.Connected)
-                        {
-                            break; // Exit loop if the tcpClient is no longer connected
-                        }
+                        await waitForSendSignal.Task;
+                        await client.SendDataAsync(data);
+                        waitForSendSignal = new TaskCompletionSource<bool>();
                     }
+                    await readDataTask;
 
                 }
                 catch (Exception ex) when (ex is SocketException || ex is IOException)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Network error in communication with the client {client.Id}: {ex.Message}");
+                    cancellationTokenSource.Cancel();
+                    Debug.WriteLine($"Network error in communication with the client {client.Id}: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Unhandled error with the client {client.Id} : {ex.Message}");
+                    cancellationTokenSource.Cancel();
+                    Debug.WriteLine($"Unhandled error with the client {client.Id} : {ex.Message}");
                 }
                 finally
                 {
+                    // Cancel the reading task if it's still running
+                    if (!cancellationTokenSource.IsCancellationRequested)
+                    {
+                    }
+                    cancellationTokenSource.Cancel();
                     // sending a specific message to the client indicating disconnection
                     if (client.TcpClient.Connected)
                     {
                         /// TODO; signal the client that the server is closing the connection in the future release
+                        client.TcpClient.Close();
                     }
-                    // Ensure the connection is closed and resources are freed
-                    client.TcpClient.Close();
+                    //// Ensure the connection is closed and resources are freed
+                    //client.TcpClient.Close();
                     connectionManager.RemoveClient(client.Id);
-                    System.Diagnostics.Debug.WriteLine($"Connection with client {client.Id} closed.");
+                    Debug.WriteLine($"Connection with client {client.Id} closed.");
+                    cancellationTokenSource.Dispose();
                 }
+            }
+        }
+
+        private async Task ReadDataContinuously(Client client, CancellationToken cancellationToken)
+        {
+            // Keep reading data from the client independently of the send signal.
+            try
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    string receivedData = await client.ReadDataAsync(); // Assuming this method exists and returns a Task<string>
+                    if (!string.IsNullOrEmpty(receivedData))
+                    {
+                        // Process the received data. For example, log it, or trigger events based on content.
+                        Debug.WriteLine($"Received data from client {client.Id}: {receivedData}");
+                    }
+                    else if (cancellationToken.IsCancellationRequested)
+                    {
+                        // Handle the cancellation due to client disconnection
+                        Debug.WriteLine("Cancellation requested due to client disconnection.");
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.WriteLine("Read operation was canceled.");
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions, such as network errors.
+                Debug.WriteLine($"Error while reading data from client {client.Id}: {ex.Message}");
+            }
+            finally
+            {
+                // Perform any cleanup, remove the client from the connection manager.
+                if (client.TcpClient.Connected)
+                {
+                    client.TcpClient.Close();
+                }
+                connectionManager.RemoveClient(client.Id);
+                Debug.WriteLine($"Stopped reading data from client {client.Id}.");
             }
         }
 

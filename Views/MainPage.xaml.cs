@@ -38,15 +38,17 @@ namespace ETCRegionManagementSimulator
 
         /// TODO: Implementa central event aggregator to manage All the EventHandlers in the future release 
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
+        public static event EventHandler<SendSelectedDataEventArgs> SendSelectedData;
 
         public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>();
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             server = ServerService.Instance.Server;
             server.NewClientConnected += OnNewClientConneted;
+
             Client.MessageReceived += OnMessageReceived;
             //MainNavigation.ItemInvoked += OnMainNavigation_ItemInvoked;
 
@@ -84,7 +86,6 @@ namespace ETCRegionManagementSimulator
         //        if (invokedItem.is)
         //        ContentFrame.Navigate(typeof(StandardPage));
         //    }
-
         //}
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -139,7 +140,7 @@ namespace ETCRegionManagementSimulator
 
                 foreach(var t in testSource)
                 {
-                    Debug.WriteLine($" +-- test source {t} \n");
+                    Debug.WriteLine($" Test source messages: {t} \n");
                 }
             });
         }
@@ -285,20 +286,28 @@ namespace ETCRegionManagementSimulator
 
         private void SendRow_Click(object sender, RoutedEventArgs e)
         {
-
+            int index = excelDataGrid.SelectedIndex;
+            object selectedRow = excelDataGrid.SelectedItem;
+            if (selectedRow is DisplayModel d)
+            {
+                Debug.WriteLine($"Click on at Item: {d.FullFrameDataSummary} at index : {index} \n");
+                SendSelectedData?.Invoke(this, new SendSelectedDataEventArgs(index, d.FullFrameDataSummary));
+            }
         }
 
         private void excelDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             object selectedRow = excelDataGrid.SelectedItem;
 
+            int index = excelDataGrid.SelectedIndex;
+
             var selectedRows = excelDataGrid.SelectedItems;
 
-            if (selectedRow is ExcelRow s)
+            if (selectedRow is DisplayModel s)
             {
-                Debug.WriteLine($"Selected item: {s.FrameDataNo}");
+                Debug.WriteLine($"Selected item: {s.FullFrameDataSummary}");
             }
-            Debug.WriteLine($"Selected item: {selectedRow}");
+            Debug.WriteLine($"Selected item: {selectedRow} at {index}");
 
         }
 

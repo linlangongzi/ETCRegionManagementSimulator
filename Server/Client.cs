@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using ETCRegionManagementSimulator.Events;
+using System.Diagnostics;
 
 namespace ETCRegionManagementSimulator
 {
@@ -34,8 +35,6 @@ namespace ETCRegionManagementSimulator
             string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
             // Raise the Event
             OnMessageReceived(message, Id);
-
-            //System.Diagnostics.Debug.Write($"Received data from client({Id}): {message} \n");
             return message;
         }
 

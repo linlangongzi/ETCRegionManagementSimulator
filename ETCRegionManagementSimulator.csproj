@@ -123,8 +123,10 @@
     <Compile Include="Controllers\ExcelDataController.cs" />
     <Compile Include="DataFormats\BCDStringConversionStrategy.cs" />
     <Compile Include="DataFormats\DataFormatBase.cs" />
+    <Compile Include="Events\ClientConnectedEventArgs.cs" />
     <Compile Include="Events\DataChangedEventArgs.cs" />
     <Compile Include="Events\MessageReceivedEventArgs.cs" />
+    <Compile Include="Events\SendSelectedDataEventArgs.cs" />
     <Compile Include="Events\SheetSelectedEventArgs.cs" />
     <Compile Include="Interfaces\IClientPage.cs" />
     <Compile Include="Interfaces\IController.cs" />
