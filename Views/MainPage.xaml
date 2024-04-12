@@ -67,11 +67,13 @@
                     Grid.Row="1"
                     x:Name="ContentFrame"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" Navigated="ContentFrame_Navigated"/>
+                    VerticalAlignment="Stretch"/>
 
                 <controls:GridSplitter
                     x:Name="Splitter_v"
                     Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
                     Width="2"
                     ResizeBehavior="PreviousAndNext"
                     Background="LightGray"
