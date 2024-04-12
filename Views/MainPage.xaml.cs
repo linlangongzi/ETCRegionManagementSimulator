@@ -150,6 +150,8 @@ namespace ETCRegionManagementSimulator
             {
                 ContentFrame.Navigate(typeof(SettingPage),settingPage);
                 Grid.SetColumnSpan(ContentFrame, 3);
+                Grid.SetRowSpan(ContentFrame, 2);
+                Grid.SetRow(ContentFrame, 0);
                 Grid_SendMsg.Visibility = Visibility.Collapsed;
                 Splitter_v.Visibility = Visibility.Collapsed;
                 TestView.Visibility = Visibility.Collapsed;
@@ -157,6 +159,8 @@ namespace ETCRegionManagementSimulator
             else
             {
                 Grid.SetColumnSpan(ContentFrame, 1);
+                Grid.SetRowSpan(ContentFrame,1);
+                Grid.SetRow(ContentFrame,1);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {

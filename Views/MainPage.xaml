@@ -43,8 +43,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="17*"/>
-                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
                 <ListView
@@ -64,7 +64,7 @@
 
                 <Frame
                     Grid.Column="0"
-                    Grid.Row="0"
+                    Grid.Row="1"
                     x:Name="ContentFrame"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch" Navigated="ContentFrame_Navigated"/>
@@ -82,6 +82,7 @@
                 <!-- Main Content -->
                 <Grid
                     Grid.Column="2"
+                    Grid.RowSpan="2"
                     x:Name="Grid_SendMsg">
 
                     <Grid.RowDefinitions>
