@@ -120,23 +120,37 @@
   <data name="Btn_Connect.Content" xml:space="preserve">
     <value>一括接続</value>
   </data>
+  <data name="Btn_FilePicker.Content" xml:space="preserve">
+    <value>参照</value>
+  </data>
+  <data name="Btn_SelectAll.Content" xml:space="preserve">
+    <value>全体選択</value>
+  </data>
+  <data name="Btn_SendMsg.Content" xml:space="preserve">
+    <value>電文送信</value>
+  </data>
   <data name="CLIENT_HEALTH_CHECK" xml:space="preserve">
     <value>ヘルスチェック(クライアント)</value>
   </data>
   <data name="ConnectionPortNo1.Text" xml:space="preserve">
-    <value>データ回線(上り)</value>
+    <value>制御回線</value>
+    <comment>制御回線</comment>
   </data>
   <data name="ConnectionPortNo2.Text" xml:space="preserve">
-    <value>ヘルスチェック(サーバー)</value>
+    <value>ヘルスチェック(クライアント)</value>
+    <comment>ヘルスチェック(クライアント)</comment>
   </data>
   <data name="ConnectionPortNo3.Text" xml:space="preserve">
     <value>データ回線(下り)</value>
+    <comment>データ回線(下り)</comment>
   </data>
   <data name="ConnectionPortNo4.Text" xml:space="preserve">
-    <value>ヘルスチェック(クライアント)</value>
+    <value>ヘルスチェック(サーバー)</value>
+    <comment>ヘルスチェック(サーバー)</comment>
   </data>
   <data name="ConnectionPortNo5.Text" xml:space="preserve">
-    <value>制御回線</value>
+    <value>データ回線(上り)</value>
+    <comment>データ回線(上り)</comment>
   </data>
   <data name="CONTROL_LINE" xml:space="preserve">
     <value>制御回線</value>
@@ -297,8 +311,23 @@
   <data name="Log_OnUpLinkDataSendFail" xml:space="preserve">
     <value>データ回線(上り)送信失敗</value>
   </data>
+  <data name="On_PortConnected" xml:space="preserve">
+    <value>接続開始</value>
+  </data>
+  <data name="On_PortDisconnected" xml:space="preserve">
+    <value>接続完了</value>
+  </data>
+  <data name="Rad_AutoReply.Header" xml:space="preserve">
+    <value>受信電文自動応答</value>
+  </data>
+  <data name="Rad_AutoSendNo.Header" xml:space="preserve">
+    <value>伝送連番自動採番</value>
+  </data>
   <data name="SERVER_HEALTH_CHECK" xml:space="preserve">
     <value>ヘルスチェック(サーバー)</value>
+  </data>
+  <data name="Tag_FileName.Text" xml:space="preserve">
+    <value>ファイル名</value>
   </data>
   <data name="Tag_LocalIP.Text" xml:space="preserve">
     <value>本機IPアドレス</value>

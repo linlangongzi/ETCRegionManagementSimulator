@@ -142,11 +142,25 @@ namespace ETCRegionManagementSimulator
             {
                 //    /// TODO: update UI element with the messages here
                 //    currentPage.SourceMessages.Add(new MessageViewModel() { Message = message });
-                testSource.Add($" {resourceLoader.GetString(senderId)} {resourceLoader.GetString("Log_OnReceiveComplete")}: {message}");
-
-                foreach(var t in testSource)
+                lock (testSource)
                 {
-                    Debug.WriteLine($" Test source messages: {t} \n");
+                    ///TO DO - presisting bug 
+                    /*System.InvalidOperationException
+    HResult=0x80131509
+    Message=Cannot change ObservableCollection during a CollectionChanged event.
+    Source=System.ObjectModel
+    StackTrace:
+    at System.Collections.ObjectModel.ObservableCollection`1.CheckReentrancy()
+    at System.Collections.ObjectModel.ObservableCollection`1.InsertItem(Int32 index, T item)
+    at System.Collections.ObjectModel.Collection`1.Add(T item)
+    at ETCRegionManagementSimulator.MainPage.<>c__DisplayClass24_0.<UpdateClientPageMessageView>b__0() in C:\Users\BP-machiyu\RegionalSimuProj\ETCRegionManagementSimulator\Views\MainPage.xaml.cs:line 147
+    */
+                    testSource.Add($" {resourceLoader.GetString(senderId)} {resourceLoader.GetString("Log_OnReceiveComplete")}: {message}");
+
+                    foreach (var t in testSource)
+                    {
+                        Debug.WriteLine($" Test source messages: {t} \n");
+                    }
                 }
             });
         }
@@ -167,7 +181,7 @@ namespace ETCRegionManagementSimulator
             {
                 Grid.SetColumnSpan(ContentFrame, 1);
                 Grid.SetRowSpan(ContentFrame,1);
-                Grid.SetRow(ContentFrame,1);
+                Grid.SetRow(ContentFrame,0);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {

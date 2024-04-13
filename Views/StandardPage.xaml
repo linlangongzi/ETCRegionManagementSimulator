@@ -28,7 +28,7 @@
                         Text="{x:Bind Message }"
                         TextAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="50"
+                        FontSize="20"
                         />
                 </DataTemplate>
             </ListView.ItemTemplate>
