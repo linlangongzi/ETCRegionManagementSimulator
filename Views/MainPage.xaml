@@ -66,6 +66,8 @@
                 <Frame
                     Grid.Column="0"
                     Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Grid.RowSpan="2"
                     x:Name="ContentFrame"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"/>
@@ -80,13 +82,17 @@
                     Background="LightGray"
                     FocusVisualPrimaryBrush="LightGray"
                     Foreground="LightGray"
-                    Opacity="0.05"/>
+                    Opacity="0.05"
+                    Visibility="Collapsed"/>
 
                 <!-- Main Content -->
                 <Grid
+                    x:Name="MainView"
                     Grid.Column="2"
                     Grid.RowSpan="2"
-                    x:Name="Grid_SendMsg">
+                    
+                    Visibility="Collapsed"
+>
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
