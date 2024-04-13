@@ -144,10 +144,10 @@ namespace ETCRegionManagementSimulator
                 //    currentPage.SourceMessages.Add(new MessageViewModel() { Message = message });
                 testSource.Add(message);
 
-                foreach(var t in testSource)
-                {
-                    Debug.WriteLine($" Test source messages: {t} \n");
-                }
+                //foreach (string t in testSource)
+                //{
+                //    Debug.WriteLine($" Test source messages: {t} \n");
+                //}
             });
         }
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
