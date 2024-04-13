@@ -142,10 +142,12 @@ namespace ETCRegionManagementSimulator
             {
                 //    /// TODO: update UI element with the messages here
                 //    currentPage.SourceMessages.Add(new MessageViewModel() { Message = message });
-                lock (testSource)
-                {
-                    testSource.Add($" {resourceLoader.GetString(senderId)} {resourceLoader.GetString("Log_OnReceiveComplete")}: {message}");
-                }
+                testSource.Add(message);
+
+                //foreach (string t in testSource)
+                //{
+                //    Debug.WriteLine($" Test source messages: {t} \n");
+                //}
             });
         }
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
