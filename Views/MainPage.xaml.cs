@@ -156,18 +156,10 @@ namespace ETCRegionManagementSimulator
             if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(SettingPage),settingPage);
-                Grid.SetColumnSpan(ContentFrame, 3);
-                Grid.SetRowSpan(ContentFrame, 2);
-                Grid.SetRow(ContentFrame, 0);
-                Grid_SendMsg.Visibility = Visibility.Collapsed;
-                Splitter_v.Visibility = Visibility.Collapsed;
                 TestView.Visibility = Visibility.Collapsed;
             }
             else
             {
-                Grid.SetColumnSpan(ContentFrame, 1);
-                Grid.SetRowSpan(ContentFrame,1);
-                Grid.SetRow(ContentFrame,0);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {
@@ -175,9 +167,6 @@ namespace ETCRegionManagementSimulator
                     StandardPage currentPage = (StandardPage)ClientPageFactory.Instance.GetPageById(v);
                     ContentFrame.Navigate(typeof(StandardPage), v);
                 }
-                //selectedItem.Name.ToString()
-                Grid_SendMsg.Visibility = Visibility.Visible;
-                Splitter_v.Visibility = Visibility.Visible;
                 TestView.Visibility = Visibility.Visible;
             }
         }
@@ -185,8 +174,7 @@ namespace ETCRegionManagementSimulator
         {
             //MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
             var setting = (NavigationViewItem)MainNavigation.SettingsItem;
-            ///TODO migrate the JIS content to dictionary
-            setting.Content = "設定";
+            setting.Content = $"{resourceLoader.GetString("Nav_Settings")}";
         }
 
         private void Dispose(bool disposing)
