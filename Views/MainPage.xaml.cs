@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
@@ -34,13 +35,12 @@ namespace ETCRegionManagementSimulator
         private bool disposedValue;
 
         private Server server;
-
         /// TODO: Implementa central event aggregator to manage All the EventHandlers in the future release 
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
         public static event EventHandler<SendSelectedDataEventArgs> SendSelectedData;
 
         public ObservableCollection<string> testSource { get; } = new ObservableCollection<string>();
-
+        ResourceLoader resourceLoader;
         public MainPage()
         {
             InitializeComponent();
@@ -62,7 +62,7 @@ namespace ETCRegionManagementSimulator
             excelService = new ExcelReader();
 
             ExcelDataController controller = new ExcelDataController(model, view, excelService);
-            
+            resourceLoader= ResourceLoader.GetForCurrentView();
         }
 
         //private void OnMainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -167,7 +167,7 @@ namespace ETCRegionManagementSimulator
             {
                 Grid.SetColumnSpan(ContentFrame, 1);
                 Grid.SetRowSpan(ContentFrame,1);
-                Grid.SetRow(ContentFrame,1);
+                Grid.SetRow(ContentFrame,0);
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {
@@ -262,12 +262,15 @@ namespace ETCRegionManagementSimulator
                     Debug.WriteLine($"file {file.Path} not exist");
                 }
             }
+
         }
 
         private void Listbox_SheetsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedSheetName = listbox_SheetsList.SelectedItem.ToString();
             SheetSelected?.Invoke(this, new SheetSelectedEventArgs(selectedSheetName));
+            excelDataGrid.Visibility = Visibility.Visible;
+
         }
 
         public void UpdateView()
@@ -300,7 +303,8 @@ namespace ETCRegionManagementSimulator
                 /// TODO: Use Share Model to Send Data in future release!
                 /// Priority: High!
                 SendSelectedData?.Invoke(this, new SendSelectedDataEventArgs(index, d.FullFrameDataSummary));
-                testSource.Add("Data Sent: " + d.FullFrameDataSummary);
+                /// TODO REPLACE CLIENT ID
+                testSource.Add($" {resourceLoader.GetString("CONTROL_LINE")} {resourceLoader.GetString("Log_OnSendComplete")}: { d.FullFrameDataSummary}");
             }
         }
 

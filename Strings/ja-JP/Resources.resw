@@ -117,145 +117,225 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConnectionPortNo.1" xml:space="preserve">
-    <value>データ回線(上り)</value>
+  <data name="Btn_Connect.Content" xml:space="preserve">
+    <value>一括接続</value>
   </data>
-  <data name="ConnectionPortNo.2" xml:space="preserve">
-    <value>ヘルスチェック(サーバー)</value>
+  <data name="Btn_FilePicker.Content" xml:space="preserve">
+    <value>参照</value>
   </data>
-  <data name="ConnectionPortNo.3" xml:space="preserve">
-    <value>データ回線(下り)</value>
+  <data name="Btn_SelectAll.Content" xml:space="preserve">
+    <value>全体選択</value>
   </data>
-  <data name="ConnectionPortNo.4" xml:space="preserve">
+  <data name="Btn_SendMsg.Content" xml:space="preserve">
+    <value>電文送信</value>
+  </data>
+  <data name="CLIENT_HEALTH_CHECK" xml:space="preserve">
     <value>ヘルスチェック(クライアント)</value>
   </data>
-  <data name="ConnectionPortNo.5" xml:space="preserve">
+  <data name="ConnectionPortNo1.Text" xml:space="preserve">
+    <value>制御回線</value>
+    <comment>制御回線</comment>
+  </data>
+  <data name="ConnectionPortNo2.Text" xml:space="preserve">
+    <value>ヘルスチェック(クライアント)</value>
+    <comment>ヘルスチェック(クライアント)</comment>
+  </data>
+  <data name="ConnectionPortNo3.Text" xml:space="preserve">
+    <value>データ回線(下り)</value>
+    <comment>データ回線(下り)</comment>
+  </data>
+  <data name="ConnectionPortNo4.Text" xml:space="preserve">
+    <value>ヘルスチェック(サーバー)</value>
+    <comment>ヘルスチェック(サーバー)</comment>
+  </data>
+  <data name="ConnectionPortNo5.Text" xml:space="preserve">
+    <value>データ回線(上り)</value>
+    <comment>データ回線(上り)</comment>
+  </data>
+  <data name="CONTROL_LINE" xml:space="preserve">
     <value>制御回線</value>
   </data>
+  <data name="DATA_DOWNSTREAM_LINE" xml:space="preserve">
+    <value>データ回線(下り)</value>
+  </data>
+  <data name="DATA_UPSTREAM_LINE" xml:space="preserve">
+    <value>データ回線(上り)</value>
+  </data>
   <data name="Log_ConnectBegin" xml:space="preserve">
-    <value>******料金所サーバーへ接続開始******</value>
+    <value>料金所サーバーへ接続開始</value>
   </data>
   <data name="Log_ConnectComplete" xml:space="preserve">
-    <value>******料金所サーバーへ接続完了******</value>
+    <value>料金所サーバーへ接続完了</value>
   </data>
   <data name="Log_OnClientHealthCheckConnectFail" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)接続失敗ので接続リトライ******</value>
+    <value>ヘルスチェック(クライアント)接続失敗ので接続リトライ</value>
   </data>
   <data name="Log_OnClientHealthCheckConnectSuccess" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)接続成功******</value>
+    <value>ヘルスチェック(クライアント)接続成功</value>
+  </data>
+  <data name="Log_OnClientHealthCheckDisconnect" xml:space="preserve">
+    <value>ヘルスチェック(クライアント)接続切断</value>
   </data>
   <data name="Log_OnClientHealthCheckReceive" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)受信開始******</value>
+    <value>ヘルスチェック(クライアント)受信開始</value>
   </data>
   <data name="Log_OnClientHealthCheckReceiveComplete" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)受信完了******</value>
+    <value>ヘルスチェック(クライアント)受信完了</value>
   </data>
   <data name="Log_OnClientHealthCheckReceiveFail" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)受信失敗******</value>
+    <value>ヘルスチェック(クライアント)受信失敗</value>
   </data>
   <data name="Log_OnClientHealthCheckSend" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)送信開始******</value>
+    <value>ヘルスチェック(クライアント)送信開始</value>
   </data>
   <data name="Log_OnClientHealthCheckSendComplete" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)送信完了******</value>
+    <value>ヘルスチェック(クライアント)送信完了</value>
   </data>
   <data name="Log_OnClientHealthCheckSendFail" xml:space="preserve">
-    <value>******ヘルスチェック(クライアント)送信失敗******</value>
+    <value>ヘルスチェック(クライアント)送信失敗</value>
+  </data>
+  <data name="Log_OnConnectionClose" xml:space="preserve">
+    <value>料金所サーバーへ接続切断</value>
   </data>
   <data name="Log_OnControlConnectFail" xml:space="preserve">
-    <value>******制御回線接続失敗ので接続リトライ******</value>
+    <value>制御回線接続失敗ので接続リトライ</value>
   </data>
   <data name="Log_OnControlConnectSuccess" xml:space="preserve">
-    <value>******制御回線接続成功******</value>
+    <value>制御回線接続成功</value>
+  </data>
+  <data name="Log_OnControlDisconnect" xml:space="preserve">
+    <value>制御回線接続切断</value>
   </data>
   <data name="Log_OnControlReceive" xml:space="preserve">
-    <value>******制御回線受信開始******</value>
+    <value>制御回線受信開始</value>
   </data>
   <data name="Log_OnControlReceiveComplete" xml:space="preserve">
-    <value>******制御回線受信完了******</value>
+    <value>制御回線受信完了</value>
   </data>
   <data name="Log_OnControlReceiveFail" xml:space="preserve">
-    <value>******制御回線受信失敗******</value>
+    <value>制御回線受信失敗</value>
   </data>
   <data name="Log_OnControlSend" xml:space="preserve">
-    <value>******制御回線送信開始******</value>
+    <value>制御回線送信開始</value>
   </data>
   <data name="Log_OnControlSendComplete" xml:space="preserve">
-    <value>******制御回線送信完了******</value>
+    <value>制御回線送信完了</value>
   </data>
   <data name="Log_OnControlSendFail" xml:space="preserve">
-    <value>******制御回線送信失敗******</value>
+    <value>制御回線送信失敗</value>
   </data>
   <data name="Log_OnDownLinkDataConnectFail" xml:space="preserve">
-    <value>******データ回線(下り)接続失敗ので接続リトライ******</value>
+    <value>データ回線(下り)接続失敗ので接続リトライ</value>
   </data>
   <data name="Log_OnDownLinkDataConnectSuccess" xml:space="preserve">
-    <value>******データ回線(下り)接続成功******</value>
+    <value>データ回線(下り)接続成功</value>
+  </data>
+  <data name="Log_OnDownLinkDataDisconnect" xml:space="preserve">
+    <value>データ回線(下り)接続切断</value>
   </data>
   <data name="Log_OnDownLinkDataReceive" xml:space="preserve">
-    <value>******データ回線(下り)受信開始******</value>
+    <value>データ回線(下り)受信開始</value>
   </data>
   <data name="Log_OnDownLinkDataReceiveComplete" xml:space="preserve">
-    <value>******データ回線(下り)受信完了******</value>
+    <value>データ回線(下り)受信完了</value>
   </data>
   <data name="Log_OnDownLinkDataReceiveFail" xml:space="preserve">
-    <value>******データ回線(下り)受信失敗******</value>
+    <value>データ回線(下り)受信失敗</value>
   </data>
   <data name="Log_OnDownLinkDataSend" xml:space="preserve">
-    <value>******データ回線(下り)送信開始******</value>
+    <value>データ回線(下り)送信開始</value>
   </data>
   <data name="Log_OnDownLinkDataSendComplete" xml:space="preserve">
-    <value>******データ回線(下り)送信完了******</value>
+    <value>データ回線(下り)送信完了</value>
   </data>
   <data name="Log_OnDownLinkDataSendFail" xml:space="preserve">
-    <value>******データ回線(下り)送信失敗******</value>
+    <value>データ回線(下り)送信失敗</value>
+  </data>
+  <data name="Log_OnReceiveComplete" xml:space="preserve">
+    <value>受信電文</value>
+  </data>
+  <data name="Log_OnSendComplete" xml:space="preserve">
+    <value>送信電文</value>
   </data>
   <data name="Log_OnServerHealthCheckConnectFail" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)接続失敗ので接続リトライ******</value>
+    <value>ヘルスチェック(サーバー)接続失敗ので接続リトライ</value>
   </data>
   <data name="Log_OnServerHealthCheckConnectSuccess" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)接続成功******</value>
+    <value>ヘルスチェック(サーバー)接続成功</value>
+  </data>
+  <data name="Log_OnServerHealthCheckDisconnect" xml:space="preserve">
+    <value>ヘルスチェック(サーバー)接続切断</value>
   </data>
   <data name="Log_OnServerHealthCheckReceive" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)受信開始******</value>
+    <value>ヘルスチェック(サーバー)受信開始</value>
   </data>
   <data name="Log_OnServerHealthCheckReceiveComplete" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)受信完了******</value>
+    <value>ヘルスチェック(サーバー)受信完了</value>
   </data>
   <data name="Log_OnServerHealthCheckReceiveFail" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)受信失敗******</value>
+    <value>ヘルスチェック(サーバー)受信失敗</value>
   </data>
   <data name="Log_OnServerHealthCheckSend" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)送信開始******</value>
+    <value>ヘルスチェック(サーバー)送信開始</value>
   </data>
   <data name="Log_OnServerHealthCheckSendComplete" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)送信完了******</value>
+    <value>ヘルスチェック(サーバー)送信完了</value>
   </data>
   <data name="Log_OnServerHealthCheckSendFail" xml:space="preserve">
-    <value>******ヘルスチェック(サーバー)送信失敗******</value>
+    <value>ヘルスチェック(サーバー)送信失敗</value>
   </data>
   <data name="Log_OnUpLinkDataConnectFail" xml:space="preserve">
-    <value>******データ回線(上り)接続失敗ので接続リトライ******</value>
+    <value>データ回線(上り)接続失敗ので接続リトライ</value>
   </data>
   <data name="Log_OnUpLinkDataConnectSuccess" xml:space="preserve">
-    <value>******データ回線(上り)接続成功******</value>
+    <value>データ回線(上り)接続成功</value>
+  </data>
+  <data name="Log_OnUpLinkDataDisconnect" xml:space="preserve">
+    <value>データ回線(上り)接続切断</value>
   </data>
   <data name="Log_OnUpLinkDataReceive" xml:space="preserve">
-    <value>******データ回線(上り)受信開始******</value>
+    <value>データ回線(上り)受信開始</value>
   </data>
   <data name="Log_OnUpLinkDataReceiveComplete" xml:space="preserve">
-    <value>******データ回線(上り)受信成功******</value>
+    <value>データ回線(上り)受信成功</value>
   </data>
   <data name="Log_OnUpLinkDataReceiveFail" xml:space="preserve">
-    <value>******データ回線(上り)受信失敗******</value>
+    <value>データ回線(上り)受信失敗</value>
   </data>
   <data name="Log_OnUpLinkDataSend" xml:space="preserve">
-    <value>******データ回線(上り)送信開始******</value>
+    <value>データ回線(上り)送信開始</value>
   </data>
   <data name="Log_OnUpLinkDataSendComplete" xml:space="preserve">
-    <value>******データ回線(上り)送信成功******</value>
+    <value>データ回線(上り)送信成功</value>
   </data>
   <data name="Log_OnUpLinkDataSendFail" xml:space="preserve">
-    <value>******データ回線(上り)送信失敗******</value>
+    <value>データ回線(上り)送信失敗</value>
+  </data>
+  <data name="On_PortConnected" xml:space="preserve">
+    <value>接続開始</value>
+  </data>
+  <data name="On_PortDisconnected" xml:space="preserve">
+    <value>接続完了</value>
+  </data>
+  <data name="Rad_AutoReply.Header" xml:space="preserve">
+    <value>受信電文自動応答</value>
+  </data>
+  <data name="Rad_AutoSendNo.Header" xml:space="preserve">
+    <value>伝送連番自動採番</value>
+  </data>
+  <data name="SERVER_HEALTH_CHECK" xml:space="preserve">
+    <value>ヘルスチェック(サーバー)</value>
+  </data>
+  <data name="Tag_FileName.Text" xml:space="preserve">
+    <value>ファイル名</value>
+  </data>
+  <data name="Tag_LocalIP.Text" xml:space="preserve">
+    <value>本機IPアドレス</value>
+  </data>
+  <data name="Tag_PortNoPlaceholder.Text" xml:space="preserve">
+    <value>ポート番号</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>地域サーバシミュレータ</value>
   </data>
 </root>

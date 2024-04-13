@@ -49,7 +49,8 @@
 
                 <ListView
                     x:Name="TestView"
-                    Grid.Row="0"
+                    Grid.Row="1"
+                    Grid.Column="0"
                     ItemsSource="{x:Bind testSource, Mode=OneWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -64,7 +65,7 @@
 
                 <Frame
                     Grid.Column="0"
-                    Grid.Row="1"
+                    Grid.Row="0"
                     x:Name="ContentFrame"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"/>
@@ -107,7 +108,7 @@
 
                             <TextBlock
                                 Grid.Column="0"
-                                Text="ファイル名"
+                                x:Uid="Tag_FileName"
                                 VerticalAlignment="Center"/>
 
                             <TextBox
@@ -124,7 +125,7 @@
                                 ui:Effects.Shadow="{StaticResource CommonShadow}"
                                 x:Name="button_filePicker"
                                 Grid.Column="2"
-                                Content="参照"
+                                x:Uid="Btn_FilePicker"
                                 Margin="5"
                                 Click="button_FilePicker_OnClick"
                                 Background="#FFCFCFCF"
@@ -147,9 +148,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 SelectionChanged="Listbox_SheetsList_SelectionChanged"
                                 Background="White">
-                                <ListBox.Shadow>
-                                    <ThemeShadow/>
-                                </ListBox.Shadow>
                                 <!-- ListBox Items -->
                             </ListBox>
                         </Grid>
@@ -167,13 +165,17 @@
 
                     <Grid Grid.Row="2" 
                         Margin="20,10">
-                            <Grid  ui:Effects.Shadow="{StaticResource CommonShadow}" CornerRadius="5,5,5,5">
+                            <Grid  ui:Effects.Shadow="{StaticResource CommonShadow}" 
+                                   CornerRadius="5,5,5,5"
+                                   Background="White">
                                 <controls:DataGrid x:Name="excelDataGrid"
                                                    HorizontalAlignment="Stretch"
                                                    VerticalAlignment="Stretch"
                                                    SelectionChanged="excelDataGrid_SelectionChanged"
                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="White">
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                                   Background="White"
+                                                   Visibility="Collapsed">
                                     <controls:DataGrid.Shadow>
                                         <ThemeShadow/>
                                     </controls:DataGrid.Shadow>
@@ -192,19 +194,19 @@
 
                         <ToggleSwitch
                             Grid.Column="0"
-                            Header="伝送連番自動採番"
+                            x:Uid="Rad_AutoSendNo"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"/>
                         <ToggleSwitch
                             Grid.Column="1"
-                            Header="受信電文自動応答"
+                            x:Uid="Rad_AutoReply"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"/>
 
                         <Button
                             ui:Effects.Shadow="{StaticResource CommonShadow}"
                             Grid.Column="2"
-                            Content="全体選択"
+                            x:Uid="Btn_SelectAll"
                             Margin="5"
                             Background="#FFCFCFCF"
                             CornerRadius="3,3,3,3"/>
@@ -212,7 +214,7 @@
                         <Button
                             x:Name="SendRow"
                             Grid.Column="3"
-                            Content="電文送信"
+                            x:Uid="Btn_SendMsg"
                             Margin="5"
                             Background="#FFCFCFCF"
                             Click="SendRow_Click"
@@ -228,23 +230,26 @@
                        VerticalAlignment="Center"
                        TextAlignment="Center" 
                        x:Name="TB_LocalHostIP"
+                       HorizontalAlignment="Right"
                        Text="本機IP:               ."/>
             <TextBlock Padding="10,0,10,0"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
                        x:Name="TB_OpenPorts"
+                       HorizontalAlignment="Right"
                        Text="オーペンポート:[                             ]."/>
             <TextBlock Padding="10,0,10,0"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
                        x:Name="TB_Remote_Client"
+                       HorizontalAlignment="Right"
                        Text="クライアント:                     ."/>
             <SymbolIcon Height=" 20" 
                         Width="27" 
                         VerticalAlignment="Center"
                         Symbol="DisconnectDrive" 
                         x:Name="ConnectionIndicator"
-></SymbolIcon>
+                        HorizontalAlignment="Right"/>
         </StackPanel>
     </Grid>
 </Page>
