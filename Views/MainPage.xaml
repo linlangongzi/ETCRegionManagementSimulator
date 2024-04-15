@@ -170,18 +170,16 @@
                             <Grid  ui:Effects.Shadow="{StaticResource CommonShadow}" 
                                    CornerRadius="5,5,5,5"
                                    Background="White">
-                                <controls:DataGrid x:Name="excelDataGrid"
+                            <controls:DataGrid x:Name="excelDataGrid"
                                                    HorizontalAlignment="Stretch"
                                                    VerticalAlignment="Stretch"
                                                    SelectionChanged="excelDataGrid_SelectionChanged"
                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                    ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                                   Background="White"
-                                                   >
-                                    <controls:DataGrid.Shadow>
-                                        <ThemeShadow/>
-                                    </controls:DataGrid.Shadow>
-                                </controls:DataGrid>
+                                                   AutoGenerateColumns="True"
+                                                   AutoGeneratingColumn="excelDataGrid_AutoGeneratingColumn"
+                                                   Background="White">
+                            </controls:DataGrid>
                             </Grid>
                     </Grid>
 

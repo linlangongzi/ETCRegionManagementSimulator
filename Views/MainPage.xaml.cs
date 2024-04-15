@@ -311,5 +311,29 @@ namespace ETCRegionManagementSimulator
 
         }
 
+        private void excelDataGrid_AutoGeneratingColumn(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
+        {
+            switch (e.Column.Header.ToString())
+            {
+                case "FrameDataNo":
+                    e.Column.Header = "No";
+                    break;
+                case "FrameDataTitle":
+                    e.Column.Header = "Title";
+                    break;
+                case "FrameDataLength":
+                    e.Column.Header = "Length";
+                    break;
+                case "FrameCommonHeaderSummary":
+                    e.Column.Header = "CommonHeader";
+                    break;
+                case "FrameContentSummary":
+                    e.Column.Header = "Content";
+                    break;
+                case "FullFrameDataSummary":
+                    e.Column.Header = "FrameData";
+                    break;
+            }
+        }
     }
 }
