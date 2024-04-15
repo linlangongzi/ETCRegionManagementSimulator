@@ -153,23 +153,22 @@ namespace ETCRegionManagementSimulator
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             //TODO: Remove IsSettingsSelected check
-            if (args.IsSettingsSelected)
-            {
-                ContentFrame.Navigate(typeof(SettingPage),settingPage);
-                TestView.Visibility = Visibility.Collapsed;
-            }
-            else
+            if (!args.IsSettingsSelected)
             {
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {
                     string v = selectedItem.Content.ToString();
                     StandardPage currentPage = (StandardPage)ClientPageFactory.Instance.GetPageById(v);
-                    ContentFrame.Navigate(typeof(StandardPage), v);
+                    _ = ContentFrame.Navigate(typeof(StandardPage), v);
                 }
-                TestView.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ContentFrame.Navigate(typeof(SettingPage), settingPage);
             }
         }
+
         private void MainNavigation_OnLoaded(object sender, RoutedEventArgs e)
         {
             //MainNavigation.SelectedItem = MainNavigation.MenuItems[0];

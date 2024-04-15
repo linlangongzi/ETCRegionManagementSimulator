@@ -11,7 +11,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <ui:AttachedDropShadow x:Key="CommonShadow" Offset="0" CastTo="{x:Bind ShadowTarget}" BlurRadius="10" Opacity="0.1"/>
+        <ui:AttachedDropShadow x:Key="CommonShadow" Offset="2" CastTo="{x:Bind ShadowTarget}" BlurRadius="16" Opacity="0.3"/>
     </Page.Resources>
 
     <Grid>
@@ -83,17 +83,13 @@
                     FocusVisualPrimaryBrush="LightGray"
                     Foreground="LightGray"
                     Opacity="0.05"
-                    Visibility="Collapsed"/>
+                    />
 
                 <!-- Main Content -->
                 <Grid
                     x:Name="MainView"
                     Grid.Column="2"
-                    Grid.RowSpan="2"
-                    
-                    Visibility="Collapsed"
->
-
+                    Grid.RowSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -181,7 +177,7 @@
                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                    ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                                                    Background="White"
-                                                   Visibility="Collapsed">
+                                                   >
                                     <controls:DataGrid.Shadow>
                                         <ThemeShadow/>
                                     </controls:DataGrid.Shadow>

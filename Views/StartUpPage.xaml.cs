@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ETCRegionManagementSimulator.Utilities;
+using System;
 using System.Net;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -53,6 +54,7 @@ namespace ETCRegionManagementSimulator
                 server.Running = true;
                 serverRunningState = true;
                 System.Diagnostics.Debug.WriteLine($"Server started successfully ");
+                runPython();
             }
             else
             {
@@ -66,6 +68,12 @@ namespace ETCRegionManagementSimulator
                 _ = Frame.Navigate(typeof(MainPage), server);
             }
             updateUI(serverRunningState);
+        }
+        private void runPython()
+        {
+            string filepath = "D:\\MyPythonTools\\CSTest\\Client.py";
+            string argv = "127.0.0.1 5000";
+            PythonRunner.RunPythonScript(filepath, argv);
         }
 
         private void updateUI(bool isServerRunning)

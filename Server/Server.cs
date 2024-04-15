@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
@@ -84,7 +83,7 @@ namespace ETCRegionManagementSimulator
             if (!Running)
             {
                 Running = true;
-                foreach(int port in ports)
+                foreach (int port in ports)
                 {
                     TcpListener listener = new TcpListener(defaultIPAddress, port);
                     listener.Start();

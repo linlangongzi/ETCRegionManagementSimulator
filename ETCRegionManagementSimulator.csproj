@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ETCRegionManagementSimulator</RootNamespace>
     <AssemblyName>ETCRegionManagementSimulator</AssemblyName>
-    <DefaultLanguage>ja-JP</DefaultLanguage>
+    <DefaultLanguage>ja-jp</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
@@ -139,6 +139,7 @@
     <Compile Include="Models\ExcelDataModel.cs" />
     <Compile Include="Utilities\ExcelDisplayAdaptor.cs" />
     <Compile Include="Utilities\FixedColumnIndex.cs" />
+    <Compile Include="Utilities\PythonRunner.cs" />
     <Compile Include="ViewModels\ByteRowModel.cs" />
     <Compile Include="ViewModels\DisplayModel.cs" />
     <Compile Include="Server\Client.cs" />
@@ -183,6 +184,7 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Scripts\Client.py" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App\App.xaml">
@@ -218,7 +220,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\ja-JP\Resources.resw" />
+    <PRIResource Include="Strings\ja-jp\Resources.resw" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
