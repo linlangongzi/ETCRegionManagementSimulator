@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -11,57 +12,35 @@ namespace ETCRegionManagementSimulator
 {
     public class BackUpServer : IDisposable
     {
-        private readonly IPAddress mainServerIp = IPAddress.Loopback;
-        private readonly int checkInterval;
-        private bool mainServerActiveState = true;
-
         private bool disposedValue;
 
-        public BackUpServer(IPAddress mainServerIp, int checkIntervalSeconds = 5)
+        private readonly IPAddress backupServerIp;
+        private int backupServerPort;
+        private readonly int heartbeatInterval;
+
+        private HeartbeatReceiver heartbeatReceiver;
+        private HeartbeatSender heartbeatSender;
+        private CancellationTokenSource cancellationTokenSource;
+
+        public BackUpServer(IPAddress mainServerIp, IPAddress backupIp, int port, int heartbeatIntervalSeconds = 5)
         {
-            this.mainServerIp = mainServerIp;
-            checkInterval = checkIntervalSeconds;
+            this.backupServerIp = backupIp;
+            this.backupServerPort = port;
+            this.heartbeatInterval = heartbeatIntervalSeconds;
+            this.cancellationTokenSource = new CancellationTokenSource();
+            this.heartbeatReceiver = new HeartbeatReceiver(port, heartbeatInterval);
+            this.heartbeatSender = new HeartbeatSender(mainServerIp, port, heartbeatInterval);
         }
 
-        // Start monitoring the main servver
-        public void StartMonitoring()
+        public void StartMainServerMonitoring()
         {
-            Thread monitorThread = new Thread(new ThreadStart(MonitorMainServer));
-            monitorThread.Start();
+            heartbeatReceiver.StartListening();
+            heartbeatSender.StartSending();
         }
-
-        private void MonitorMainServer()
-        {
-            while (true)
-            {
-                mainServerActiveState = CheckServerStatus(mainServerIp);
-                if (!mainServerActiveState)
-                {
-                    ActivateBackupOperations();
-                    break;
-                }
-                Thread.Sleep(checkInterval * 1000);
-            }
-        }
-
-        private bool CheckServerStatus(IPAddress ip)
-        {
-            try
-            {
-                Ping ping = new Ping();
-                PingReply reply = ping.Send(ip, 1000);
-                return reply.Status == IPStatus.Success;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private void ActivateBackupOperations()
         {
 
-            Console.WriteLine("Main server is down. Backup server taking over.");
+            Debug.WriteLine("Main server is down. Backup server taking over.");
             // Implement the logic to start handling requests that were handled by the main server.
             // This might involve starting certain services, changing DNS entries, etc.
         }
@@ -69,8 +48,7 @@ namespace ETCRegionManagementSimulator
         // Method to simulate main server recovery
         public void MainServerRecovered()
         {
-            mainServerActiveState = true;
-            Console.WriteLine("Main server has recovered. Switching back to main server operations.");
+            Debug.WriteLine("Main server has recovered. Switching back to main server operations.");
             // Implement the logic to switch back operations to the main server.
             // This might involve re-synchronizing data or other state details.
         }
@@ -81,11 +59,14 @@ namespace ETCRegionManagementSimulator
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    cancellationTokenSource?.Dispose();
+                    heartbeatReceiver?.Dispose();
+                    heartbeatSender?.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
+                heartbeatReceiver = null;
+                heartbeatSender = null;
+                cancellationTokenSource = null;
                 disposedValue = true;
             }
         }
