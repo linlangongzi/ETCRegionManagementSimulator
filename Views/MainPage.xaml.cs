@@ -256,8 +256,9 @@ namespace ETCRegionManagementSimulator
         {
             var selectedSheetName = listbox_SheetsList.SelectedItem.ToString();
             SheetSelected?.Invoke(this, new SheetSelectedEventArgs(selectedSheetName));
-            excelDataGrid.Visibility = Visibility.Visible;
-
+            int index = excelDataGrid.SelectedIndex;
+            ExcelRow excelRow = model.GetDataPerRowById(index + 1);
+            Debug.WriteLine($"----------LINE---: {excelRow.FrameContent}");
         }
 
         public void UpdateView()
@@ -319,7 +320,7 @@ namespace ETCRegionManagementSimulator
                     e.Column.Header = "No";
                     break;
                 case "FrameDataTitle":
-                    e.Column.Header = "Title";
+                    e.Column.Header = "Type";
                     break;
                 case "FrameDataLength":
                     e.Column.Header = "Length";

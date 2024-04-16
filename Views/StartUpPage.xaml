@@ -22,7 +22,7 @@
                    TextAlignment="Center" Margin="0,20,0,0"
                    />
 
-        <Grid Margin="0,105,0,266" HorizontalAlignment="Center" Width="559" Height="420">
+        <Grid Margin="0,110,0,250" HorizontalAlignment="Center" Width="560">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -70,17 +70,34 @@
                        HorizontalAlignment="Center"  
                        VerticalAlignment="Center"
                        />
-
-            <TextBlock x:Name="connectionPortFirst" 
-                       x:Uid="Tag_PortNoPlaceholder"
-                       Grid.Row="1" 
-                       Width="280" 
-                       Height="40" 
-                       Grid.Column="2"
-                       HorizontalAlignment="Center" 
-                       TextAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       HorizontalTextAlignment="Center" FontSize="20"/>
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="2"  
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                >
+                <TextBox x:Name="backupip_address" 
+                         PlaceholderText = "IP Address"
+                         Text="127.0.0.2" 
+                         Width="200" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"
+                         TextAlignment="Center"
+                         FontSize="20" 
+                         Height="40" 
+                         BorderThickness="0,0,0,2" />
+                <TextBlock x:Name="backupServerPort" 
+                           x:Uid="Tag_PortNoPlaceholder"
+                           Grid.Row="1" 
+                           Width="80" 
+                           Height="40" 
+                           Grid.Column="2"
+                           HorizontalAlignment="Center" 
+                           TextAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           HorizontalTextAlignment="Center" FontSize="20"/>
+            </StackPanel>
 
             <!-- Row 2 -->
             <TextBlock x:Name="tag_port_Copy" 
@@ -177,7 +194,7 @@
                        Grid.Column="2" FontSize="20"
                        />
         </Grid>
-        
+
         <Button x:Name="startServer" 
             Width="120"
             Height="120"

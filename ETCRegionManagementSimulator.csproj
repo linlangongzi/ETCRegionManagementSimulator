@@ -137,6 +137,9 @@
     <Compile Include="Interfaces\IExcelService.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
+    <Compile Include="Server\BackUpServer.cs" />
+    <Compile Include="Server\HeartbeatReceiver.cs" />
+    <Compile Include="Server\HeartbeatSender.cs" />
     <Compile Include="Utilities\ExcelDisplayAdaptor.cs" />
     <Compile Include="Utilities\FixedColumnIndex.cs" />
     <Compile Include="Utilities\PythonRunner.cs" />

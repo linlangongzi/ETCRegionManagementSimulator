@@ -6,7 +6,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace ETCRegionManagementSimulator
 {
@@ -24,7 +23,7 @@ namespace ETCRegionManagementSimulator
             server.Ports = Utility.GetAvailablePorts();
             mainPage = new MainPage();
 
-            connectionPortFirst.Text = server.Ports[0].ToString();
+            backupServerPort.Text = server.Ports[0].ToString();
             connectionPortSecond.Text = server.Ports[1].ToString();
             connectionPortThird.Text = server.Ports[2].ToString();
             connectionPortForth.Text = server.Ports[3].ToString();
