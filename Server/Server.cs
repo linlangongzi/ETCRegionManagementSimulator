@@ -251,7 +251,7 @@ namespace ETCRegionManagementSimulator
             }
         }
 
-        private void StopTasks()
+        public void StopTasks()
         {
             if (Running)
             {

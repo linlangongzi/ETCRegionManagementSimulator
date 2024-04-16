@@ -1,5 +1,6 @@
 ﻿using ETCRegionManagementSimulator.Utilities;
 using System;
+using System.Diagnostics;
 using System.Net;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -13,9 +14,13 @@ namespace ETCRegionManagementSimulator
     {
 
         private Server server;
+        private BackUpServer backupServer;
+
         private MainPage mainPage;
         private bool disposedValue;
 
+        private static bool backupServerRunningState = false;
+        private static bool serverRunningState = false;
         public StartUpPage()
         {
             this.InitializeComponent();
@@ -33,7 +38,6 @@ namespace ETCRegionManagementSimulator
 
         private async void OnStart(object sender, RoutedEventArgs e)
         {
-            bool serverRunningState = server.Running;
             if (!serverRunningState)
             {
                 string ipAddressStr = ip_address.Text.Trim();
@@ -52,27 +56,59 @@ namespace ETCRegionManagementSimulator
                 await server.Start();
                 server.Running = true;
                 serverRunningState = true;
-                System.Diagnostics.Debug.WriteLine($"Server started successfully ");
-                runPython();
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"Server is running {serverRunningState}");
-                //TO DO: Stop server.
-                //return;
-                
+                Debug.WriteLine($"Shut down the server");
+                serverRunningState = false;
+                server.StopTasks();
             }
+
             if (serverRunningState)
             {
                 _ = Frame.Navigate(typeof(MainPage), server);
             }
+
+            if (!backupServerRunningState)
+            {
+                StartBackupServer();
+            }
+            else
+            {
+                if (backupServer != null)
+                {
+                    Debug.WriteLine("Stop Backup Server \n");
+                    backupServer.StopMainServerMonitoring();
+                }
+            }
+            //runPython();
+
             updateUI(serverRunningState);
         }
+
         private void runPython()
         {
             string filepath = "D:\\MyPythonTools\\CSTest\\Client.py";
             string argv = "127.0.0.1 5000";
             PythonRunner.RunPythonScript(filepath, argv);
+        }
+
+
+        private void StartBackupServer()
+        {
+            Debug.WriteLine("Start Backup Server \n");
+            string backupServerIp = backupip_address.Text.Trim();
+            IPAddress backupIpAddr;
+            int backupPort = Utility.GetAvailablePorts()[1];
+            if (!IPAddress.TryParse(backupServerIp, out backupIpAddr))
+            {
+                Debug.WriteLine($" Backup Server IP : {backupServerIp} is an invalid ip address");
+            }
+
+            backupServer = new BackUpServer(server.DefaultIPAddress, backupIpAddr, backupPort);
+            backupServer.StartMainServerMonitoring();
+            backupServerRunningState = true;
+            System.Diagnostics.Debug.WriteLine($"Server started successfully ");
         }
 
         private void updateUI(bool isServerRunning)

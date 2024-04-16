@@ -12,64 +12,48 @@ namespace ETCRegionManagementSimulator
 {
     public class HeartbeatReceiver : IDisposable
     {
-        private readonly int listenPort;
-        private bool isMainServerAlive = true;
-        private readonly int heartbeatInterval;
-        private UdpClient listener;
+        private TcpListener listener;
+        private TcpClient client;
+        private NetworkStream stream;
+        private readonly int port;
+        private bool running = true;
         private Thread listenThread;
-        private IPEndPoint groupEP;
-        private CancellationTokenSource cancellationTokenSource;
+
 
         private bool disposedValue;
-        public HeartbeatReceiver(int port, int heartbeatIntervalSeconds = 5)
+        public HeartbeatReceiver(int listenPort)
         {
-            this.listenPort = port;
-            this.heartbeatInterval = heartbeatIntervalSeconds;
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.groupEP = new IPEndPoint(IPAddress.Any, listenPort);
+            this.port = listenPort;
+            listener = new TcpListener(IPAddress.Any, port);
         }
 
         public void StartListening()
         {
-            listener = new UdpClient(listenPort);
-            listenThread = new Thread(new ThreadStart(ListenForHeartbeat));
+            listener.Start();
+            listenThread = new Thread(new ThreadStart(ListenForHeartbeats));
             listenThread.Start();
         }
 
-        private void ListenForHeartbeat()
+        private void ListenForHeartbeats()
         {
             try
             {
-                while (!cancellationTokenSource.IsCancellationRequested)
-                {
-                    Debug.WriteLine("Waiting for heartbeat...");
-                    if (listener.Available > 0)
-                    {
-                        byte[] bytes = listener.Receive(ref groupEP);
-                        if (bytes.Length > 0)
-                        {
-                            Debug.WriteLine("Heartbeat received.");
-                            isMainServerAlive = true;
-                        }
-                    }
+                client = listener.AcceptTcpClient();
+                stream = client.GetStream();
+                byte[] buffer = new byte[1024];
 
-                    Thread.Sleep(heartbeatInterval * 1000);
-                    if (!isMainServerAlive)
+                while (running)
+                {
+                    int byteRead = stream.Read(buffer, 0, buffer.Length);
+                    if (byteRead > 0)
                     {
-                        ActivateBackupOperations();
-                        break;
+                        Debug.WriteLine($"Heartbeat received {buffer}");
                     }
-                    // Reset flag for next interval
-                    isMainServerAlive = false;
                 }
-            }
-            catch (Exception e)
+            } 
+            catch (Exception ex)
             {
-                Debug.WriteLine($" Listen for heart beat {e} \n");
-            }
-            finally
-            {
-                listener.Close();
+                Debug.WriteLine("Error receiving hearbeat: " + ex.Message);
             }
         }
 
@@ -81,9 +65,11 @@ namespace ETCRegionManagementSimulator
 
         public void StopListening()
         {
-            cancellationTokenSource.Cancel();
-            listener?.Close();
+            running = false;
             listenThread?.Join(); // Ensure the thread has completed
+            stream.Close();
+            client.Close();
+            listener.Stop();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -92,8 +78,7 @@ namespace ETCRegionManagementSimulator
             {
                 if (disposing)
                 {
-                    listener?.Dispose();
-                    cancellationTokenSource?.Dispose();
+                    StopListening();
                 }
                 disposedValue = true;
             }

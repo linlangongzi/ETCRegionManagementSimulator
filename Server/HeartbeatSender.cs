@@ -9,29 +9,29 @@ namespace ETCRegionManagementSimulator
 {
     public class HeartbeatSender : IDisposable
     {
-        private readonly IPAddress backupServerIp;
-        private readonly int backupServerPort;
+        private readonly IPAddress mainServerIp;
+        private readonly int mainServerPort;
         private readonly int heartbeatInterval;
 
+        private TcpClient client;
+        private NetworkStream stream;
         private Thread sendThread;
-        private UdpClient sender;
-        private IPEndPoint endPoint;
-        private CancellationTokenSource cancellationTokenSource;
+        private bool running = true;
 
         private bool disposedValue;
 
         public HeartbeatSender(IPAddress ip, int port, int heartbeatIntervalSeconds = 5)
         {
-            this.backupServerIp = ip;
-            this.backupServerPort = port;
-            this.heartbeatInterval = heartbeatIntervalSeconds;
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.sender = new UdpClient();
-            this.endPoint = new IPEndPoint(backupServerIp, backupServerPort);
+            mainServerIp = ip;
+            mainServerPort = port;
+            heartbeatInterval = heartbeatIntervalSeconds;
+            client = new TcpClient();
         }
 
         public void StartSending()
         {
+            client.Connect(mainServerIp, mainServerPort);
+            stream = client.GetStream();
             sendThread = new Thread(new ThreadStart(SendHeartbeat));
             sendThread.Start();
         }
@@ -40,29 +40,25 @@ namespace ETCRegionManagementSimulator
         {
             try
             {
-                while (!cancellationTokenSource.IsCancellationRequested)
+                while(running)
                 {
-                    byte[] bytes = Encoding.ASCII.GetBytes("Heartbeat");
-                    sender.Send(bytes, bytes.Length, endPoint);  // Use the persistent UdpClient instance
-                    Debug.WriteLine($"Heartbeat sent by {this}");
+                    byte[] buffer = Encoding.ASCII.GetBytes("Heartbeat");
+                    stream.Write(buffer, 0, buffer.Length);
                     Thread.Sleep(heartbeatInterval * 1000);
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"Failed to send heartbeat: {e.Message}");
-                // Optionally rethrow or handle the exception
-            }
-            finally
-            {
-                sender.Close();
+                Debug.WriteLine("Error Sending hearbeat: " + e.Message);
             }
         }
 
         public void StopSending()
         {
-            cancellationTokenSource.Cancel();
+            running = false;
             sendThread?.Join(); // Ensure the thread has completed
+            stream.Close();
+            client.Close();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -71,10 +67,10 @@ namespace ETCRegionManagementSimulator
             {
                 if (disposing)
                 {
-                    cancellationTokenSource?.Dispose();
-                    sender?.Dispose();
+
                 }
                 disposedValue = true;
+                StopSending();
             }
         }
 

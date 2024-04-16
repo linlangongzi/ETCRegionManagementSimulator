@@ -28,14 +28,20 @@ namespace ETCRegionManagementSimulator
             this.backupServerPort = port;
             this.heartbeatInterval = heartbeatIntervalSeconds;
             this.cancellationTokenSource = new CancellationTokenSource();
-            this.heartbeatReceiver = new HeartbeatReceiver(port, heartbeatInterval);
+            this.heartbeatReceiver = new HeartbeatReceiver(port);
             this.heartbeatSender = new HeartbeatSender(mainServerIp, port, heartbeatInterval);
         }
-
+         
         public void StartMainServerMonitoring()
         {
             heartbeatReceiver.StartListening();
             heartbeatSender.StartSending();
+        }
+
+        public void StopMainServerMonitoring()
+        {
+            heartbeatSender.StopSending();
+            heartbeatReceiver.StopListening();
         }
         private void ActivateBackupOperations()
         {
