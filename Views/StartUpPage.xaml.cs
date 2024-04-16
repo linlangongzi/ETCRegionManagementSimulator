@@ -61,7 +61,7 @@ namespace ETCRegionManagementSimulator
             {
                 Debug.WriteLine($"Shut down the server");
                 serverRunningState = false;
-                server.StopTasks();
+                server.Stop();
             }
 
             if (serverRunningState)

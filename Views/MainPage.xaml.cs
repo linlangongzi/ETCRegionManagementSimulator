@@ -62,7 +62,7 @@ namespace ETCRegionManagementSimulator
             excelService = new ExcelReader();
 
             ExcelDataController controller = new ExcelDataController(model, view, excelService);
-            resourceLoader= ResourceLoader.GetForCurrentView();
+            resourceLoader = ResourceLoader.GetForCurrentView();
         }
 
         //private void OnMainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -91,11 +91,6 @@ namespace ETCRegionManagementSimulator
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            /// TODO: delete the reduntant code below
-            if (e.Parameter != null)
-            {
-                server = (Server)e.Parameter;
-            }
         }
 
         private void OnNewClientConneted(object sender, ClientConnectedEventArgs eventArgs)

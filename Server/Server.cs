@@ -251,7 +251,7 @@ namespace ETCRegionManagementSimulator
             }
         }
 
-        public void StopTasks()
+        public void Stop()
         {
             if (Running)
             {
@@ -285,7 +285,7 @@ namespace ETCRegionManagementSimulator
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
-                StopTasks();
+                Stop();
                 Running = false;
                 disposedValue = true;
             }
