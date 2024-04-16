@@ -75,6 +75,7 @@ namespace ETCRegionManagementSimulator
             }
             else
             {
+                backupServerRunningState = false;
                 if (backupServer != null)
                 {
                     Debug.WriteLine("Stop Backup Server \n");
