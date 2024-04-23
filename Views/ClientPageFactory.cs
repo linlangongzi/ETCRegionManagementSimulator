@@ -17,8 +17,9 @@ namespace ETCRegionManagementSimulator.Views
         {
             if (!pagesById.ContainsKey(clientId))
             {
-                StandardPage clientPage = new StandardPage();
-                clientPage.ClientPageId = clientId;
+
+                //StandardPage clientPage = new StandardPage();
+                //clientPage.ClientPageId = clientId;
                 pagesById[clientId] = clientPage;
                 return clientPage;
             }

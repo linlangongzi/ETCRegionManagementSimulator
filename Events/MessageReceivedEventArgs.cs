@@ -12,10 +12,10 @@ namespace ETCRegionManagementSimulator.Events
 
         public string ClientId { get; }
 
-        public MessageReceivedEventArgs(string message, string senderId)
+        public MessageReceivedEventArgs(string senderId, string message)
         {
-            Message = message;
             ClientId = senderId;
+            Message = message;
         }
     }
 }

@@ -193,7 +193,6 @@ namespace ETCRegionManagementSimulator
                         client.TcpClient.Close();
                     }
                     //// Ensure the connection is closed and resources are freed
-                    //client.TcpClient.Close();
                     connectionManager.RemoveClient(client.Id);
                     client.Dispose();
                     Debug.WriteLine($"Connection with client {client.Id} closed.");
@@ -279,12 +278,7 @@ namespace ETCRegionManagementSimulator
                         connectionManager.RemoveAllClients();
                         connectionManager = null;
                     }
-
-                    // TODO: dispose managed state (managed objects)
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 Stop();
                 Running = false;
                 disposedValue = true;

@@ -50,14 +50,14 @@
 
             <TextBox x:Name="ip_address" 
                      PlaceholderText = "IP Address"
-                     Text="127.0.0.1" 
                      Width="280" 
                      TextWrapping="Wrap"
                      HorizontalAlignment="Center" 
                      VerticalAlignment="Center"
                      TextAlignment="Center"
                      FontSize="20" 
-                     Grid.Column="2" Height="40" 
+                     Grid.Column="2"
+                     Height="40" 
                      BorderThickness="0,0,0,2" />
 
             <!-- Row 1 -->

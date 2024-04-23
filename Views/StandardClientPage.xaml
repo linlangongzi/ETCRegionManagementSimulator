@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="ETCRegionManagementSimulator.Views.StandardClientPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:viewmodels="using:ETCRegionManagementSimulator.ViewModels" 
+    d:DataContext="{d:DesignInstance Type=viewmodels:ClientViewModel}"
+    mc:Ignorable="d"
+    DataContext="{Binding ClientViewModel, Mode=OneWay}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <TextBlock Text="{Binding ClientView.ClientId}" />
+        <TextBlock Text="{Binding ClientView.Name}" />
+        <ListView 
+            x:Name="listView_messagelist"
+            BorderBrush="AliceBlue"
+            BorderThickness="10"
+            ItemsSource="{Binding Messages}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Margin="10"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

@@ -6,18 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1466.716" d:DesignHeight="783.719">
 
     <Grid>
         <TextBox x:Name="textbox_messages" 
                  HorizontalAlignment="Left" 
-                 Height="580" 
+                 Height="205" 
                  Margin="149,95,0,0" 
                  Text="TextBox" 
                  TextWrapping="Wrap" 
                  VerticalAlignment="Top"
-                 Width="1100"/>
-        <StackPanel HorizontalAlignment="Left" Margin="149,790,0,0" Orientation="Horizontal" VerticalAlignment="Top">
+                 Width="743"/>
+        <StackPanel HorizontalAlignment="Left" Margin="164,438,0,0" Orientation="Horizontal" VerticalAlignment="Top">
             <TextBox x:Name="textbox_ip" Height="60" Text="ip" TextWrapping="Wrap" Width="390" Margin="0,0,20,0"/>
             <TextBox x:Name="textbox_port" Text="port" TextWrapping="NoWrap" Width="140" Height="60" Margin="0,0,160,0" TextAlignment="Center" HorizontalTextAlignment="Center"/>
             <ToggleButton x:Name="togglebtn_connect" 
@@ -32,7 +32,7 @@
         <TextBlock x:Name="textblock_status" 
                    HorizontalAlignment="Left" 
                    Height="65" 
-                   Margin="149,925,0,0" 
+                   Margin="164,573,0,0" 
                    Text="Status" 
                    TextWrapping="Wrap"
                    VerticalAlignment="Top" 

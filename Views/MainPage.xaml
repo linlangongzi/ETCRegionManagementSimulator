@@ -47,11 +47,11 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <ListView
+                <!--<ListView
                     x:Name="TestView"
                     Grid.Row="1"
                     Grid.Column="0"
-                    ItemsSource="{x:Bind testSource, Mode=OneWay}">
+                    ItemsSource="{x:Bind TestSource, Mode=OneWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
@@ -61,7 +61,7 @@
                                 FontSize="20"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>-->
 
                 <Frame
                     Grid.Column="0"

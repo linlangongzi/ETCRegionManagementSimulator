@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using System.Net.NetworkInformation;
 
 namespace ETCRegionManagementSimulator
 {
@@ -28,8 +29,38 @@ namespace ETCRegionManagementSimulator
             }
             return availablePorts;
         }
+        public static string GetIPv4Address()
+        {
+            try
+            {
+                NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
 
-        private static bool IsPortAvailable(int port)
+                foreach (NetworkInterface networkInterface in networkInterfaces)
+                {
+                    if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                    {
+                        IPInterfaceProperties ipProperties = networkInterface.GetIPProperties();
+
+                        foreach (UnicastIPAddressInformation ip in ipProperties.UnicastAddresses)
+                        {
+                            if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                            {
+                                return ip.Address.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error retrieving IPv4 address: " + ex.Message);
+            }
+
+            return null; // No IPv4 address found or an error occurred
+        }
+
+
+    private static bool IsPortAvailable(int port)
         {
             try
             {

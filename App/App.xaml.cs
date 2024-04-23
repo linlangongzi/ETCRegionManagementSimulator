@@ -1,19 +1,12 @@
-﻿using OfficeOpenXml;
+﻿using ETCRegionManagementSimulator.ViewModels;
+using ETCRegionManagementSimulator.Views;
+using Microsoft.Extensions.DependencyInjection;
+using OfficeOpenXml;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator
@@ -27,12 +20,25 @@ namespace ETCRegionManagementSimulator
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+
+        public IServiceProvider ServiceProvider { get; private set; }
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            ServiceCollection services = new ServiceCollection();
+            ConfigureServices(services);
+            ServiceProvider = services.BuildServiceProvider();
         }
 
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<StandardPageFactory>();
+            services.AddTransient<ClientViewModel>();
+            services.AddTransient<StandardClientPage> ( provide => 
+                new StandardClientPage(provide.GetRequiredService<ClientViewModel>()));
+        }
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.

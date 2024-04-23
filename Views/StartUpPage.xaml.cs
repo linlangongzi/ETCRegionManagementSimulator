@@ -33,6 +33,7 @@ namespace ETCRegionManagementSimulator
             connectionPortThird.Text = server.Ports[2].ToString();
             connectionPortForth.Text = server.Ports[3].ToString();
             connectionPortFifth.Text = server.Ports[4].ToString();
+            ip_address.Text = Utility.GetIPv4Address();
 
         }
 
@@ -45,11 +46,11 @@ namespace ETCRegionManagementSimulator
                 IPAddress ipAddr;
                 if (!IPAddress.TryParse(ipAddressStr, out ipAddr))
                 {
-                    System.Diagnostics.Debug.WriteLine($"{ipAddressStr} is an invalid ip address");
+                    Debug.WriteLine($"{ipAddressStr} is an invalid ip address");
                     return;
                 }
                 else if (ipAddr.AddressFamily!= System.Net.Sockets.AddressFamily.InterNetwork) {
-                    System.Diagnostics.Debug.WriteLine($"{ipAddressStr} is an invalid ip address");
+                    Debug.WriteLine($"{ipAddressStr} is an invalid ip address");
                     return;
                 }
                 server.DefaultIPAddress = ipAddr;
@@ -109,7 +110,7 @@ namespace ETCRegionManagementSimulator
             backupServer = new BackUpServer(server.DefaultIPAddress, backupIpAddr, backupPort);
             backupServer.StartMainServerMonitoring();
             backupServerRunningState = true;
-            System.Diagnostics.Debug.WriteLine($"Server started successfully ");
+            Debug.WriteLine($"Server started successfully ");
         }
 
         private void updateUI(bool isServerRunning)

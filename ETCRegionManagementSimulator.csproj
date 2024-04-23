@@ -17,7 +17,17 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <PackageCertificateThumbprint>2229D90CAD3C7893C1061ADE9B0725671687208D</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -127,6 +137,7 @@
     <Compile Include="Events\ClientDisconnetedEventArgs.cs" />
     <Compile Include="Events\DataChangedEventArgs.cs" />
     <Compile Include="Events\MessageReceivedEventArgs.cs" />
+    <Compile Include="Events\MessageService.cs" />
     <Compile Include="Events\SendSelectedDataEventArgs.cs" />
     <Compile Include="Events\SheetSelectedEventArgs.cs" />
     <Compile Include="Interfaces\IClientPage.cs" />
@@ -136,6 +147,7 @@
     <Compile Include="Interfaces\IDataModel.cs" />
     <Compile Include="Interfaces\IExcelService.cs" />
     <Compile Include="Interfaces\IView.cs" />
+    <Compile Include="ViewModels\ClientView.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
     <Compile Include="Server\BackUpServer.cs" />
     <Compile Include="Server\HeartbeatReceiver.cs" />
@@ -143,7 +155,8 @@
     <Compile Include="Utilities\ExcelDisplayAdaptor.cs" />
     <Compile Include="Utilities\FixedColumnIndex.cs" />
     <Compile Include="Utilities\PythonRunner.cs" />
-    <Compile Include="ViewModels\ByteRowModel.cs" />
+    <Compile Include="Models\ByteRowModel.cs" />
+    <Compile Include="ViewModels\ClientViewModel.cs" />
     <Compile Include="ViewModels\DisplayModel.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="Server\ClientIdGenerator.cs" />
@@ -154,18 +167,19 @@
     <Compile Include="Utilities\DataFormatConverter.cs" />
     <Compile Include="Utilities\ExcelReader.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
-    <Compile Include="Views\ClientPageFactory.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Server\ServerService.cs" />
+    <Compile Include="ViewModels\NavigationViewItemModel.cs" />
     <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StandardPage.xaml.cs">
-      <DependentUpon>StandardPage.xaml</DependentUpon>
+    <Compile Include="Views\StandardClientPage.xaml.cs">
+      <DependentUpon>StandardClientPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StandardPageFactory.cs" />
     <Compile Include="Views\StartUpPage.xaml.cs">
       <DependentUpon>StartUpPage.xaml</DependentUpon>
     </Compile>
@@ -202,7 +216,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StandardPage.xaml">
+    <Page Include="Views\StandardClientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,6 +229,18 @@
     <PackageReference Include="EPPlus">
       <Version>7.1.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>8.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <Version>8.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel">
+      <Version>8.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options">
+      <Version>8.0.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
@@ -225,9 +251,14 @@
   <ItemGroup>
     <PRIResource Include="Strings\ja-jp\Resources.resw" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ETCRegionManagementSimulator_TemporaryKey.pfx" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

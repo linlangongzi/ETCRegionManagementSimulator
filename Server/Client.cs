@@ -14,13 +14,6 @@ namespace ETCRegionManagementSimulator
         public TcpClient TcpClient { get; }
         public NetworkStream Stream { get; }
 
-        // make the following EventHandler static so that it can be accessed by multiple pages
-        public static event EventHandler<MessageReceivedEventArgs> MessageReceived;
-        public static void OnMessageReceived(string message, string senderId)
-        {
-            MessageReceived?.Invoke(null, new MessageReceivedEventArgs(message, senderId));
-        }
-
         public Client(string id, TcpClient client)
         {
             Id = id;
@@ -34,8 +27,13 @@ namespace ETCRegionManagementSimulator
             int bytesRead = await Stream.ReadAsync(buffer, 0, buffer.Length);
             string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
             // Raise the Event
-            OnMessageReceived(message, Id);
+            MessageService.Instance.PublishMessage(Id, message);
             return message;
+        }
+
+        private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            // Handle message received
         }
 
         public async Task SendDataAsync(string data)
