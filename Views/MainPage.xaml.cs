@@ -34,7 +34,6 @@ namespace ETCRegionManagementSimulator
         private bool disposedValue;
 
         private Dictionary<string, NavigationViewItemModel> NavigationViewItemCollection = new Dictionary<string, NavigationViewItemModel>();
-        //private ObservableCollection<string> TestSource { get; } = new ObservableCollection<string>();
 
         /// TODO: use DI to replace code below
         private IExcelService _excelService;
