@@ -15,45 +15,44 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="9*"></RowDefinition>
         </Grid.RowDefinitions>
-            <Grid
-                Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <!-- Each column takes an equal share -->
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock 
+        <Grid
+            Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!-- Each column takes an equal share -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
                     x:Name="clientId"
                     Height="80"
                     Grid.Column="0" 
                     Text="{Binding ClientView.ClientId}" 
                     Margin="5" 
                     HorizontalAlignment="Stretch"/>
-                <TextBlock 
+            <TextBlock 
                     x:Name="name"
                     Height="80"
                     Grid.Column="1" 
                     Text="{Binding ClientView.Name}" 
                     Margin="5" 
                     HorizontalAlignment="Stretch"/>
-            </Grid>
-            
-                <ListView
-                    Grid.Row="1"
+        </Grid>
+
+        <ListView
+            Grid.Row="1"
             x:Name="listView_messagelist"
             BorderBrush="AliceBlue"
             BorderThickness="10"
             ItemsSource="{Binding Messages}"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                VerticalAlignment="Stretch">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" Margin="10"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            
-        
+            VerticalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Margin="10"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 
 </Page>

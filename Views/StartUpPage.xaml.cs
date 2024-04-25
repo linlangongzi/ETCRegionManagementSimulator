@@ -107,7 +107,7 @@ namespace ETCRegionManagementSimulator
                 Debug.WriteLine($" Backup Server IP : {backupServerIp} is an invalid ip address");
             }
 
-            backupServer = new BackUpServer(server.DefaultIPAddress, backupIpAddr, backupPort);
+            backupServer = new BackUpServer(server.DefaultIPAddress, backupIpAddr, backupPort, 1);
             backupServer.StartMainServerMonitoring();
             backupServerRunningState = true;
             Debug.WriteLine($"Server started successfully ");
