@@ -146,6 +146,8 @@
     <Compile Include="Interfaces\IDataFormat.cs" />
     <Compile Include="Interfaces\IDataModel.cs" />
     <Compile Include="Interfaces\IExcelService.cs" />
+    <Compile Include="Interfaces\IPageWithViewModel.cs" />
+    <Compile Include="Interfaces\IStandardPageFactory.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="ViewModels\ClientView.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
@@ -175,6 +177,9 @@
     <Compile Include="ViewModels\NavigationViewItemModel.cs" />
     <Compile Include="Views\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpecialClientPage.xaml.cs">
+      <DependentUpon>SpecialClientPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StandardClientPage.xaml.cs">
       <DependentUpon>StandardClientPage.xaml</DependentUpon>
@@ -213,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SpecialClientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

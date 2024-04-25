@@ -5,39 +5,51 @@ namespace ETCRegionManagementSimulator.Events
 {
     public class MessageService
     {
+        private readonly object _lock = new object();
+
         private static readonly MessageService _instance = new MessageService();
         public static MessageService Instance => _instance;
         private readonly Dictionary<string, List<EventHandler<MessageReceivedEventArgs>>> _handlers = new Dictionary<string, List<EventHandler<MessageReceivedEventArgs>>>();
 
         public void Subscribe(string clientId, EventHandler<MessageReceivedEventArgs> handler)
         {
-            if (!_handlers.ContainsKey(clientId))
+            lock (_lock)
             {
-                _handlers[clientId] = new List<EventHandler<MessageReceivedEventArgs>>();
+                if (!_handlers.ContainsKey(clientId))
+                {
+                    _handlers[clientId] = new List<EventHandler<MessageReceivedEventArgs>>();
+                }
+                _handlers[clientId].Add(handler);
             }
-            _handlers[clientId].Add(handler);
         }
 
         public void Unsubscribe(string clientId, EventHandler<MessageReceivedEventArgs> handler)
         {
-            if (_handlers.ContainsKey(clientId))
+            lock (_lock)
             {
-                _ = _handlers[clientId].Remove(handler);
-                if (_handlers[clientId].Count == 0)
+                if (_handlers.ContainsKey(clientId))
                 {
-                    _ = _handlers.Remove(clientId);
+                    _ = _handlers[clientId].Remove(handler);
+                    if (_handlers[clientId].Count == 0)
+                    {
+                        _ = _handlers?.Remove(clientId);
+                    }
                 }
             }
         }
 
         public void PublishMessage(string clientId, string message)
         {
-            if (_handlers.ContainsKey(clientId))
+            lock(_lock)
             {
-                MessageReceivedEventArgs args = new MessageReceivedEventArgs(clientId, message);
-                foreach (EventHandler<MessageReceivedEventArgs> handler in _handlers[clientId])
+                if (_handlers.ContainsKey(clientId))
                 {
-                    handler(this, args);
+                    MessageReceivedEventArgs args = new MessageReceivedEventArgs(clientId, message);
+                    foreach (EventHandler<MessageReceivedEventArgs> handler in _handlers[clientId])
+                    {
+                        // Safely invoke the handler if it's not null
+                        handler?.Invoke(this, args);
+                    }
                 }
             }
         }

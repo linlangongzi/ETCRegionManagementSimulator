@@ -5,24 +5,46 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:viewmodels="using:ETCRegionManagementSimulator.ViewModels" 
-    d:DataContext="{d:DesignInstance Type=viewmodels:ClientViewModel}"
+    d:DataContext="{d:DesignInstance viewmodels:ClientViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
     DataContext="{Binding ClientViewModel, Mode=OneWay}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="{Binding ClientView.ClientId}" />
-        <TextBlock Text="{Binding ClientView.Name}" />
-        <ListView 
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!-- Each column takes an equal share -->
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock 
+                    x:Name="clientId"
+                    Height="80"
+                    Grid.Column="0" 
+                    Text="{Binding ClientView.ClientId}" 
+                    Margin="5" 
+                    HorizontalAlignment="Stretch"/>
+                <TextBlock 
+                    x:Name="name"
+                    Height="80"
+                    Grid.Column="1" 
+                    Text="{Binding ClientView.Name}" 
+                    Margin="5" 
+                    HorizontalAlignment="Stretch"/>
+            </Grid>
+            <ListView 
             x:Name="listView_messagelist"
             BorderBrush="AliceBlue"
             BorderThickness="10"
             ItemsSource="{Binding Messages}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" Margin="10"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Margin="10"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
+
 </Page>

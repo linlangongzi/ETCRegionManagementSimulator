@@ -1,4 +1,5 @@
-﻿using ETCRegionManagementSimulator.ViewModels;
+﻿using ETCRegionManagementSimulator.Interfaces;
+using ETCRegionManagementSimulator.ViewModels;
 using ETCRegionManagementSimulator.Views;
 using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
@@ -11,16 +12,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
+
     sealed partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-
         public IServiceProvider ServiceProvider { get; private set; }
         public App()
         {
@@ -34,16 +28,11 @@ namespace ETCRegionManagementSimulator
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<StandardPageFactory>();
-            services.AddTransient<ClientViewModel>();
-            services.AddTransient<StandardClientPage> ( provide => 
-                new StandardClientPage(provide.GetRequiredService<ClientViewModel>()));
+            services.AddTransient<StandardClientPage>();
+            services.AddTransient<SpecialClientPage>();
+            services.AddSingleton<IStandardPageFactory, StandardPageFactory>();
         }
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
-        /// <param name="e">Details about the launch request and process.</param>
+
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             //EPPlus NonCommercial license

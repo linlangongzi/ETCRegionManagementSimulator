@@ -1,4 +1,5 @@
 ﻿using ETCRegionManagementSimulator.Events;
+using ETCRegionManagementSimulator.Interfaces;
 using ETCRegionManagementSimulator.ViewModels;
 using System;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator.Views
 {
-    public sealed partial class StandardClientPage : Page, IDisposable
+    public sealed partial class StandardClientPage : Page, IPageWithViewModel, IDisposable
     {
         private string _clientId;
 
@@ -24,9 +25,15 @@ namespace ETCRegionManagementSimulator.Views
 
         public StandardClientPage(ClientViewModel viewModel)
         {
+            this.InitializeComponent();
             DataContext = viewModel;
+            _clientViewModel = viewModel;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+        }
+        public void SetViewModel(ClientViewModel viewModel)
+        {
+            DataContext = viewModel;
         }
 
         private void OnUnloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -43,10 +50,10 @@ namespace ETCRegionManagementSimulator.Views
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                // Update the UI with the received message specific to this client
-                Debug.WriteLine($"{this} : {e.ClientId} Received Messages :{e.Message}");
-                ClientViewModel viewModel = DataContext as ClientViewModel;
-                viewModel?.ReceiveMessage(e.Message);
+                if (DataContext != null && _clientViewModel != null)
+                {
+                    _clientViewModel.ReceiveMessage(e.Message);
+                }
             });
         }
 
@@ -54,11 +61,6 @@ namespace ETCRegionManagementSimulator.Views
         {
             base.OnNavigatedTo(e);
             _clientId = e.Parameter as string;
-            if (_clientViewModel == null)
-            {
-                _clientViewModel = new ClientViewModel(); // or fetch from a higher level
-            }
-            this.DataContext = _clientViewModel;
         }
 
         private void Dispose(bool disposing)

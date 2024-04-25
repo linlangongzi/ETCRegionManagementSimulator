@@ -31,11 +31,6 @@ namespace ETCRegionManagementSimulator
             return message;
         }
 
-        private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
-        {
-            // Handle message received
-        }
-
         public async Task SendDataAsync(string data)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(data);

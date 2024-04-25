@@ -10,7 +10,7 @@ namespace ETCRegionManagementSimulator.ViewModels
     {
         private ClientView _clientView;
 
-        private ObservableCollection<string> _messages = new ObservableCollection<string>();
+        private ObservableCollection<string> _messages;
 
         public ClientView ClientView
         {
@@ -24,12 +24,23 @@ namespace ETCRegionManagementSimulator.ViewModels
 
         public ObservableCollection<string> Messages
         {
-            get => _messages;
+            get => _messages ?? (_messages = new ObservableCollection<string>());
             set
             {
                 _messages = value;
                 OnPropertyChanged();
             }
+        }
+
+        public ClientViewModel()
+        {
+            ClientView = new ClientView();
+            _messages = new ObservableCollection<string>();
+        }
+        public ClientViewModel(ClientView clientView)
+        {
+            ClientView = clientView;
+            _messages = new ObservableCollection<string>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,7 +59,6 @@ namespace ETCRegionManagementSimulator.ViewModels
         public void ReceiveMessage(string message)
         {
             Messages.Add(message);
-            Debug.WriteLine($">>>>>>>>> {message} >>>>>>>");
         }
     }
 }

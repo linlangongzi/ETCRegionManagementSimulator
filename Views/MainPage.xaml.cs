@@ -24,6 +24,8 @@ namespace ETCRegionManagementSimulator
 {
     public sealed partial class MainPage : Page, IView, IDisposable
     {
+
+        private IStandardPageFactory _pageFactory;
         /// TODO: Implementa central event aggregator to manage All the EventHandlers in the future release 
         public event EventHandler<SheetSelectedEventArgs> SheetSelected;
         public static event EventHandler<SendSelectedDataEventArgs> SendSelectedData;
@@ -47,28 +49,36 @@ namespace ETCRegionManagementSimulator
         public MainPage()
         {
             InitializeComponent();
-
-            _server = ServerService.Instance.Server;
-            _server.NewClientConnected += OnNewClientConneted;
-            _server.ClientDisconnected += OnClientDisconnected;
-
             //MainNavigation.ItemInvoked += OnMainNavigation_ItemInvoked;
-            _view = this;
-            _excelService = new ExcelReader();
-            ExcelDataController controller = new ExcelDataController(_excelDataModel, _view, _excelService);
-
-            SettingPage = new SettingPage();
-            _resourceLoader = ResourceLoader.GetForCurrentView();
-
+            InitializeDependencies();
+            InitializeServer();
             InitializeMainUI();
         }
 
+        private void InitializeDependencies()
+        {
+            App app = (App)Application.Current;
+            _pageFactory = app.ServiceProvider.GetRequiredService<IStandardPageFactory>();
+
+            _view = this;
+            _excelService = new ExcelReader();
+            ExcelDataController controller = new ExcelDataController(_excelDataModel, _view, _excelService);
+        }
+
+        private void InitializeServer()
+        {
+            _server = ServerService.Instance.Server;
+            _server.NewClientConnected += OnNewClientConneted;
+            _server.ClientDisconnected += OnClientDisconnected;
+        }
         private void InitializeMainUI()
         {
             ///TODO migrate JIS strings to resource dictionary
             TB_LocalHostIP.Text = $"本機IPアドレス: {_server.DefaultIPAddress}.";
             TB_OpenPorts.Text = $"オーペンポート: [ {string.Join(" ; ", _server.Ports.Select(i => i.ToString()))} ].";
             TB_Remote_Client.Text = $"接続されていない.";
+            SettingPage = new SettingPage();
+            _resourceLoader = ResourceLoader.GetForCurrentView();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -83,13 +93,16 @@ namespace ETCRegionManagementSimulator
             ClientView clientView = new ClientView
             {
                 ClientId = clientId,
-                Name = clientId.ToLower()
+                Name = clientId.ToLower(),
+                Type = ClientView.ClientViewType.Standard
             };
 
-            App app = (App)Application.Current;
-            StandardPageFactory factory = app.ServiceProvider.GetRequiredService<StandardPageFactory>();
-            StandardClientPage clientPage = factory.CreateStandardPage(clientView);
+            StandardClientPage clientPage = (StandardClientPage)_pageFactory.CreateStandardPage(clientView);
 
+            /// TODO: adjust the Page navigation logic here by giving the content of
+            /// NavigationView clientPage
+            /// TODO: maybe move the ClientView and NavifationViewItem creation within the factory
+            /// 
             NavigationViewItem item = new NavigationViewItem
             {
                 Content = clientId,
@@ -98,9 +111,6 @@ namespace ETCRegionManagementSimulator
             };
 
             NavigationViewItemCollection.Add(clientId, new NavigationViewItemModel(clientId, clientPage, item));
-
-            Debug.WriteLine($"A New Client :  {clientId} is connected \n");
-
             MainNavigation.MenuItems.Add(item);
             MainNavigation.SelectedItem = item;
 
@@ -123,53 +133,33 @@ namespace ETCRegionManagementSimulator
                 }
                 NavigationViewItemCollection.Remove(disconnectedClientId);
             }
-            //TestSource.Add($"Disconneted from client : {disconnectedClientId}");
         }
 
-        private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
-        {
-            string message = e.Message;
-            string senderId = e.ClientId;
-            UpdateClientPageMessageView(senderId, message);
-        }
-
-        private async void UpdateClientPageMessageView(string senderId, string message)
-        {
-            //StandardPage currentPage = (StandardPage) ClientPageFactory.Instance.GetPageById(senderId);
-            //if (currentPage != null)
-            //{
-            //    Debug.WriteLine($" >> Sender ID : {senderId} \n >>  CurrentPage is  : {currentPage.ClientPageId} Receive : {message} \n");
-            //    currentPage.UpdateMessageView(message);
-            //}
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                //    /// TODO: update UI element with the messages here
-                //    currentPage.SourceMessages.Add(new MessageViewModel() { Message = message });
-                //TestSource.Add(message);
-
-                //foreach (string t in testSource)
-                //{
-                //    Debug.WriteLine($" Test source messages: {t} \n");
-                //}
-            });
-        }
         private void MainNavigation_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            //TODO: Remove IsSettingsSelected check
             if (!args.IsSettingsSelected)
             {
                 NavigationViewItem selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {
                     string id = selectedItem.Content.ToString();
-                    NavigationViewItemCollection.TryGetValue(id, out NavigationViewItemModel selectedItemModel);
-                    StandardClientPage currentPage = selectedItemModel.StandardPage;
-
-                    //StandardPage currentPage = (StandardPage)ClientPageFactory.Instance.GetPageById(v);
-                    if (currentPage is StandardClientPage standardPage)
+                    if (NavigationViewItemCollection.TryGetValue(id, out NavigationViewItemModel selectedItemModel))
                     {
-                        Type pageType = standardPage.GetType();
-                        _ = ContentFrame.Navigate(pageType, id);
+                        Page currentPage = selectedItemModel.StandardPage;
+
+                        if (currentPage.DataContext == null)
+                        {
+                            Debug.WriteLine("Error: DataContext should have been set by now.");
+                            // Optionally handle this situation, such as re-setting DataContext or logging an error.
+                        } else
+                        {
+                            _ = ContentFrame.Navigate(currentPage.GetType(), id);
+                        }
+
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Error: No matching item in NavigationViewItemCollection.");
                     }
                 }
             }
@@ -179,10 +169,10 @@ namespace ETCRegionManagementSimulator
             }
         }
 
+
         private void MainNavigation_OnLoaded(object sender, RoutedEventArgs e)
         {
-            //MainNavigation.SelectedItem = MainNavigation.MenuItems[0];
-            var setting = (NavigationViewItem)MainNavigation.SettingsItem;
+            NavigationViewItem setting = (NavigationViewItem)MainNavigation.SettingsItem;
             setting.Content = $"{_resourceLoader.GetString("Nav_Settings")}";
         }
 
