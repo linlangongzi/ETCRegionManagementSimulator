@@ -67,7 +67,7 @@
                     Grid.Column="0"
                     Grid.Row="0"
                     Grid.ColumnSpan="1"
-                    Grid.RowSpan="1"
+                    Grid.RowSpan="2"
                     x:Name="ContentFrame"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"/>
@@ -76,7 +76,7 @@
                     x:Name="Splitter_v"
                     Grid.Column="1"
                     Grid.Row="0"
-                    Grid.RowSpan="1"
+                    Grid.RowSpan="2"
                     Width="2"
                     ResizeBehavior="PreviousAndNext"
                     Background="LightGray"
