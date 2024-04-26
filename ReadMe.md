@@ -5,4 +5,4 @@
 ### <https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/troubleshooting-uwp-firewall>
 ## Resolution:
 ### Prompt command below (Powershell, Admin needed) before starting the emulator
-```CheckNetIsolation.exe LoopbackExempt -is -n=85b7304a-465a-4d02-b27f-bf4f122704ec_agrbw38z0xjy8```
+```CheckNetIsolation.exe LoopbackExempt -is -n=85b7304a-465a-4d02-b27f-bf4f122704ec_c1k9twpptvqza```

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ETCRegionManagementSimulator.Views
 {
-    public sealed partial class StandardClientPage : Page, IPageWithViewModel, IDisposable
+    public sealed partial class StandardClientPage : Page, IDisposable
     {
         private string _clientId;
 
@@ -19,6 +19,7 @@ namespace ETCRegionManagementSimulator.Views
             this.InitializeComponent();
             _clientViewModel = new ClientViewModel();
             this.DataContext = _clientViewModel;
+
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
@@ -30,10 +31,6 @@ namespace ETCRegionManagementSimulator.Views
             _clientViewModel = viewModel;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
-        }
-        public void SetViewModel(ClientViewModel viewModel)
-        {
-            DataContext = viewModel;
         }
 
         private void OnUnloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -61,6 +58,28 @@ namespace ETCRegionManagementSimulator.Views
         {
             base.OnNavigatedTo(e);
             _clientId = e.Parameter as string;
+
+            Debug.WriteLine($" StandardClientPage OnNavigatedTo  DataContext  {this.DataContext} ");
+
+            //if (App.ViewModelState.ContainsKey(_clientId))
+            //{
+            //    _clientViewModel = App.ViewModelState[_clientId];
+            //    DataContext = _clientViewModel;
+            //}
+            //else
+            //{
+            //    _clientViewModel = new ClientViewModel();
+            //    DataContext = _clientViewModel;
+            //}
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            Debug.WriteLine($" StandardClientPage FROM  DataContext  {this.DataContext} ");
+            // Save state here, e.g., to local settings or a static property
+            //App.ViewModelState[_clientId] = _clientViewModel;
         }
 
         private void Dispose(bool disposing)
@@ -68,8 +87,8 @@ namespace ETCRegionManagementSimulator.Views
             if (disposing)
             {
                 // TODO: dispose managed state (managed objects)
+                _clientViewModel = null;
             }
-            _clientViewModel = null;
         }
 
         ~StandardClientPage()
